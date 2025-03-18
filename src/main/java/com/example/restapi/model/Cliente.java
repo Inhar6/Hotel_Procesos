@@ -1,28 +1,45 @@
 package com.example.restapi.model;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "clientes")
 public class Cliente {
-    private Long id;               // Identificador único del cliente
-    private String nombre;         // Nombre del cliente
-    private String apellido;       // Apellido del cliente
-    private String email;          // Correo electrónico para reservas y notificaciones
-    private String telefono;       // Número de contacto del cliente
-    private String metodoPago;     // Método de pago preferido (tarjeta, PayPal, etc.)
-    private List<Reserva> reservas; // Lista de reservas asociadas al cliente
 
-    // Constructor
-    public Cliente(Long id, String nombre, String apellido, String email, String telefono, String metodoPago) {
-        this.id = id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 50)
+    private String nombre;
+
+    @Column(nullable = false, length = 50)
+    private String apellido;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false, length = 15)
+    private String telefono;
+
+    @Column(nullable = false, length = 20)
+    private String metodoPago;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas;
+
+    public Cliente() {}
+
+    public Cliente(String nombre, String apellido, String email, String telefono, String metodoPago) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
         this.metodoPago = metodoPago;
-        this.reservas = new ArrayList<>();
     }
 
+    // Getters y Setters
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -56,6 +73,4 @@ public class Cliente {
                 ", metodoPago='" + metodoPago + '\'' +
                 '}';
     }
-    
 }
-

@@ -1,28 +1,39 @@
 package com.example.restapi.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "habitaciones")
 public class Habitacion {
-    private Long id;                // Identificador único de la habitación
-    private int numero;             // Número de la habitación
-    private String tipo;            // Tipo de habitación (Ej: "Individual", "Doble", "Suite")
-    private double precioPorNoche;  // Precio por noche de la habitación
-    private boolean disponible;     // Indica si la habitación está disponible o no
-    private String estadoLimpieza;  // Estado de limpieza ("Limpia", "Sucia", "En mantenimiento")
-    private boolean tieneProblemas; // Indica si tiene algún problema reportado
-    private List<Reserva> reservas; // Lista de reservas asociadas a la habitación
 
-    // Constructor
-    public Habitacion(Long id, int numero, String tipo, double precioPorNoche) {
-        this.id = id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private int numero;
+
+    @Column(nullable = false, length = 20)
+    private String tipo;
+
+    @Column(nullable = false)
+    private double precioPorNoche;
+
+    @Column(nullable = false)
+    private boolean disponible = true;
+
+    @Column(nullable = false, length = 20)
+    private String estadoLimpieza = "Limpia";
+
+    @Column(nullable = false)
+    private boolean tieneProblemas = false;
+
+    public Habitacion() {}
+
+    public Habitacion(int numero, String tipo, double precioPorNoche) {
         this.numero = numero;
         this.tipo = tipo;
         this.precioPorNoche = precioPorNoche;
-        this.disponible = true; // Por defecto, la habitación está disponible
-        this.estadoLimpieza = "Limpia"; // Por defecto, la habitación está limpia
-        this.tieneProblemas = false;
-        this.reservas = new ArrayList<>();
     }
 
     // Getters y Setters
@@ -46,9 +57,6 @@ public class Habitacion {
 
     public boolean isTieneProblemas() { return tieneProblemas; }
     public void setTieneProblemas(boolean tieneProblemas) { this.tieneProblemas = tieneProblemas; }
-
-    public List<Reserva> getReservas() { return reservas; }
-    public void addReserva(Reserva reserva) { this.reservas.add(reserva); }
 
     @Override
     public String toString() {

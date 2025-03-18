@@ -1,30 +1,50 @@
 package com.example.restapi.model;
 
 import java.time.LocalDate;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "reservas")
 public class Reserva {
-    private Long id;                // Identificador único de la reserva
-    private Cliente cliente;        // Cliente que realiza la reserva
-    private Habitacion habitacion;  // Habitación reservada
-    private LocalDate fechaCheckIn; // Fecha de entrada
-    private LocalDate fechaCheckOut;// Fecha de salida
-    private double totalPagar;      // Costo total de la reserva
-    private String estado;          // Estado de la reserva (Pendiente, Confirmada, Cancelada)
-    private String metodoPago;      // Método de pago utilizado
 
-    // Constructor
-    public Reserva(Long id, Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
-        this.id = id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "habitacion_id", nullable = false)
+    private Habitacion habitacion;
+
+    @Column(nullable = false)
+    private LocalDate fechaCheckIn;
+
+    @Column(nullable = false)
+    private LocalDate fechaCheckOut;
+
+    @Column(nullable = false)
+    private double totalPagar;
+
+    @Column(nullable = false, length = 20)
+    private String estado = "Pendiente";
+
+    @Column(nullable = false, length = 20)
+    private String metodoPago;
+
+    public Reserva() {}
+
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
         this.cliente = cliente;
         this.habitacion = habitacion;
         this.fechaCheckIn = fechaCheckIn;
         this.fechaCheckOut = fechaCheckOut;
         this.metodoPago = metodoPago;
-        this.estado = "Pendiente"; // Por defecto, la reserva inicia como pendiente
-        this.totalPagar = calcularTotal(); // Calcula el total basado en las noches y la tarifa de la habitación
+        this.totalPagar = calcularTotal();
     }
 
-    // Método para calcular el costo total de la reserva
     private double calcularTotal() {
         long noches = fechaCheckIn.until(fechaCheckOut).getDays();
         return noches * habitacion.getPrecioPorNoche();
@@ -78,5 +98,4 @@ public class Reserva {
                 ", metodoPago='" + metodoPago + '\'' +
                 '}';
     }
-
 }
