@@ -31,7 +31,7 @@ public class Reserva {
     @Column(nullable = false, length = 20)
     private String estado = "Pendiente";
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String metodoPago;
 
     public Reserva() {}

@@ -23,7 +23,7 @@ public class Cliente {
     @Column(nullable = false, length = 15)
     private String telefono;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String metodoPago;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -39,7 +39,6 @@ public class Cliente {
         this.metodoPago = metodoPago;
     }
 
-    // Getters y Setters
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
