@@ -30,10 +30,12 @@ public class Habitacion {
 
     public Habitacion() {}
 
-    public Habitacion(int numero, String tipo, double precioPorNoche) {
+    public Habitacion(int numero, String tipo, double precioPorNoche, boolean disponible, boolean tieneProblemas) {
         this.numero = numero;
         this.tipo = tipo;
         this.precioPorNoche = precioPorNoche;
+        this.disponible = disponible;
+        this.tieneProblemas = tieneProblemas;
     }
 
     // Getters y Setters
