@@ -22,10 +22,31 @@ public class HabitacionService {
         return habitacionRepository.findAll();
     }
 
+    //Habitaciones libres
+    public List<Habitacion> getHabitacionesDisponibles() {
+        return habitacionRepository.findByDisponibleTrue();
+    }
+
     public Optional<Habitacion> getHabitacionById(Long id) {
         return habitacionRepository.findById(id);
     }
 
+    //Habitacion Urgente
+    public List<Habitacion> getHabitacionesUrgentes() {
+        return habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
+    }
+    
+    public Habitacion getHabitacionUrgente() {
+        List<Habitacion> habitacionesUrgentes = getHabitacionesUrgentes();
+        if (habitacionesUrgentes.isEmpty()) {
+            throw new RuntimeException("No hay habitaciones disponibles para asignación urgente");
+        }
+        return habitacionesUrgentes.get(0); // Devuelve la primera habitación disponible
+    }
+
+    /*
+     * BD
+     */
     public Habitacion createHabitacion(Habitacion habitacion) {
         return habitacionRepository.save(habitacion);
     }
