@@ -5,7 +5,10 @@ import com.example.restapi.model.Habitacion;
 import com.example.restapi.repository.HabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -42,6 +45,23 @@ public class HabitacionService {
             throw new RuntimeException("No hay habitaciones disponibles para asignación urgente");
         }
         return habitacionesUrgentes.get(0); // Devuelve la primera habitación disponible
+    }
+
+    //Informe de ocupacion (Gerente)
+    public Map<String, Object> obtenerInformeOcupacion() {
+        List<Habitacion> habitaciones = habitacionRepository.findAll();
+        int totalHabitaciones = habitaciones.size();
+        int ocupadas = (int) habitaciones.stream().filter(h -> !h.isDisponible()).count();
+        int disponibles = totalHabitaciones - ocupadas;
+        double porcentajeOcupacion = (totalHabitaciones == 0) ? 0 : (ocupadas * 100.0) / totalHabitaciones;
+
+        Map<String, Object> informe = new HashMap<>();
+        informe.put("totalHabitaciones", totalHabitaciones);
+        informe.put("habitacionesOcupadas", ocupadas);
+        informe.put("habitacionesDisponibles", disponibles);
+        informe.put("porcentajeOcupacion", String.format("%.2f%%", porcentajeOcupacion));
+
+        return informe;
     }
 
     /*

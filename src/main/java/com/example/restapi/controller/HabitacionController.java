@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/recepcion")
+@RequestMapping("/api/personal")
 public class HabitacionController {
 
     private final HabitacionService habitacionService;
@@ -59,4 +60,11 @@ public class HabitacionController {
     public List<Habitacion> getHabitacionesUrgentes() {
         return habitacionService.getHabitacionesUrgentes();
     }
+
+    //Informe de ocupacion (Gerente)
+    @GetMapping("/ocupacion")
+    public Map<String, Object> obtenerOcupacionHotel() {
+        return habitacionService.obtenerInformeOcupacion();
+    }
+
 }
