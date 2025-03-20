@@ -11,6 +11,8 @@ public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 
     // Método para obtener habitaciones disponibles
     List<Habitacion> findByDisponibleTrue();
+    // Metodo para habitacionUrgente
+    List<Habitacion> findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse(String estadoLimpieza);
 
     // Otros métodos personalizados si es necesario
 }
