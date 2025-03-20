@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Ocupación - Gerente</title>
+    <link rel="stylesheet" href="styleGerente.css">
+    <script>
+        async function obtenerOcupacion() {
+            try {
+                const response = await fetch('/api/personal/ocupacion');
+                const data = await response.json();
+
+                document.getElementById("totalHabitaciones").textContent = data.totalHabitaciones;
+                document.getElementById("habitacionesOcupadas").textContent = data.habitacionesOcupadas;
+                document.getElementById("habitacionesDisponibles").textContent = data.habitacionesDisponibles;
+                document.getElementById("porcentajeOcupacion").textContent = data.porcentajeOcupacion;
+            } catch (error) {
+                console.error("Error al obtener los datos de ocupación: ", error);
+            }
+        }
+
+        window.onload = obtenerOcupacion;
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Informe de Ocupación del Hotel</h1>
+
+        <div class="informe">
+            <h2>Resumen de Ocupación</h2>
+            <table>
+                <tr>
+                    <td><strong>Total de Habitaciones:</strong></td>
+                    <td id="totalHabitaciones">Cargando...</td>
+                </tr>
+                <tr>
+                    <td><strong>Habitaciones Ocupadas:</strong></td>
+                    <td id="habitacionesOcupadas">Cargando...</td>
+                </tr>
+                <tr>
+                    <td><strong>Habitaciones Disponibles:</strong></td>
+                    <td id="habitacionesDisponibles">Cargando...</td>
+                </tr>
+                <tr>
+                    <td><strong>Porcentaje de Ocupación:</strong></td>
+                    <td id="porcentajeOcupacion">Cargando...</td>
+                </tr>
+            </table>
+        </div>
+
+        <button class="volver" onclick="location.href='personal.html'">🔙 Volver</button>
+    </div>
+
+</body>
+</html>
