@@ -1,0 +1,99 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: url('hotel.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    display: inline-block;
+    border-radius: 15px;
+    margin-top: 15%;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Título */
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+/* Botones */
+.button-container {
+    margin-top: 20px;
+}
+
+button {
+    font-size: 18px;
+    padding: 12px 24px;
+    margin: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.personal {
+    background-color: #ff5733;
+    color: white;
+}
+
+.clientes {
+    background-color: #33c1ff;
+    color: white;
+}
+
+/* Efecto hover */
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/*PERSONAL:HTML*/
+/* Estilos específicos para los botones de Personal */
+.gerente {
+    background-color: #ffbd33;
+    color: black;
+}
+
+.limpieza {
+    background-color: #33ff57;
+    color: black;
+}
+
+.recepcion {
+    background-color: #337aff;
+    color: white;
+}
+
+.volver {
+    background-color: #aaaaaa;
+    color: white;
+    margin-top: 20px;
+}
+
+/* Hover para todos los botones */
+.gerente:hover, .limpieza:hover, .recepcion:hover, .volver:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+}
