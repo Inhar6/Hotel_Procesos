@@ -12,7 +12,7 @@
         <!-- Formulario de inicio de sesión -->
         <div id="login-form">
             <h2>Iniciar Sesión</h2>
-            <form>
+            <form onsubmit="login(event)">
                 <input type="email" id="login-email" placeholder="Correo Electrónico" required>
                 <input type="password" id="login-password" placeholder="Contraseña" required>
                 <button type="submit">Entrar</button>
@@ -23,7 +23,7 @@
         <!-- Formulario de registro -->
         <div id="register-form" style="display: none;">
             <h2>Registro</h2>
-            <form>
+            <form onsubmit="register(event)">
                 <input type="text" id="nombre" placeholder="Nombre" required>
                 <input type="text" id="apellido" placeholder="Apellido" required>
                 <input type="email" id="email" placeholder="Correo Electrónico" required>
@@ -42,6 +42,63 @@
                 document.getElementById("login-form").style.display === "none" ? "block" : "none";
             document.getElementById("register-form").style.display = 
                 document.getElementById("register-form").style.display === "none" ? "block" : "none";
+        }
+
+        async function login(event) {
+            event.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            try {
+                const response = await fetch("http://localhost:8080/api/cliente/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, contraseña: password })
+                });
+
+                const data = await response.text();
+                if (response.ok) {
+                    alert("Inicio de sesión exitoso");
+                    localStorage.setItem("clienteEmail", email);  // Guardar sesión
+                    window.location.href = "dashboard.html";  // Redirigir
+                } else {
+                    alert("Error: " + data);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al conectar con el servidor");
+            }
+        }
+
+        async function register(event) {
+            event.preventDefault();
+            const cliente = {
+                nombre: document.getElementById("nombre").value,
+                apellido: document.getElementById("apellido").value,
+                email: document.getElementById("email").value,
+                telefono: document.getElementById("telefono").value,
+                metodoPago: document.getElementById("metodoPago").value,
+                contraseña: document.getElementById("password").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/cliente/registro", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cliente)
+                });
+
+                const data = await response.text();
+                if (response.ok) {
+                    alert("Registro exitoso, ahora inicia sesión");
+                    toggleForm();  // Volver al login
+                } else {
+                    alert("Error: " + data);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al conectar con el servidor");
+            }
         }
     </script>
 
