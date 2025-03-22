@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="stylesCliente.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Formulario de inicio de sesión -->
+        <div id="login-form">
+            <h2>Iniciar Sesión</h2>
+            <form>
+                <input type="email" id="login-email" placeholder="Correo Electrónico" required>
+                <input type="password" id="login-password" placeholder="Contraseña" required>
+                <button type="submit">Entrar</button>
+            </form>
+            <p>¿No tienes cuenta? <a href="#" onclick="toggleForm()">Regístrate aquí</a></p>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div id="register-form" style="display: none;">
+            <h2>Registro</h2>
+            <form>
+                <input type="text" id="nombre" placeholder="Nombre" required>
+                <input type="text" id="apellido" placeholder="Apellido" required>
+                <input type="email" id="email" placeholder="Correo Electrónico" required>
+                <input type="text" id="telefono" placeholder="Teléfono" required>
+                <input type="text" id="metodoPago" placeholder="Método de Pago" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit">Registrarse</button>
+            </form>
+            <p>¿Ya tienes cuenta? <a href="#" onclick="toggleForm()">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById("login-form").style.display = 
+                document.getElementById("login-form").style.display === "none" ? "block" : "none";
+            document.getElementById("register-form").style.display = 
+                document.getElementById("register-form").style.display === "none" ? "block" : "none";
+        }
+    </script>
+
+</body>
+</html>
