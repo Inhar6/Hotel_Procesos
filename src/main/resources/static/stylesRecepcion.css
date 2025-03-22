@@ -1,0 +1,95 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: url('hotel.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 5% auto;
+    width: 80%;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Botones y filtros */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+button, select, input {
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+select, input {
+    background-color: white;
+    color: black;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    color: black;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #4caf50;
+    color: white;
+}
+
+.libre {
+    color: green;
+    font-weight: bold;
+}
+
+.ocupada {
+    color: red;
+    font-weight: bold;
+}
+
+/* Estilo para el botón Volver */
+.volver-button {
+    margin-top: 20px;
+}
+
+.volver-button button {
+    background-color: #ff5733;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.volver-button button:hover {
+    background-color: #e14a2d;
+}

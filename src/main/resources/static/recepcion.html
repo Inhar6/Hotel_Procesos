@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepción - Habitaciones</title>
+    <link rel="stylesheet" href="stylesRecepcion.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gestión de Habitaciones</h1>
+
+        <!-- Botones de filtro -->
+        <div class="filter-section">
+            <button onclick="cargarTodas()">Todas</button>
+            <button onclick="cargarDisponibles()">Disponibles</button>
+            <button onclick="cargarUrgentes()">Urgentes</button>
+
+            <select id="tipoFiltro" onchange="filtrarPorTipo()">
+                <option value="">Filtrar por tipo</option>
+                <option value="simple">Simple</option>
+                <option value="doble">Doble</option>
+                <option value="suite">Suite</option>
+            </select>
+
+            <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
+        </div>
+
+        <!-- Tabla de habitaciones -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="habitaciones-list">
+                <!-- Aquí se insertarán dinámicamente las habitaciones -->
+            </tbody>
+        </table>
+
+        <!-- Botón Volver -->
+        <div class="volver-button">
+            <button onclick="volver()">Volver</button>
+        </div>
+
+    </div>
+
+    <script>
+        async function cargarTodas() {
+            const response = await fetch("http://localhost:8080/api/personal/habitaciones");
+            const habitaciones = await response.json();
+            mostrarHabitaciones(habitaciones);
+        }
+
+        async function cargarDisponibles() {
+            const response = await fetch("http://localhost:8080/api/personal/habitaciones/disponibles");
+            const habitaciones = await response.json();
+            mostrarHabitaciones(habitaciones);
+        }
+
+        async function cargarUrgentes() {
+            const response = await fetch("http://localhost:8080/api/personal/habitaciones/urgentes");
+            const habitaciones = await response.json();
+            mostrarHabitaciones(habitaciones);
+        }
+
+        async function filtrarPorTipo() {
+            const tipo = document.getElementById("tipoFiltro").value;
+            if (tipo) {
+                const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/tipo/${tipo}`);
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            }
+        }
+
+        async function filtrarPorPrecio() {
+            const precioMax = document.getElementById("precioMax").value;
+            if (precioMax) {
+                const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/precio/${precioMax}`);
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            }
+        }
+
+        function mostrarHabitaciones(habitaciones) {
+            const tbody = document.getElementById("habitaciones-list");
+            tbody.innerHTML = "";
+            habitaciones.forEach(hab => {
+                const row = `<tr>
+                    <td>${hab.id}</td>
+                    <td>${hab.tipo}</td>
+                    <td>${hab.precioPorNoche} €</td>
+                    <td class="${hab.disponible ? 'libre' : 'ocupada'}">${hab.disponible ? 'Libre' : 'Ocupada'}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Redirigir al volver
+        function volver() {
+            window.location.href = "personal.html";  // Cambia esta URL según la página a la que desees redirigir
+        }
+
+        // Cargar todas las habitaciones al inicio
+        window.onload = cargarTodas;
+    </script>
+
+</body>
+</html>
