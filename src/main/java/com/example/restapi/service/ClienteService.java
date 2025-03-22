@@ -26,6 +26,10 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+
+    /*
+     * BD
+     */
     public Cliente createCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
