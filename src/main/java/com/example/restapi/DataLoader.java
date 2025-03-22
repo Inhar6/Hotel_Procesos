@@ -37,9 +37,9 @@ public class DataLoader {
         }
 
         // Crear Clientes
-        Cliente cliente1 = new Cliente("Juan", "Pérez", "juan@example.com", "123456789", "Tarjeta");
-        Cliente cliente2 = new Cliente("María", "Gómez", "maria@example.com", "987654321", "PayPal");
-        Cliente cliente3 = new Cliente("Carlos", "López", "carlos@example.com", "1122334455", "Transferencia");
+        Cliente cliente1 = new Cliente("Juan", "Pérez", "juan@example.com", "123456789", "Tarjeta","caracol");
+        Cliente cliente2 = new Cliente("María", "Gómez", "maria@example.com", "987654321", "PayPal","caracol");
+        Cliente cliente3 = new Cliente("Carlos", "López", "carlos@example.com", "1122334455", "Transferencia","caracol");
 
         clienteRepository.saveAll(List.of(cliente1, cliente2, cliente3));
         clienteRepository.flush(); // Sincronizar con la base de datos

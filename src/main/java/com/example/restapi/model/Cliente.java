@@ -26,17 +26,21 @@ public class Cliente {
     @Column(nullable = false, length = 50)
     private String metodoPago;
 
+    @Column(nullable = false, length = 255) // Asegura espacio suficiente para una contraseña cifrada
+    private String contraseña;
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
 
     public Cliente() {}
 
-    public Cliente(String nombre, String apellido, String email, String telefono, String metodoPago) {
+    public Cliente(String nombre, String apellido, String email, String telefono, String metodoPago, String contraseña) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
         this.metodoPago = metodoPago;
+        this.contraseña = contraseña;
     }
 
     // Getters y Setters
@@ -58,6 +62,9 @@ public class Cliente {
     public String getMetodoPago() { return metodoPago; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
 
+    public String getContraseña() { return contraseña; }
+    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+
     public List<Reserva> getReservas() { return reservas; }
     public void addReserva(Reserva reserva) { this.reservas.add(reserva); }
 
@@ -70,6 +77,7 @@ public class Cliente {
                 ", email='" + email + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", metodoPago='" + metodoPago + '\'' +
+                ", contraseña='[PROTEGIDA]'" +  // No mostrar la contraseña por seguridad
                 '}';
     }
 }
