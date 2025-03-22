@@ -26,6 +26,14 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+    public Optional<Cliente> getClienteByEmail(String email) {
+        return clienteRepository.findByEmail(email);
+    }
+
+    public boolean verificarCredenciales(String email, String contraseña) {
+        Optional<Cliente> cliente = clienteRepository.findByEmail(email);
+        return cliente.isPresent() && cliente.get().getContraseña().equals(contraseña);
+    }
 
     /*
      * BD
