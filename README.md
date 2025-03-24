@@ -1,8 +1,8 @@
 HOTEL PROCESOS
 =============================
 
-Este proyecto va encarado a la asignatura de Procesos del Software y Calidad. El proyecto principalmente esta encarado en la gestion de un hotelñ desde distintos puntos de vista.
-Para el desarrrollo de dicho poryecto se han tilizado las tecnologias de SpringBoot, SQL y Maven.
+Este proyecto va encarado a la asignatura de Procesos del Software y Calidad. Principalmente esta creado para la gestion de un hotel desde distintos puntos de vista.
+Para el desarrollo de dicho proyecto se han utilizado las tecnologias de SpringBoot, SQL y Maven.
 
 La estructura básica de un proyecto SpringBoot se puede inicializar utilizando *Spring initializr* en https://start.spring.io/.
 
