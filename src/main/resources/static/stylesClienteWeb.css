@@ -1,0 +1,175 @@
+/* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Fondo general */
+body {
+    background: #4ca1af;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    flex-direction: column;
+}
+
+/* Barra superior */
+.navbar {
+    width: 100%;
+    background: #357f88;
+    padding: 20px;
+    text-align: center;
+    font-size: 32px; /* Más grande */
+    font-weight: bold;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Contenedor principal centrado */
+.container {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    width: 80%;
+    max-width: 900px;
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+    margin-top: 80px; /* Espacio suficiente debajo de la barra */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título */
+h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #fff;
+}
+
+/* Tabla centrada */
+.table-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    width: 90%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background-color: #4ca1af;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botón dentro de la tabla */
+td button {
+    padding: 8px 15px;
+    background-color: #4ca1af;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+td button:hover {
+    background-color: #357f88;
+    transform: scale(1.05);
+}
+
+/* Formulario */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    outline: none;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    outline: 2px solid #4ca1af;
+}
+
+/* Botón principal */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4ca1af;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #357f88;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Enlaces */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #4ca1af;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
