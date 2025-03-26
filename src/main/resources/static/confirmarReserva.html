@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Reserva</title>
+    <link rel="stylesheet" href="stylesClienteWeb.css">
+</head>
+<body>
+    <div class="navbar">HOTEL PROCESOS</div>
+
+    <div class="container">
+        <h2>Confirmar Reserva</h2>
+
+        <div id="info-habitacion">
+            <!-- Aquí se mostrará la info de la habitación seleccionada -->
+        </div>
+
+        <form id="reserva-form">
+            <label for="checkIn">Fecha Check-In:</label>
+            <input type="date" id="checkIn" required>
+
+            <label for="checkOut">Fecha Check-Out:</label>
+            <input type="date" id="checkOut" required>
+
+            <label for="metodoPago">Método de Pago:</label>
+            <select id="metodoPago">
+                <option value="tarjeta">Tarjeta</option>
+                <option value="paypal">PayPal</option>
+                <option value="efectivo">Efectivo</option>
+            </select>
+
+            <button type="button" onclick="confirmarReserva()">Confirmar Reserva</button>
+            <button type="button" onclick="window.history.back()">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        let habitacionId = new URLSearchParams(window.location.search).get("habitacionId");
+
+        async function cargarHabitacion() {
+            if (!habitacionId) return;
+            const response = await fetch(`http://localhost:8080/api/personal/habitaciones/${habitacionId}`);
+            const habitacion = await response.json();
+
+            document.getElementById("info-habitacion").innerHTML = `
+                <h3>Habitación ${habitacion.numero} - ${habitacion.tipo}</h3>
+                <p>Precio por noche: ${habitacion.precioPorNoche} €</p>
+                <p>${habitacion.descripcion || "Sin descripción disponible"}</p>
+            `;
+        }
+
+        async function confirmarReserva() {
+            const fechaCheckIn = document.getElementById("checkIn").value;
+            const fechaCheckOut = document.getElementById("checkOut").value;
+            const metodoPago = document.getElementById("metodoPago").value;
+            const clienteId = 1; // Suponiendo cliente logeado
+
+            if (!fechaCheckIn || !fechaCheckOut) {
+                alert("Por favor, completa todos los datos.");
+                return;
+            }
+
+            const reserva = {
+                clienteId: clienteId,
+                habitacionId: habitacionId,
+                fechaCheckIn: fechaCheckIn,
+                fechaCheckOut: fechaCheckOut,
+                metodoPago: metodoPago
+            };
+
+            const response = await fetch("http://localhost:8080/api/reservas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(reserva)
+            });
+
+            if (response.ok) {
+                alert("Reserva realizada con éxito.");
+                window.location.href = "reserva.html";
+            } else {
+                alert("Error al realizar la reserva.");
+            }
+        }
+
+        window.onload = cargarHabitacion;
+    </script>
+
+</body>
+</html>
