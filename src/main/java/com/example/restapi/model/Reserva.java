@@ -2,7 +2,7 @@ package com.example.restapi.model;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    @JsonBackReference
+    @JsonProperty("clienteId") // Serializa solo el ID como "clienteId"
     private Cliente cliente;
 
     @ManyToOne
@@ -45,6 +45,7 @@ public class Reserva {
     @Column(nullable = false, length = 50)
     private String metodoPago;
 
+    // Constructores
     public Reserva() {}
 
     public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
@@ -68,6 +69,12 @@ public class Reserva {
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
+    // Personalizar cómo se serializa el cliente a solo su ID
+    @JsonProperty("clienteId")
+    public Long getClienteId() {
+        return cliente != null ? cliente.getId() : null;
+    }
+
     public Habitacion getHabitacion() { return habitacion; }
     public void setHabitacion(Habitacion habitacion) { this.habitacion = habitacion; }
 
@@ -86,15 +93,8 @@ public class Reserva {
     public String getMetodoPago() { return metodoPago; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
 
-    // Método para cancelar la reserva
-    public void cancelarReserva() {
-        this.estado = "Cancelada";
-    }
-
-    // Método para confirmar la reserva
-    public void confirmarReserva() {
-        this.estado = "Confirmada";
-    }
+    public void cancelarReserva() { this.estado = "Cancelada"; }
+    public void confirmarReserva() { this.estado = "Confirmada"; }
 
     @Override
     public String toString() {

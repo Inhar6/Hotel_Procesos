@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recepción - Habitaciones</title>
     <link rel="stylesheet" href="stylesRecepcion.css">
 </head>
+
 <body>
 
     <div class="container">
@@ -172,21 +174,21 @@
         function mostrarReservas(reservas) {
             const tbody = document.getElementById("reservas-list");
             tbody.innerHTML = "";
-            if (reservas.length === 0) {
+            if (!reservas || reservas.length === 0) {
                 tbody.innerHTML = "<tr><td colspan='8'>No hay reservas disponibles</td></tr>";
                 return;
             }
             reservas.forEach(reserva => {
                 const row = `<tr>
-                    <td>${reserva.id}</td>
-                    <td>${reserva.habitacion.numero}</td>
-                    <td>${reserva.cliente.nombre} ${reserva.cliente.apellido}</td>
-                    <td>${formatearFecha(reserva.fechaCheckIn)}</td>
-                    <td>${formatearFecha(reserva.fechaCheckOut)}</td>
-                    <td>${reserva.totalPagar.toFixed(2)}</td>
-                    <td class="${reserva.estado.toLowerCase()}">${reserva.estado}</td>
-                    <td>${reserva.metodoPago}</td>
-                </tr>`;
+            <td>${reserva.id || 'N/A'}</td>
+            <td>${reserva.habitacion?.numero || 'N/A'}</td>
+            <td>${reserva.clienteId || 'N/A'}</td> <!-- Usar clienteId en lugar de cliente.nombre -->
+            <td>${formatearFecha(reserva.fechaCheckIn)}</td>
+            <td>${formatearFecha(reserva.fechaCheckOut)}</td>
+            <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+            <td class="${(reserva.estado || '').toLowerCase()}">${reserva.estado || 'N/A'}</td>
+            <td>${reserva.metodoPago || 'N/A'}</td>
+        </tr>`;
                 tbody.innerHTML += row;
             });
         }
@@ -219,4 +221,5 @@
     </script>
 
 </body>
+
 </html>
