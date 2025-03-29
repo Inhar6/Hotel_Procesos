@@ -76,6 +76,27 @@ th {
     font-weight: bold;
 }
 
+/* Aumentar espacio entre tabla y botones */
+.action-buttons {
+    margin-top: 40px; /* Aumentado de 30px a 40px para mayor separación */
+}
+
+/* Estilo para el botón de Cancelar Reserva */
+.cancelar-btn {
+    background-color: #ff0000; /* Rojo más intenso */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px; /* Añade espacio entre botones */
+    margin-top: 20px;
+}
+
+.cancelar-btn:hover {
+    background-color: #cc0000; /* Rojo más oscuro al pasar el cursor */
+}
+
 /* Estilo para el botón Volver */
 .volver-button {
     margin-top: 20px;
@@ -84,10 +105,11 @@ th {
 .volver-button button {
     background-color: #ff5733;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    margin-top: 20px;
 }
 
 .volver-button button:hover {

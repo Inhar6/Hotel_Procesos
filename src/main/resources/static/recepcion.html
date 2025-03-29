@@ -42,8 +42,11 @@
             </tbody>
         </table>
 
-        <!-- Botón Volver -->
-        <div class="volver-button">
+        <div class="action-buttons">
+            <!-- Botón Cancelar Reserva  -->
+            <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
+            
+            <!-- Botón Volver -->
             <button onclick="volver()">Volver</button>
         </div>
 
@@ -98,6 +101,30 @@
                 </tr>`;
                 tbody.innerHTML += row;
             });
+        }
+
+         // Función para cancelar una reserva
+         async function cancelarReserva() {
+            const reservaId = prompt("Introduce el ID de la reserva a cancelar:");
+            
+            if (reservaId) {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/reservas/cancelar/${reservaId}`, {
+                        method: "PUT"
+                    });
+                    // Obtener el resultado
+                    const resultado = await response.text();
+                    
+                    if (response.ok) {
+                        alert(resultado);
+                        cargarTodas();
+                    } else {
+                        alert("Error: " + resultado);
+                    }
+                } catch (error) {
+                    alert("Error al conectar con el servidor: " + error.message);
+                }
+            }
         }
 
         // Redirigir al volver
