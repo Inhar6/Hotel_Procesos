@@ -19,6 +19,12 @@ body {
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
 }
 
+/* Títulos con el mismo tamaño */
+h1, h2 {
+    font-size: 28px; /* Tamaño igual para ambos, ya estaba bien */
+    margin-bottom: 20px;
+}
+
 /* Botones y filtros */
 .filter-section {
     margin-bottom: 20px;
@@ -34,7 +40,7 @@ button, select, input {
 }
 
 button {
-    background-color: #4caf50;
+    background-color: #4caf50; /* Verde predeterminado para otros botones */
     color: white;
 }
 
@@ -66,6 +72,7 @@ th {
     color: white;
 }
 
+/* Estados de habitaciones */
 .libre {
     color: green;
     font-weight: bold;
@@ -76,21 +83,38 @@ th {
     font-weight: bold;
 }
 
-/* Aumentar espacio entre tabla y botones */
-.action-buttons {
-    margin-top: 40px; /* Aumentado de 30px a 40px para mayor separación */
+/* Estados de reservas */
+.pendiente {
+    color: #ffa500; /* Naranja para Pendiente */
+    font-weight: bold;
+}
+
+.confirmada {
+    color: #008000; /* Verde para Confirmada */
+    font-weight: bold;
+}
+
+.cancelada {
+    color: #ff0000; /* Rojo para Cancelada */
+    font-weight: bold;
+}
+
+/* Estilo para el contenedor de botones (sin clase específica) */
+.container > div:last-child {
+    margin-top: 60px; /* Aumentado a 80px para más separación de la tabla */
+    display: flex; /* Usar flexbox para alinear botones */
+    justify-content: center; /* Centrar horizontalmente */
+    gap: 25px; /* Más espacio entre botones */
 }
 
 /* Estilo para el botón de Cancelar Reserva */
 .cancelar-btn {
-    background-color: #ff0000; /* Rojo más intenso */
+    background-color: #ff0000; /* Rojo intenso */
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    margin-right: 10px; /* Añade espacio entre botones */
-    margin-top: 20px;
 }
 
 .cancelar-btn:hover {
@@ -98,20 +122,15 @@ th {
 }
 
 /* Estilo para el botón Volver */
-.volver-button {
-    margin-top: 20px;
-}
-
-.volver-button button {
-    background-color: #ff5733;
+button[onclick="volver()"] {
+    background-color: #1e90ff; /* Azul */
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
-.volver-button button:hover {
-    background-color: #e14a2d;
+button[onclick="volver()"]:hover {
+    background-color: #1c7cd6; /* Azul más oscuro al pasar el cursor */
 }
