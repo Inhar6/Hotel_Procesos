@@ -1,15 +1,18 @@
 package com.example.restapi.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.restapi.model.Cliente;
 import com.example.restapi.model.Habitacion;
 import com.example.restapi.model.Reserva;
 import com.example.restapi.repository.ClienteRepository;
 import com.example.restapi.repository.HabitacionRepository;
 import com.example.restapi.repository.ReservaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class ReservaService {
@@ -67,5 +70,9 @@ public class ReservaService {
             return true;
         }
         return false;
+    }
+
+    public List<Reserva> getAllReservas() {
+        return reservaRepository.findAll();
     }
 }

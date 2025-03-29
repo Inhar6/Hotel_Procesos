@@ -42,10 +42,29 @@
             </tbody>
         </table>
 
+        <!-- Sección para gestión de reservas -->
+        <h2>Gestión de Reservas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Reserva</th>
+                    <th>Habitación</th>
+                    <th>Cliente</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Total (€)</th>
+                    <th>Estado</th>
+                    <th>Método Pago</th>
+                </tr>
+            </thead>
+            <tbody id="reservas-list">
+                <!-- Aquí se insertarán dinámicamente las reservas -->
+            </tbody>
+        </table>
+
         <div class="action-buttons">
-            <!-- Botón Cancelar Reserva  -->
+            <!-- Botón Cancelar Reserva -->
             <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
-            
             <!-- Botón Volver -->
             <button onclick="volver()">Volver</button>
         </div>
@@ -53,39 +72,65 @@
     </div>
 
     <script>
+        function formatearFecha(fecha) {
+            const date = new Date(fecha);
+            return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
         async function cargarTodas() {
-            const response = await fetch("http://localhost:8080/api/personal/habitaciones");
-            const habitaciones = await response.json();
-            mostrarHabitaciones(habitaciones);
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+                await cargarReservas(); // Cargar también las reservas
+            } catch (error) {
+                console.error("Error al cargar habitaciones:", error);
+            }
         }
 
         async function cargarDisponibles() {
-            const response = await fetch("http://localhost:8080/api/personal/habitaciones/disponibles");
-            const habitaciones = await response.json();
-            mostrarHabitaciones(habitaciones);
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones/disponibles");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            } catch (error) {
+                console.error("Error al cargar disponibles:", error);
+            }
         }
 
         async function cargarUrgentes() {
-            const response = await fetch("http://localhost:8080/api/personal/habitaciones/urgentes");
-            const habitaciones = await response.json();
-            mostrarHabitaciones(habitaciones);
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones/urgentes");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            } catch (error) {
+                console.error("Error al cargar urgentes:", error);
+            }
         }
 
         async function filtrarPorTipo() {
             const tipo = document.getElementById("tipoFiltro").value;
             if (tipo) {
-                const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/tipo/${tipo}`);
-                const habitaciones = await response.json();
-                mostrarHabitaciones(habitaciones);
+                try {
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/tipo/${tipo}`);
+                    const habitaciones = await response.json();
+                    mostrarHabitaciones(habitaciones);
+                } catch (error) {
+                    console.error("Error al filtrar por tipo:", error);
+                }
             }
         }
 
         async function filtrarPorPrecio() {
             const precioMax = document.getElementById("precioMax").value;
             if (precioMax) {
-                const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/precio/${precioMax}`);
-                const habitaciones = await response.json();
-                mostrarHabitaciones(habitaciones);
+                try {
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/precio/${precioMax}`);
+                    const habitaciones = await response.json();
+                    mostrarHabitaciones(habitaciones);
+                } catch (error) {
+                    console.error("Error al filtrar por precio:", error);
+                }
             }
         }
 
@@ -103,18 +148,57 @@
             });
         }
 
-         // Función para cancelar una reserva
-         async function cancelarReserva() {
+        async function cargarReservas() {
+            try {
+                const response = await fetch("http://localhost:8080/api/reservas", {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error ${response.status}: ${errorText}`);
+                }
+                const reservas = await response.json();
+                console.log("Reservas recibidas:", reservas); // Para depuración
+                mostrarReservas(reservas);
+            } catch (error) {
+                console.error("Error al cargar reservas:", error);
+                alert(`No se pudieron cargar las reservas. Detalle: ${error.message}`);
+            }
+        }
+
+        function mostrarReservas(reservas) {
+            const tbody = document.getElementById("reservas-list");
+            tbody.innerHTML = "";
+            if (reservas.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='8'>No hay reservas disponibles</td></tr>";
+                return;
+            }
+            reservas.forEach(reserva => {
+                const row = `<tr>
+                    <td>${reserva.id}</td>
+                    <td>${reserva.habitacion.numero}</td>
+                    <td>${reserva.cliente.nombre} ${reserva.cliente.apellido}</td>
+                    <td>${formatearFecha(reserva.fechaCheckIn)}</td>
+                    <td>${formatearFecha(reserva.fechaCheckOut)}</td>
+                    <td>${reserva.totalPagar.toFixed(2)}</td>
+                    <td class="${reserva.estado.toLowerCase()}">${reserva.estado}</td>
+                    <td>${reserva.metodoPago}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        async function cancelarReserva() {
             const reservaId = prompt("Introduce el ID de la reserva a cancelar:");
-            
             if (reservaId) {
                 try {
                     const response = await fetch(`http://localhost:8080/api/reservas/cancelar/${reservaId}`, {
                         method: "PUT"
                     });
-                    // Obtener el resultado
                     const resultado = await response.text();
-                    
                     if (response.ok) {
                         alert(resultado);
                         cargarTodas();
@@ -127,12 +211,10 @@
             }
         }
 
-        // Redirigir al volver
         function volver() {
-            window.location.href = "personal.html";  // Cambia esta URL según la página a la que desees redirigir
+            window.location.href = "personal.html";
         }
 
-        // Cargar todas las habitaciones al inicio
         window.onload = cargarTodas;
     </script>
 
