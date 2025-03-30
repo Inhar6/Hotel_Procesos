@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recepción - Habitaciones</title>
     <link rel="stylesheet" href="stylesRecepcion.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Gestión de Habitaciones</h1>
@@ -254,7 +256,7 @@
             if (reservaId) {
                 try {
                     const response = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
-                        method: "PUT"
+                        method: "POST" // Cambiado de PUT a POST
                     });
                     const resultado = await response.text();
                     if (response.ok) {
@@ -276,4 +278,5 @@
         window.onload = cargarTodas;
     </script>
 </body>
+
 </html>
