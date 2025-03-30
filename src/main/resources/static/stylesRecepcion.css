@@ -148,3 +148,63 @@ button[onclick="volver()"] {
 button[onclick="volver()"]:hover {
     background-color: #1c7cd6; /* Azul más oscuro al pasar el cursor */
 }
+
+/* Estilos para los botones de Check-In y Check-Out */
+.buttons-section {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.checkin-btn {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.checkout-btn {
+    background-color: #2196F3; /* Azul */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.checkin-btn:hover {
+    background-color: #3e8e41;
+}
+
+.checkout-btn:hover {
+    background-color: #0b7dda;
+}
+
+/* Estilos para los estados de las reservas */
+.pendiente {
+    background-color: #ffeb3b; /* Amarillo */
+    color: #000;
+}
+
+.completada {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+.cancelada {
+    background-color: #f44336; /* Rojo */
+    color: white;
+}
+
+.checkin {
+    background-color: #2196F3; /* Azul */
+    color: white;
+}
+
+.checkout {
+    background-color: #9C27B0; /* Púrpura */
+    color: white;
+}

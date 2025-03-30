@@ -63,11 +63,15 @@
             </tbody>
         </table>
 
-        <div>
-            <!-- Botón Modificar Reserva -->
+        <div class="buttons-section">
+            <!-- Botones originales -->
             <button class="modificar-btn" onclick="modificarReserva()">Modificar Reserva</button>
-            <!-- Botón Cancelar Reserva -->
             <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
+            
+            <!-- Nuevos botones para check-in y check-out -->
+            <button class="checkin-btn" onclick="irACheckIn()">Realizar Check-In</button>
+            <button class="checkout-btn" onclick="realizarCheckOut()">Realizar Check-Out</button>
+            
             <!-- Botón Volver -->
             <button onclick="volver()">Volver</button>
         </div>
@@ -256,6 +260,31 @@
                     }
                 } else {
                     alert("Todos los campos son obligatorios.");
+                }
+            }
+        }
+
+        // Nuevas funciones para Check-in y Check-out
+        function irACheckIn() {
+            window.location.href = "checkin.html";
+        }
+
+        async function realizarCheckOut() {
+            const reservaId = prompt("Introduce el ID de la reserva para realizar el Check-Out:");
+            if (reservaId) {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
+                        method: "PUT"
+                    });
+                    const resultado = await response.text();
+                    if (response.ok) {
+                        alert("Check-Out realizado con éxito: " + resultado);
+                        cargarTodas();
+                    } else {
+                        alert("Error al realizar el Check-Out: " + resultado);
+                    }
+                } catch (error) {
+                    alert("Error al conectar con el servidor: " + error.message);
                 }
             }
         }
