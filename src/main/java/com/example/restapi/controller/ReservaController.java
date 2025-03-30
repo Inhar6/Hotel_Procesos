@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restapi.model.Reserva;
@@ -35,6 +36,26 @@ public class ReservaController {
     @GetMapping
     public List<Reserva> getAllReservas() {
         return reservaService.getAllReservas();
+    }
+
+    @GetMapping("/por-email")
+    public ResponseEntity<List<Reserva>> getReservasPorEmail(@RequestParam String email) {
+        List<Reserva> reservas = reservaService.getReservasPorEmail(email);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(reservas);
+    }
+
+    // **Nuevo endpoint: obtener una reserva por ID**
+    @GetMapping("/{id}")
+    public ResponseEntity<Reserva> getReservaById(@PathVariable Long id) {
+        Optional<Reserva> reservaOpt = reservaService.getReservaById(id);
+        if (reservaOpt.isPresent()) {
+            return ResponseEntity.ok(reservaOpt.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     // Endpoint para hacer una reserva

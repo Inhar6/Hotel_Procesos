@@ -18,4 +18,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     List<Reserva> findByHabitacion(Habitacion habitacion);
     // Buscar reservas por estado
     List<Reserva> findByEstado(String estado);
+    // Nuevo método para buscar reservas por email de cliente
+    List<Reserva> findByClienteEmail(String email); 
 }

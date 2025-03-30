@@ -115,6 +115,11 @@ public class ReservaService {
         return false; // Reserva no encontrada
     }
 
+    // Nuevo método
+    public List<Reserva> getReservasPorEmail(String email) {
+        return reservaRepository.findByClienteEmail(email);
+    }
+
     public Optional<Reserva> getReservaById(Long id) {
         return reservaRepository.findById(id);
     }
