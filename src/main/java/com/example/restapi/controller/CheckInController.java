@@ -2,7 +2,6 @@ package com.example.restapi.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.restapi.model.CheckIn;
 import com.example.restapi.service.CheckInService;
 
@@ -25,12 +23,11 @@ public class CheckInController {
         this.checkInService = checkInService;
     }
 
-    // Endpoint para realizar un check-in
-    @PostMapping("/checkin")
+    @PostMapping(value = "/checkin", consumes = "application/json")
     public ResponseEntity<String> realizarCheckIn(@RequestBody CheckIn datosCheckIn) {
         try {
-            // Validar que los campos obligatorios estén presentes
-            if (datosCheckIn.getReserva() == null || datosCheckIn.getReserva().getId() == null ||
+            // Validar campos obligatorios
+            if (datosCheckIn.getReservaId() == null ||
                 datosCheckIn.getNombreHuesped() == null || datosCheckIn.getApellidosHuesped() == null ||
                 datosCheckIn.getDocumentoTipo() == null || datosCheckIn.getDocumentoNumero() == null ||
                 datosCheckIn.getTelefono() == null || datosCheckIn.getEmail() == null ||
@@ -39,7 +36,7 @@ public class CheckInController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faltan campos obligatorios en los datos del check-in.");
             }
 
-            // Validar que las fechas sean coherentes
+            // Validar fechas
             LocalDate fechaCheckIn = datosCheckIn.getFechaCheckIn();
             LocalDate fechaCheckOut = datosCheckIn.getFechaCheckOut();
             LocalDate hoy = LocalDate.now();

@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recepción - Habitaciones</title>
     <link rel="stylesheet" href="stylesRecepcion.css">
 </head>
-
 <body>
     <div class="container">
         <h1>Gestión de Habitaciones</h1>
@@ -17,14 +15,12 @@
             <button onclick="cargarTodas()">Todas</button>
             <button onclick="cargarDisponibles()">Disponibles</button>
             <button onclick="cargarUrgentes()">Urgentes</button>
-
             <select id="tipoFiltro" onchange="filtrarPorTipo()">
                 <option value="">Filtrar por tipo</option>
                 <option value="simple">Simple</option>
                 <option value="doble">Doble</option>
                 <option value="suite">Suite</option>
             </select>
-
             <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
         </div>
 
@@ -38,12 +34,10 @@
                     <th>Estado</th>
                 </tr>
             </thead>
-            <tbody id="habitaciones-list">
-                <!-- Aquí se insertarán dinámicamente las habitaciones -->
-            </tbody>
+            <tbody id="habitaciones-list"></tbody>
         </table>
 
-        <!-- Sección para gestión de reservas -->
+        <!-- Tabla de Gestión de Reservas -->
         <h2>Gestión de Reservas</h2>
         <table>
             <thead>
@@ -58,21 +52,14 @@
                     <th>Método Pago</th>
                 </tr>
             </thead>
-            <tbody id="reservas-list">
-                <!-- Aquí se insertarán dinámicamente las reservas -->
-            </tbody>
+            <tbody id="reservas-list"></tbody>
         </table>
 
         <div class="buttons-section">
-            <!-- Botones originales -->
             <button class="modificar-btn" onclick="modificarReserva()">Modificar Reserva</button>
             <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
-            
-            <!-- Nuevos botones para check-in y check-out -->
             <button class="checkin-btn" onclick="irACheckIn()">Realizar Check-In</button>
             <button class="checkout-btn" onclick="realizarCheckOut()">Realizar Check-Out</button>
-            
-            <!-- Botón Volver -->
             <button onclick="volver()">Volver</button>
         </div>
     </div>
@@ -158,9 +145,7 @@
             try {
                 const response = await fetch("http://localhost:8080/api/reservas", {
                     method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' }
                 });
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -185,6 +170,7 @@
             reservas.forEach(reserva => {
                 const metodoPago = reserva.metodoPago || 'N/A';
                 const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
+                const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-'); // Convertir "CheckIn Realizado" a "checkin-realizado"
                 const row = `<tr>
                     <td>${reserva.id || 'N/A'}</td>
                     <td>${reserva.habitacion?.numero || 'N/A'}</td>
@@ -192,7 +178,7 @@
                     <td>${formatearFecha(reserva.fechaCheckIn)}</td>
                     <td>${formatearFecha(reserva.fechaCheckOut)}</td>
                     <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
-                    <td class="${(reserva.estado || '').toLowerCase()}">${reserva.estado || 'N/A'}</td>
+                    <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
                     <td>${metodoPagoCapitalizado}</td>
                 </tr>`;
                 tbody.innerHTML += row;
@@ -230,7 +216,6 @@
                 const fechaCheckIn = prompt("Introduce la nueva fecha de Check-In (YYYY-MM-DD):");
                 const fechaCheckOut = prompt("Introduce la nueva fecha de Check-Out (YYYY-MM-DD):");
                 const metodoPago = prompt("Introduce el nuevo método de pago:");
-
                 if (habitacionId && fechaCheckIn && fechaCheckOut && metodoPago) {
                     try {
                         const datos = {
@@ -239,15 +224,11 @@
                             fechaCheckOut: fechaCheckOut,
                             metodoPago: metodoPago
                         };
-
                         const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
                             method: "PUT",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+                            headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(datos)
                         });
-
                         const resultado = await response.text();
                         if (response.ok) {
                             alert(resultado);
@@ -264,7 +245,6 @@
             }
         }
 
-        // Nuevas funciones para Check-in y Check-out
         function irACheckIn() {
             window.location.href = "checkin.html";
         }

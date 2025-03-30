@@ -1,13 +1,10 @@
 package com.example.restapi.service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.restapi.model.CheckIn;
 import com.example.restapi.model.Reserva;
-import com.example.restapi.model.Habitacion;
-import com.example.restapi.model.Cliente;
 import com.example.restapi.repository.CheckInRepository;
 import com.example.restapi.repository.ReservaRepository;
 import com.example.restapi.repository.HabitacionRepository;
@@ -27,44 +24,20 @@ public class CheckInService {
     }
 
     public boolean realizarCheckIn(CheckIn datosCheckIn) {
-        if (datosCheckIn == null || datosCheckIn.getReserva() == null || datosCheckIn.getReserva().getId() == null) {
+        Optional<Reserva> reservaOpt = reservaRepository.findById(datosCheckIn.getReservaId());
+        if (reservaOpt.isEmpty()) {
             return false;
         }
 
-        Long reservaId = datosCheckIn.getReserva().getId();
-        Optional<Reserva> reservaOpt = reservaRepository.findById(reservaId);
-
-        if (reservaOpt.isPresent()) {
-            Reserva reserva = reservaOpt.get();
-
-            Cliente clienteReserva = reserva.getCliente();
-            if (clienteReserva == null || 
-                !clienteReserva.getNombre().equals(datosCheckIn.getNombreHuesped()) ||
-                !clienteReserva.getApellido().equals(datosCheckIn.getApellidosHuesped())) {
-                return false;
-            }
-
-            if ("Cancelada".equals(reserva.getEstado()) || checkInRepository.findByReserva(reserva).size() > 0) {
-                return false;
-            }
-
-            Habitacion habitacion = reserva.getHabitacion();
-            if (habitacion.isDisponible()) {
-                habitacion.setDisponible(false);
-                habitacionRepository.save(habitacion);
-            }
-
-            reserva.setEstado("CheckIn Realizado");
-            reserva.setFechaCheckIn(datosCheckIn.getFechaCheckIn());
-            reserva.setFechaCheckOut(datosCheckIn.getFechaCheckOut());
-            reserva.setMetodoPago(datosCheckIn.getMetodoPago());
-            reservaRepository.save(reserva);
-
-            datosCheckIn.setReserva(reserva);
-            checkInRepository.save(datosCheckIn);
-
-            return true;
+        Reserva reserva = reservaOpt.get();
+        if ("CheckIn Realizado".equals(reserva.getEstado())) {
+            return false;
         }
-        return false;
+
+        reserva.setEstado("CheckIn Realizado");
+        reservaRepository.save(reserva);
+        checkInRepository.save(datosCheckIn);
+
+        return true;
     }
 }

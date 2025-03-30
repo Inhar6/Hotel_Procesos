@@ -15,7 +15,7 @@ import com.example.restapi.model.Reserva;
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
 
     // Buscar todos los check-ins de una reserva específica
-    List<CheckIn> findByReserva(Reserva reserva);
+    List<CheckIn> findByReservaId(Long reservaId);
 
     // Buscar check-ins por fecha de check-in
     @Query("SELECT c FROM CheckIn c WHERE c.fechaCheckIn = :fecha")

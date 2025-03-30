@@ -1,17 +1,7 @@
 package com.example.restapi.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "check_ins")
@@ -21,9 +11,8 @@ public class CheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "reserva_id", nullable = false)
-    private Reserva reserva;
+    @Column(name = "reserva_id", nullable = false)
+    private Long reservaId; // Cambiado de @OneToOne a @Column
 
     @Column(name = "nombre_huesped", nullable = false, length = 50)
     private String nombreHuesped;
@@ -67,10 +56,10 @@ public class CheckIn {
     // Constructores
     public CheckIn() {}
 
-    public CheckIn(Reserva reserva, String nombreHuesped, String apellidosHuesped, String documentoTipo,
+    public CheckIn(Long reservaId, String nombreHuesped, String apellidosHuesped, String documentoTipo,
                    String documentoNumero, String telefono, String email, String direccion, LocalDate fechaCheckIn,
                    LocalDate fechaCheckOut, Integer numHuespedes, String metodoPago, String preferencias, String comentarios) {
-        this.reserva = reserva;
+        this.reservaId = reservaId;
         this.nombreHuesped = nombreHuesped;
         this.apellidosHuesped = apellidosHuesped;
         this.documentoTipo = documentoTipo;
@@ -89,73 +78,32 @@ public class CheckIn {
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public Reserva getReserva() { return reserva; }
-    public void setReserva(Reserva reserva) { this.reserva = reserva; }
-
-    // Personalizar cómo se serializa la reserva a solo su ID
-    @JsonProperty("reservaId")
-    public Long getReservaId() {
-        return reserva != null ? reserva.getId() : null;
-    }
-
+    public Long getReservaId() { return reservaId; }
+    public void setReservaId(Long reservaId) { this.reservaId = reservaId; }
     public String getNombreHuesped() { return nombreHuesped; }
     public void setNombreHuesped(String nombreHuesped) { this.nombreHuesped = nombreHuesped; }
-
     public String getApellidosHuesped() { return apellidosHuesped; }
     public void setApellidosHuesped(String apellidosHuesped) { this.apellidosHuesped = apellidosHuesped; }
-
     public String getDocumentoTipo() { return documentoTipo; }
     public void setDocumentoTipo(String documentoTipo) { this.documentoTipo = documentoTipo; }
-
     public String getDocumentoNumero() { return documentoNumero; }
     public void setDocumentoNumero(String documentoNumero) { this.documentoNumero = documentoNumero; }
-
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
-
     public LocalDate getFechaCheckIn() { return fechaCheckIn; }
     public void setFechaCheckIn(LocalDate fechaCheckIn) { this.fechaCheckIn = fechaCheckIn; }
-
     public LocalDate getFechaCheckOut() { return fechaCheckOut; }
     public void setFechaCheckOut(LocalDate fechaCheckOut) { this.fechaCheckOut = fechaCheckOut; }
-
     public Integer getNumHuespedes() { return numHuespedes; }
     public void setNumHuespedes(Integer numHuespedes) { this.numHuespedes = numHuespedes; }
-
     public String getMetodoPago() { return metodoPago; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
-
     public String getPreferencias() { return preferencias; }
     public void setPreferencias(String preferencias) { this.preferencias = preferencias; }
-
     public String getComentarios() { return comentarios; }
     public void setComentarios(String comentarios) { this.comentarios = comentarios; }
-
-    @Override
-    public String toString() {
-        return "CheckIn{" +
-                "id=" + id +
-                ", reserva=" + reserva.getId() +
-                ", nombreHuesped='" + nombreHuesped + '\'' +
-                ", apellidosHuesped='" + apellidosHuesped + '\'' +
-                ", documentoTipo='" + documentoTipo + '\'' +
-                ", documentoNumero='" + documentoNumero + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", fechaCheckIn=" + fechaCheckIn +
-                ", fechaCheckOut=" + fechaCheckOut +
-                ", numHuespedes=" + numHuespedes +
-                ", metodoPago='" + metodoPago + '\'' +
-                ", preferencias='" + preferencias + '\'' +
-                ", comentarios='" + comentarios + '\'' +
-                '}';
-    }
 }

@@ -37,18 +37,18 @@ public class DataLoader {
         }
 
         // Crear Clientes
-        Cliente cliente1 = new Cliente("Juan", "Pérez", "juan@example.com", "123456789", "Tarjeta","caracol");
-        Cliente cliente2 = new Cliente("María", "Gómez", "maria@example.com", "987654321", "PayPal","caracol");
-        Cliente cliente3 = new Cliente("Carlos", "López", "carlos@example.com", "1122334455", "Transferencia","caracol");
+        Cliente cliente1 = new Cliente("Juan", "Pérez", "caracol", "juan@example.com", "Tarjeta", "123456789");
+        Cliente cliente2 = new Cliente("María", "Gómez", "caracol", "maria@example.com", "PayPal", "987654321");
+        Cliente cliente3 = new Cliente("Carlos", "López", "caracol", "carlos@example.com", "Transferencia", "1122334455");
 
         clienteRepository.saveAll(List.of(cliente1, cliente2, cliente3));
         clienteRepository.flush(); // Sincronizar con la base de datos
 
         // Crear Habitaciones
-        Habitacion habitacion1 = new Habitacion(101, "Individual", 50.0, true, true);
-        Habitacion habitacion2 = new Habitacion(102, "Doble", 80.0, false, true);
-        Habitacion habitacion3 = new Habitacion(103, "Suite", 150.0, true, false);
-        Habitacion habitacion4 = new Habitacion(104, "Doble", 85.0, true, true);
+        Habitacion habitacion1 = new Habitacion(101, 50.0, true, "Limpia", false, "Individual");
+        Habitacion habitacion2 = new Habitacion(102, 80.0, false, "Limpia", true, "Doble");
+        Habitacion habitacion3 = new Habitacion(103, 150.0, true, "Sucia", false, "Suite");
+        Habitacion habitacion4 = new Habitacion(104, 85.0, true, "Limpia", false, "Doble");
 
         habitacionRepository.saveAll(List.of(habitacion1, habitacion2, habitacion3, habitacion4));
         habitacionRepository.flush(); // Sincronizar con la base de datos

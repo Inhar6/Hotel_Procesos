@@ -1,24 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recepción - Check-In</title>
     <link rel="stylesheet" href="stylesRecepcion.css">
     <style>
-        .form-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
-        .buttons-group { margin-top: 20px; display: flex; gap: 10px; }
-        .buttons-group button { padding: 10px 15px; cursor: pointer; }
-        .submit-btn { background-color: #4CAF50; color: white; border: none; }
-        .cancel-btn { background-color: #f44336; color: white; border: none; }
-        .readonly { background-color: #f0f0f0; }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .buttons-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons-group button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        .readonly {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Formulario de Check-In</h1>
@@ -28,7 +78,8 @@
                 <h2>Datos de la Reserva</h2>
                 <div class="form-group">
                     <label for="reserva-id">ID de la Reserva:</label>
-                    <input type="number" id="reserva-id" name="reservaId" placeholder="Introduce el ID de la reserva" required>
+                    <input type="number" id="reserva-id" name="reservaId" placeholder="Introduce el ID de la reserva"
+                        required>
                 </div>
 
                 <!-- Sección de datos personales -->
@@ -54,7 +105,8 @@
                     </div>
                     <div class="form-group">
                         <label for="documento-numero">Número de Documento:</label>
-                        <input type="text" id="documento-numero" name="documentoNumero" placeholder="Introduce número de documento" required>
+                        <input type="text" id="documento-numero" name="documentoNumero"
+                            placeholder="Introduce número de documento" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -86,7 +138,8 @@
                 </div>
                 <div class="form-group">
                     <label for="num-huespedes">Número de Huéspedes:</label>
-                    <input type="number" id="num-huespedes" name="numHuespedes" min="1" placeholder="Número de huéspedes" required>
+                    <input type="number" id="num-huespedes" name="numHuespedes" min="1"
+                        placeholder="Número de huéspedes" required>
                 </div>
                 <div class="form-group">
                     <label for="metodo-pago">Método de Pago:</label>
@@ -101,11 +154,13 @@
                 <!-- Preferencias y comentarios -->
                 <div class="form-group">
                     <label for="preferencias">Preferencias Especiales:</label>
-                    <input type="text" id="preferencias" name="preferencias" placeholder="Almohada extra, cama supletoria, etc.">
+                    <input type="text" id="preferencias" name="preferencias"
+                        placeholder="Almohada extra, cama supletoria, etc.">
                 </div>
                 <div class="form-group">
                     <label for="comentarios">Comentarios:</label>
-                    <input type="text" id="comentarios" name="comentarios" placeholder="Información adicional relevante">
+                    <input type="text" id="comentarios" name="comentarios"
+                        placeholder="Información adicional relevante">
                 </div>
 
                 <!-- Botones -->
@@ -124,7 +179,7 @@
                 limpiarCamposAutocompletados();
                 return;
             }
-    
+
             try {
                 // Paso 1: Obtener la reserva
                 const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`);
@@ -135,7 +190,7 @@
                 }
                 const reserva = await reservaResponse.json();
                 console.log("Reserva recibida:", reserva);
-    
+
                 // Paso 2: Obtener los datos del cliente usando clienteId
                 const clienteResponse = await fetch(`http://localhost:8080/api/cliente/${reserva.clienteId}`);
                 if (!clienteResponse.ok) {
@@ -145,7 +200,7 @@
                 }
                 const cliente = await clienteResponse.json();
                 console.log("Cliente recibido:", cliente);
-    
+
                 // Autocompletar todos los campos, incluyendo teléfono
                 document.getElementById("nombre").value = cliente.nombre || "";
                 document.getElementById("apellidos").value = cliente.apellido || "";
@@ -160,13 +215,13 @@
                 alert("Error al buscar la reserva o el cliente: " + error.message);
             }
         }
-    
+
         function formatearFechaParaInput(fechaString) {
             if (!fechaString) return "";
             const fecha = new Date(fechaString);
             return fecha.toISOString().split('T')[0]; // Formato YYYY-MM-DD
         }
-    
+
         function limpiarCamposAutocompletados() {
             document.getElementById("nombre").value = "";
             document.getElementById("apellidos").value = "";
@@ -176,16 +231,16 @@
             document.getElementById("fecha-checkout").value = "";
             document.getElementById("metodo-pago").value = "tarjeta";
         }
-    
+
         // Evento para buscar la reserva cuando se pierde el foco
         document.getElementById("reserva-id").addEventListener("blur", buscarReserva);
-    
+
         // Manejo del envío del formulario (sin cambios)
-        document.getElementById("checkin-form").addEventListener("submit", async function(event) {
+        document.getElementById("checkin-form").addEventListener("submit", async function (event) {
             event.preventDefault();
             const formData = new FormData(this);
             const datosCheckIn = {
-                reserva: { id: formData.get("reservaId") },
+                reservaId: formData.get("reservaId"), // Enviar como objeto con id
                 nombreHuesped: formData.get("nombre"),
                 apellidosHuesped: formData.get("apellidos"),
                 documentoTipo: formData.get("documentoTipo"),
@@ -200,7 +255,9 @@
                 preferencias: formData.get("preferencias"),
                 comentarios: formData.get("comentarios")
             };
-    
+
+            console.log("JSON enviado:", JSON.stringify(datosCheckIn));
+
             try {
                 const response = await fetch("http://localhost:8080/api/reservas/checkin", {
                     method: "POST",
@@ -208,20 +265,22 @@
                     body: JSON.stringify(datosCheckIn)
                 });
                 if (response.ok) {
-                    alert("Check-in realizado con éxito: " + await response.text());
+                    alert("Check-in realizado correctamente.");
                     window.location.href = "recepcion.html";
                 } else {
-                    alert("Error al realizar check-in: " + await response.text());
+                    const errorText = await response.text();
+                    alert("Error al realizar el check-in: " + errorText);
                 }
             } catch (error) {
                 console.error("Error en el check-in:", error);
                 alert("Error al conectar con el servidor: " + error.message);
             }
         });
-    
+
         function volver() {
             window.location.href = "recepcion.html";
         }
     </script>
 </body>
+
 </html>

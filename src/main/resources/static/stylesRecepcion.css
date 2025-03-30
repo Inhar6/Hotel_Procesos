@@ -208,3 +208,8 @@ button[onclick="volver()"]:hover {
     background-color: #9C27B0; /* Púrpura */
     color: white;
 }
+
+.checkin-realizado {
+    background-color: #4CAF50; /* Verde, igual que completada */
+    color: white;
+}
