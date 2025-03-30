@@ -24,8 +24,7 @@
             font-weight: bold;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -77,8 +76,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="reserva-id">ID de Reserva:</label>
-                        <input type="text" id="reserva-id" name="reservaId" placeholder="Introduce ID de reserva"
-                            required>
+                        <input type="text" id="reserva-id" name="reservaId" placeholder="Introduce ID de reserva" required>
                     </div>
                     <div class="form-group">
                         <label for="habitacion-id">Habitación:</label>
@@ -113,8 +111,7 @@
                     </div>
                     <div class="form-group">
                         <label for="documento-numero">Número de Documento:</label>
-                        <input type="text" id="documento-numero" name="documentoNumero"
-                            placeholder="Introduce número de documento" required>
+                        <input type="text" id="documento-numero" name="documentoNumero" placeholder="Introduce número de documento" required>
                     </div>
                 </div>
 
@@ -150,8 +147,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="num-huespedes">Número de Huéspedes:</label>
-                        <input type="number" id="num-huespedes" name="numHuespedes" min="1"
-                            placeholder="Número de huéspedes" required>
+                        <input type="number" id="num-huespedes" name="numHuespedes" min="1" placeholder="Número de huéspedes" required>
                     </div>
                     <div class="form-group">
                         <label for="metodo-pago">Método de Pago:</label>
@@ -167,14 +163,12 @@
                 <!-- Sección de preferencias y comentarios -->
                 <div class="form-group">
                     <label for="preferencias">Preferencias Especiales:</label>
-                    <input type="text" id="preferencias" name="preferencias"
-                        placeholder="Almohada extra, cama supletoria, etc.">
+                    <input type="text" id="preferencias" name="preferencias" placeholder="Almohada extra, cama supletoria, etc.">
                 </div>
 
                 <div class="form-group">
                     <label for="comentarios">Comentarios:</label>
-                    <input type="text" id="comentarios" name="comentarios"
-                        placeholder="Información adicional relevante">
+                    <input type="text" id="comentarios" name="comentarios" placeholder="Información adicional relevante">
                 </div>
 
                 <!-- Botones -->
@@ -195,12 +189,12 @@
                 }
                 const habitaciones = await response.json();
                 const selectHabitacion = document.getElementById("habitacion-id");
-
+                
                 // Limpiar opciones existentes excepto la primera
                 const primeraOpcion = selectHabitacion.options[0];
                 selectHabitacion.innerHTML = '';
                 selectHabitacion.appendChild(primeraOpcion);
-
+                
                 // Agregar las habitaciones disponibles
                 habitaciones.forEach(hab => {
                     const option = document.createElement("option");
@@ -218,30 +212,29 @@
         async function buscarReserva() {
             const reservaId = document.getElementById("reserva-id").value;
             if (!reservaId) return;
-
+            
             try {
                 const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`);
                 if (!response.ok) {
                     alert("No se encontró la reserva o no está disponible para check-in");
                     return;
                 }
-
+                
                 const reserva = await response.json();
+                
+                // Rellenar campos con datos de la reserva
                 document.getElementById("habitacion-id").value = reserva.habitacionId || "";
                 document.getElementById("fecha-checkin").value = formatearFechaParaInput(reserva.fechaCheckIn);
                 document.getElementById("fecha-checkout").value = formatearFechaParaInput(reserva.fechaCheckOut);
-                document.getElementById("num-huespedes").value = reserva.numHuespedes || 1;
-                document.getElementById("metodo-pago").value = reserva.metodoPago || "tarjeta";
-
+                
+                // Si hay datos del cliente, rellenarlos también
                 if (reserva.cliente) {
                     document.getElementById("nombre").value = reserva.cliente.nombre || "";
                     document.getElementById("apellidos").value = reserva.cliente.apellidos || "";
-                    document.getElementById("documento-tipo").value = reserva.cliente.documentoTipo || "dni";
-                    document.getElementById("documento-numero").value = reserva.cliente.documentoNumero || "";
-                    document.getElementById("telefono").value = reserva.cliente.telefono || "";
                     document.getElementById("email").value = reserva.cliente.email || "";
-                    document.getElementById("direccion").value = reserva.cliente.direccion || "";
+                    document.getElementById("telefono").value = reserva.cliente.telefono || "";
                 }
+                
             } catch (error) {
                 console.error("Error al buscar la reserva:", error);
                 alert("Error al buscar la reserva");
@@ -255,9 +248,9 @@
         }
 
         // Evento para el formulario
-        document.getElementById("checkin-form").addEventListener("submit", async function (event) {
+        document.getElementById("checkin-form").addEventListener("submit", async function(event) {
             event.preventDefault();
-
+            
             // Recoger todos los datos del formulario
             const formData = new FormData(this);
             const datosCheckIn = {
@@ -279,7 +272,7 @@
                 preferencias: formData.get("preferencias"),
                 comentarios: formData.get("comentarios")
             };
-
+            
             try {
                 // Enviar datos al servidor
                 const response = await fetch("http://localhost:8080/api/reservas/checkin", {
@@ -289,7 +282,7 @@
                     },
                     body: JSON.stringify(datosCheckIn)
                 });
-
+                
                 if (response.ok) {
                     const resultado = await response.text();
                     alert("Check-in realizado con éxito: " + resultado);
@@ -312,13 +305,13 @@
         }
 
         // Al cargar la página
-        window.onload = function () {
+        window.onload = function() {
             cargarHabitacionesDisponibles();
-
+            
             // Establecer la fecha actual como predeterminada para check-in
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById("fecha-checkin").value = hoy;
-
+            
             // Y fecha de mañana para check-out por defecto
             const manana = new Date();
             manana.setDate(manana.getDate() + 1);
@@ -326,5 +319,4 @@
         };
     </script>
 </body>
-
 </html>

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.restapi.model.Cliente;
 import com.example.restapi.model.CheckIn;
 import com.example.restapi.model.Reserva;
 import com.example.restapi.model.Habitacion;
@@ -34,6 +35,13 @@ public class CheckInService {
 
         if (reservaOpt.isPresent()) {
             Reserva reserva = reservaOpt.get();
+
+            // Verificación del cliente
+            Cliente clienteReserva = reserva.getCliente();
+            if (!clienteReserva.getNombre().equals(datosCheckIn.getNombreHuesped()) ||
+                !clienteReserva.getApellido().equals(datosCheckIn.getApellidosHuesped())) {
+                return false; // El huésped no coincide con el cliente de la reserva
+            }
 
             // Verificar si la reserva ya tiene un check-in o está cancelada
             if ("Cancelada".equals(reserva.getEstado())) {
