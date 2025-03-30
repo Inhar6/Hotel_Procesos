@@ -25,8 +25,7 @@
                 <option value="suite">Suite</option>
             </select>
 
-            <input type="number" id="precioMax" placeholder="Precio máximo" on----------------------------------------------------------------------------
-oninput="filtrarPorPrecio()">
+            <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
         </div>
 
         <!-- Tabla de habitaciones -->
@@ -208,7 +207,11 @@ oninput="filtrarPorPrecio()">
                         alert(resultado);
                         cargarTodas();
                     } else {
-                        alert("Error: " + resultado);
+                        if (resultado === "La reserva ya está cancelada.") {
+                            alert("No se puede cancelar porque la reserva ya está cancelada.");
+                        } else {
+                            alert("Error: " + resultado);
+                        }
                     }
                 } catch (error) {
                     alert("Error al conectar con el servidor: " + error.message);
@@ -244,7 +247,7 @@ oninput="filtrarPorPrecio()">
                         const resultado = await response.text();
                         if (response.ok) {
                             alert(resultado);
-                            cargarTodas(); // Recargar la lista para reflejar los cambios
+                            cargarTodas();
                         } else {
                             alert("Error: " + resultado);
                         }

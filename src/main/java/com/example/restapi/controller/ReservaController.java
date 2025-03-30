@@ -1,9 +1,11 @@
 package com.example.restapi.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
-import java.time.format.DateTimeParseException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,11 +95,16 @@ public class ReservaController {
     // Endpoint para cancelar una reserva
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<String> cancelarReserva(@PathVariable Long id) {
+        Optional<Reserva> reservaOpt = reservaService.getReservaById(id); // Asumimos que agregamos este método auxiliar
+        if (reservaOpt.isPresent() && "Cancelada".equals(reservaOpt.get().getEstado())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La reserva ya está cancelada.");
+        }
+
         boolean exito = reservaService.cancelarReserva(id);
         if (exito) {
             return ResponseEntity.ok("Reserva cancelada correctamente.");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo cancelar la reserva.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo cancelar la reserva. Verifica que exista.");
         }
     }
 }

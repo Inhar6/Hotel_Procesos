@@ -99,6 +99,9 @@ public class ReservaService {
 
         if (reservaOpt.isPresent()) {
             Reserva reserva = reservaOpt.get();
+            if ("Cancelada".equals(reserva.getEstado())) {
+                return false; // La reserva ya está cancelada
+            }
             reserva.cancelarReserva();
             reservaRepository.save(reserva);
 
@@ -109,7 +112,11 @@ public class ReservaService {
 
             return true;
         }
-        return false;
+        return false; // Reserva no encontrada
+    }
+
+    public Optional<Reserva> getReservaById(Long id) {
+        return reservaRepository.findById(id);
     }
 
     public List<Reserva> getAllReservas() {
