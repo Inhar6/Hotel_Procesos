@@ -1,7 +1,8 @@
 package com.example.restapi.model;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,71 +21,60 @@ public class CheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "reserva_id", nullable = false)
     private Reserva reserva;
 
-    @ManyToOne
-    @JoinColumn(name = "habitacion_id", nullable = false)
-    private Habitacion habitacion;
-
-    @Column(nullable = false)
+    @Column(name = "nombre_huesped", nullable = false, length = 50)
     private String nombreHuesped;
 
-    @Column(nullable = false)
+    @Column(name = "apellidos_huesped", nullable = false, length = 50)
     private String apellidosHuesped;
 
-    @Column(nullable = false)
-    private String tipoDocumento;
+    @Column(name = "documento_tipo", nullable = false, length = 20)
+    private String documentoTipo;
 
-    @Column(nullable = false)
-    private String numeroDocumento;
+    @Column(name = "documento_numero", nullable = false, length = 20)
+    private String documentoNumero;
 
-    @Column
+    @Column(name = "telefono", nullable = false, length = 15)
     private String telefono;
 
-    @Column
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column
+    @Column(name = "direccion", length = 200)
     private String direccion;
 
-    @Column(nullable = false)
+    @Column(name = "fecha_check_in", nullable = false)
     private LocalDate fechaCheckIn;
 
-    @Column(nullable = false)
+    @Column(name = "fecha_check_out", nullable = false)
     private LocalDate fechaCheckOut;
 
-    @Column(nullable = false)
+    @Column(name = "num_huespedes", nullable = false)
     private Integer numHuespedes;
 
-    @Column
+    @Column(name = "metodo_pago", nullable = false, length = 50)
     private String metodoPago;
 
-    @Column
+    @Column(name = "preferencias", length = 200)
     private String preferencias;
 
-    @Column
+    @Column(name = "comentarios", length = 500)
     private String comentarios;
 
-    @Column(nullable = false)
-    private boolean activo;
+    // Constructores
+    public CheckIn() {}
 
-    // Constructor vacío requerido por JPA
-    public CheckIn() {
-    }
-
-    // Constructor con parámetros
-    public CheckIn(Reserva reserva, Habitacion habitacion, String nombreHuesped, String apellidosHuesped,
-                  String tipoDocumento, String numeroDocumento, String telefono, String email, String direccion,
-                  LocalDate fechaCheckIn, LocalDate fechaCheckOut, Integer numHuespedes, String metodoPago,
-                  String preferencias, String comentarios) {
+    public CheckIn(Reserva reserva, String nombreHuesped, String apellidosHuesped, String documentoTipo,
+                   String documentoNumero, String telefono, String email, String direccion, LocalDate fechaCheckIn,
+                   LocalDate fechaCheckOut, Integer numHuespedes, String metodoPago, String preferencias, String comentarios) {
         this.reserva = reserva;
-        this.habitacion = habitacion;
         this.nombreHuesped = nombreHuesped;
         this.apellidosHuesped = apellidosHuesped;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroDocumento = numeroDocumento;
+        this.documentoTipo = documentoTipo;
+        this.documentoNumero = documentoNumero;
         this.telefono = telefono;
         this.email = email;
         this.direccion = direccion;
@@ -94,150 +84,78 @@ public class CheckIn {
         this.metodoPago = metodoPago;
         this.preferencias = preferencias;
         this.comentarios = comentarios;
-        this.activo = true;
     }
 
     // Getters y Setters
-    public Long getId() {
-        return id;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Reserva getReserva() { return reserva; }
+    public void setReserva(Reserva reserva) { this.reserva = reserva; }
+
+    // Personalizar cómo se serializa la reserva a solo su ID
+    @JsonProperty("reservaId")
+    public Long getReservaId() {
+        return reserva != null ? reserva.getId() : null;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNombreHuesped() { return nombreHuesped; }
+    public void setNombreHuesped(String nombreHuesped) { this.nombreHuesped = nombreHuesped; }
 
-    public Reserva getReserva() {
-        return reserva;
-    }
+    public String getApellidosHuesped() { return apellidosHuesped; }
+    public void setApellidosHuesped(String apellidosHuesped) { this.apellidosHuesped = apellidosHuesped; }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
-    }
+    public String getDocumentoTipo() { return documentoTipo; }
+    public void setDocumentoTipo(String documentoTipo) { this.documentoTipo = documentoTipo; }
 
-    public Habitacion getHabitacion() {
-        return habitacion;
-    }
+    public String getDocumentoNumero() { return documentoNumero; }
+    public void setDocumentoNumero(String documentoNumero) { this.documentoNumero = documentoNumero; }
 
-    public void setHabitacion(Habitacion habitacion) {
-        this.habitacion = habitacion;
-    }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public String getNombreHuesped() {
-        return nombreHuesped;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setNombreHuesped(String nombreHuesped) {
-        this.nombreHuesped = nombreHuesped;
-    }
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public String getApellidosHuesped() {
-        return apellidosHuesped;
-    }
+    public LocalDate getFechaCheckIn() { return fechaCheckIn; }
+    public void setFechaCheckIn(LocalDate fechaCheckIn) { this.fechaCheckIn = fechaCheckIn; }
 
-    public void setApellidosHuesped(String apellidosHuesped) {
-        this.apellidosHuesped = apellidosHuesped;
-    }
+    public LocalDate getFechaCheckOut() { return fechaCheckOut; }
+    public void setFechaCheckOut(LocalDate fechaCheckOut) { this.fechaCheckOut = fechaCheckOut; }
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
+    public Integer getNumHuespedes() { return numHuespedes; }
+    public void setNumHuespedes(Integer numHuespedes) { this.numHuespedes = numHuespedes; }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
+    public String getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
 
-    public String getNumeroDocumento() {
-        return numeroDocumento;
-    }
+    public String getPreferencias() { return preferencias; }
+    public void setPreferencias(String preferencias) { this.preferencias = preferencias; }
 
-    public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public LocalDate getFechaCheckIn() {
-        return fechaCheckIn;
-    }
-
-    public void setFechaCheckIn(LocalDate fechaCheckIn) {
-        this.fechaCheckIn = fechaCheckIn;
-    }
-
-    public LocalDate getFechaCheckOut() {
-        return fechaCheckOut;
-    }
-
-    public void setFechaCheckOut(LocalDate fechaCheckOut) {
-        this.fechaCheckOut = fechaCheckOut;
-    }
-
-    public Integer getNumHuespedes() {
-        return numHuespedes;
-    }
-
-    public void setNumHuespedes(Integer numHuespedes) {
-        this.numHuespedes = numHuespedes;
-    }
-
-    public String getMetodoPago() {
-        return metodoPago;
-    }
-
-    public void setMetodoPago(String metodoPago) {
-        this.metodoPago = metodoPago;
-    }
-
-    public String getPreferencias() {
-        return preferencias;
-    }
-
-    public void setPreferencias(String preferencias) {
-        this.preferencias = preferencias;
-    }
-
-    public String getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(String comentarios) {
-        this.comentarios = comentarios;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
+    public String getComentarios() { return comentarios; }
+    public void setComentarios(String comentarios) { this.comentarios = comentarios; }
 
     @Override
     public String toString() {
-        return "CheckIn [id=" + id + ", reserva=" + reserva.getId() + ", habitacion=" + habitacion.getId() 
-                + ", nombreHuesped=" + nombreHuesped + ", fechaCheckIn=" + fechaCheckIn 
-                + ", fechaCheckOut=" + fechaCheckOut + "]";
+        return "CheckIn{" +
+                "id=" + id +
+                ", reserva=" + reserva.getId() +
+                ", nombreHuesped='" + nombreHuesped + '\'' +
+                ", apellidosHuesped='" + apellidosHuesped + '\'' +
+                ", documentoTipo='" + documentoTipo + '\'' +
+                ", documentoNumero='" + documentoNumero + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", fechaCheckIn=" + fechaCheckIn +
+                ", fechaCheckOut=" + fechaCheckOut +
+                ", numHuespedes=" + numHuespedes +
+                ", metodoPago='" + metodoPago + '\'' +
+                ", preferencias='" + preferencias + '\'' +
+                ", comentarios='" + comentarios + '\'' +
+                '}';
     }
 }

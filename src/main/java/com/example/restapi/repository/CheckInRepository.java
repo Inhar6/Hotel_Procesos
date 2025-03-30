@@ -1,0 +1,22 @@
+package com.example.restapi.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.restapi.model.CheckIn;
+import com.example.restapi.model.Reserva;
+
+@Repository
+public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
+
+    // Buscar todos los check-ins de una reserva específica
+    List<CheckIn> findByReserva(Reserva reserva);
+
+    // Buscar check-ins por fecha de check-in
+    List<CheckIn> findByFechaCheckIn(String fechaCheckIn);
+
+    // Buscar check-ins por documento del huésped
+    List<CheckIn> findByDocumentoNumero(String documentoNumero);
+}
