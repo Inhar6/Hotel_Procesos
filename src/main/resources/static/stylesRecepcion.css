@@ -137,7 +137,7 @@ th {
 
 /* Estilo para el botón Volver */
 button[onclick="volver()"] {
-    background-color: #1e90ff; /* Azul */
+    background-color: #575f66; /*  */
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -146,7 +146,7 @@ button[onclick="volver()"] {
 }
 
 button[onclick="volver()"]:hover {
-    background-color: #1c7cd6; /* Azul más oscuro al pasar el cursor */
+    background-color: #353637; /* Azul más oscuro al pasar el cursor */
 }
 
 /* Estilos para los botones de Check-In y Check-Out */
@@ -204,17 +204,14 @@ button[onclick="volver()"]:hover {
     color: white;
 }
 
-.checkout {
-    background-color: #9C27B0; /* Púrpura */
-    color: white;
-}
+
 
 .checkin-realizado {
     background-color: #4CAF50; /* Verde, igual que completada */
     color: white;
 }
 
-.checkout-realizado {
-    background-color: #2196F3; 
+table td.checkout-realizado {
+    background-color: #2196F3; /* Azul */
     color: white;
 }
