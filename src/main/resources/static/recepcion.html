@@ -25,7 +25,8 @@
                 <option value="suite">Suite</option>
             </select>
 
-            <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
+            <input type="number" id="precioMax" placeholder="Precio máximo" on----------------------------------------------------------------------------
+oninput="filtrarPorPrecio()">
         </div>
 
         <!-- Tabla de habitaciones -->
@@ -179,6 +180,8 @@
                 return;
             }
             reservas.forEach(reserva => {
+                const metodoPago = reserva.metodoPago || 'N/A';
+                const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
                 const row = `<tr>
                     <td>${reserva.id || 'N/A'}</td>
                     <td>${reserva.habitacion?.numero || 'N/A'}</td>
@@ -187,7 +190,7 @@
                     <td>${formatearFecha(reserva.fechaCheckOut)}</td>
                     <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
                     <td class="${(reserva.estado || '').toLowerCase()}">${reserva.estado || 'N/A'}</td>
-                    <td>${reserva.metodoPago || 'N/A'}</td>
+                    <td>${metodoPagoCapitalizado}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
