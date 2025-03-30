@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <div class="container">
         <h1>Gestión de Habitaciones</h1>
 
@@ -65,12 +64,13 @@
         </table>
 
         <div>
+            <!-- Botón Modificar Reserva -->
+            <button class="modificar-btn" onclick="modificarReserva()">Modificar Reserva</button>
             <!-- Botón Cancelar Reserva -->
             <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
             <!-- Botón Volver -->
             <button onclick="volver()">Volver</button>
         </div>
-
     </div>
 
     <script>
@@ -163,7 +163,7 @@
                     throw new Error(`Error ${response.status}: ${errorText}`);
                 }
                 const reservas = await response.json();
-                console.log("Reservas recibidas:", reservas); // Para depuración
+                console.log("Reservas recibidas:", reservas);
                 mostrarReservas(reservas);
             } catch (error) {
                 console.error("Error al cargar reservas:", error);
@@ -180,15 +180,15 @@
             }
             reservas.forEach(reserva => {
                 const row = `<tr>
-            <td>${reserva.id || 'N/A'}</td>
-            <td>${reserva.habitacion?.numero || 'N/A'}</td>
-            <td>${reserva.clienteId || 'N/A'}</td> <!-- Usar clienteId en lugar de cliente.nombre -->
-            <td>${formatearFecha(reserva.fechaCheckIn)}</td>
-            <td>${formatearFecha(reserva.fechaCheckOut)}</td>
-            <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
-            <td class="${(reserva.estado || '').toLowerCase()}">${reserva.estado || 'N/A'}</td>
-            <td>${reserva.metodoPago || 'N/A'}</td>
-        </tr>`;
+                    <td>${reserva.id || 'N/A'}</td>
+                    <td>${reserva.habitacion?.numero || 'N/A'}</td>
+                    <td>${reserva.clienteId || 'N/A'}</td>
+                    <td>${formatearFecha(reserva.fechaCheckIn)}</td>
+                    <td>${formatearFecha(reserva.fechaCheckOut)}</td>
+                    <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+                    <td class="${(reserva.estado || '').toLowerCase()}">${reserva.estado || 'N/A'}</td>
+                    <td>${reserva.metodoPago || 'N/A'}</td>
+                </tr>`;
                 tbody.innerHTML += row;
             });
         }
@@ -213,13 +213,52 @@
             }
         }
 
+        async function modificarReserva() {
+            const reservaId = prompt("Introduce el ID de la reserva a modificar:");
+            if (reservaId) {
+                const habitacionId = prompt("Introduce el nuevo ID de la habitación:");
+                const fechaCheckIn = prompt("Introduce la nueva fecha de Check-In (YYYY-MM-DD):");
+                const fechaCheckOut = prompt("Introduce la nueva fecha de Check-Out (YYYY-MM-DD):");
+                const metodoPago = prompt("Introduce el nuevo método de pago:");
+
+                if (habitacionId && fechaCheckIn && fechaCheckOut && metodoPago) {
+                    try {
+                        const datos = {
+                            habitacionId: habitacionId,
+                            fechaCheckIn: fechaCheckIn,
+                            fechaCheckOut: fechaCheckOut,
+                            metodoPago: metodoPago
+                        };
+
+                        const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(datos)
+                        });
+
+                        const resultado = await response.text();
+                        if (response.ok) {
+                            alert(resultado);
+                            cargarTodas(); // Recargar la lista para reflejar los cambios
+                        } else {
+                            alert("Error: " + resultado);
+                        }
+                    } catch (error) {
+                        alert("Error al conectar con el servidor: " + error.message);
+                    }
+                } else {
+                    alert("Todos los campos son obligatorios.");
+                }
+            }
+        }
+
         function volver() {
             window.location.href = "personal.html";
         }
 
         window.onload = cargarTodas;
     </script>
-
 </body>
-
 </html>

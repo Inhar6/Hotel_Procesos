@@ -101,10 +101,24 @@ th {
 
 /* Estilo para el contenedor de botones (sin clase específica) */
 .container > div:last-child {
-    margin-top: 60px; /* Aumentado a 80px para más separación de la tabla */
+    margin-top: 40px; /* Aumentado a 80px para más separación de la tabla */
     display: flex; /* Usar flexbox para alinear botones */
     justify-content: center; /* Centrar horizontalmente */
     gap: 25px; /* Más espacio entre botones */
+}
+
+/* Estilo para el botón de Modificar Reserva */
+.modificar-btn {
+    background-color: #ffa200; /* Rojo intenso */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.modificar-btn:hover {
+    background-color: #784c00; /* Rojo más oscuro al pasar el cursor */
 }
 
 /* Estilo para el botón de Cancelar Reserva */

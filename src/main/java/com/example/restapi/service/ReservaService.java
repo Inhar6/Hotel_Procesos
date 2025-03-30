@@ -54,6 +54,46 @@ public class ReservaService {
         return false;
     }
 
+    public boolean modificarReserva(Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
+        Optional<Reserva> reservaOpt = reservaRepository.findById(reservaId);
+        Optional<Habitacion> habitacionOpt = habitacionRepository.findById(habitacionId);
+
+        if (reservaOpt.isPresent() && habitacionOpt.isPresent()) {
+            Reserva reserva = reservaOpt.get();
+            Habitacion nuevaHabitacion = habitacionOpt.get();
+
+            // Verificar que la nueva habitación esté disponible (si es diferente a la actual)
+            if (!nuevaHabitacion.getId().equals(reserva.getHabitacion().getId()) && !nuevaHabitacion.isDisponible()) {
+                return false; // La nueva habitación no está disponible
+            }
+
+            // Si la habitación cambia, liberar la anterior y actualizar el precio
+            if (!nuevaHabitacion.getId().equals(reserva.getHabitacion().getId())) {
+                Habitacion habitacionAnterior = reserva.getHabitacion();
+                habitacionAnterior.setDisponible(true);
+                habitacionRepository.save(habitacionAnterior);
+
+                reserva.setHabitacion(nuevaHabitacion);
+                nuevaHabitacion.setDisponible(false);
+                habitacionRepository.save(nuevaHabitacion);
+
+                // Recalcular el precio solo si cambia la habitación
+                long noches = fechaCheckIn.until(fechaCheckOut).getDays();
+                reserva.setTotalPagar(noches * nuevaHabitacion.getPrecioPorNoche());
+            }
+
+            // Actualizar los otros campos
+            reserva.setFechaCheckIn(fechaCheckIn);
+            reserva.setFechaCheckOut(fechaCheckOut);
+            reserva.setMetodoPago(metodoPago);
+
+            // Guardar los cambios en la reserva
+            reservaRepository.save(reserva);
+            return true;
+        }
+        return false; // Reserva o habitación no encontrada
+    }
+
     public boolean cancelarReserva(Long reservaId) {
         Optional<Reserva> reservaOpt = reservaRepository.findById(reservaId);
 

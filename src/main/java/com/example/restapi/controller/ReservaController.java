@@ -3,7 +3,7 @@ package com.example.restapi.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
+import java.time.format.DateTimeParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class ReservaController {
 
     // Endpoint para obtener todas las reservas    
     @GetMapping
-    public List<Reserva> getAllReservas() { 
+    public List<Reserva> getAllReservas() {
         return reservaService.getAllReservas();
     }
 
@@ -57,7 +57,38 @@ public class ReservaController {
         }
     }
 
-            
+    // Endpoint para modificar una reserva
+    @PutMapping("/{id}")
+    public ResponseEntity<String> modificarReserva(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> datos) {
+        try {
+            // Validar que todos los campos estén presentes
+            if (!datos.containsKey("habitacionId") || !datos.containsKey("fechaCheckIn")
+                    || !datos.containsKey("fechaCheckOut") || !datos.containsKey("metodoPago")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faltan campos obligatorios en los datos.");
+            }
+
+            Long habitacionId = Long.parseLong(datos.get("habitacionId").toString());
+            LocalDate fechaCheckIn = LocalDate.parse(datos.get("fechaCheckIn").toString());
+            LocalDate fechaCheckOut = LocalDate.parse(datos.get("fechaCheckOut").toString());
+            String metodoPago = datos.get("metodoPago").toString();
+
+            boolean exito = reservaService.modificarReserva(id, habitacionId, fechaCheckIn, fechaCheckOut, metodoPago);
+
+            if (exito) {
+                return ResponseEntity.ok("Reserva modificada con éxito.");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo modificar la reserva. Verifica que la reserva exista y la habitación esté disponible.");
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El ID de la habitación debe ser un número válido.");
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Las fechas deben estar en formato YYYY-MM-DD.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error inesperado: " + e.getMessage());
+        }
+    }
 
     // Endpoint para cancelar una reserva
     @PutMapping("/cancelar/{id}")
