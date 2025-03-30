@@ -213,3 +213,8 @@ button[onclick="volver()"]:hover {
     background-color: #4CAF50; /* Verde, igual que completada */
     color: white;
 }
+
+.checkout-realizado {
+    background-color: #2196F3; 
+    color: white;
+}
