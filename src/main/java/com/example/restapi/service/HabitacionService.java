@@ -47,6 +47,20 @@ public class HabitacionService {
         return habitacionesUrgentes.get(0); // Devuelve la primera habitación disponible
     }
 
+    // Método para obtener habitaciones que no están limpias
+    public List<Habitacion> getHabitacionesNoLimpias() {
+        return habitacionRepository.findByEstadoLimpiezaNot("Limpia");
+    }
+    
+     // Método para obtener una habitación que necesita limpieza urgente
+     public Habitacion getHabitacionParaLimpiezaUrgente() {
+        List<Habitacion> habitacionesNoLimpias = getHabitacionesNoLimpias();
+        if (habitacionesNoLimpias.isEmpty()) {
+            throw new RuntimeException("No hay habitaciones que necesiten limpieza urgente");
+        }
+        return habitacionesNoLimpias.get(0); // Devuelve la primera habitación que necesita limpieza
+    }
+
     //Informe de ocupacion (Gerente)
     public Map<String, Object> obtenerInformeOcupacion() {
         List<Habitacion> habitaciones = habitacionRepository.findAll();
