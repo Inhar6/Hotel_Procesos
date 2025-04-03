@@ -40,15 +40,6 @@ Muestra todas las habitaciones registradas
 
 Para ver la lista completa de métodos de la API REST, puede visitar la interfaz de Swagger en: http://localhost:8080/swagger-ui.html. Consulte las anotaciones en las clases *Habitacion Controller* y *ClienteController*, las dependencias requeridas en el archivo *pom.xml* y el archivo *application.properties* para su configuración.
 
-Linea de comandos para el cliente
--------------------
-
-Hay un ejemplo de implementación de un cliente de API REST que utiliza las bibliotecas de cliente REST de SpringBoot en la clase *BookManager.java*. Puedes iniciar el cliente con el siguiente comando Maven (verificar).
-
-    mvn exec:java
-
-Consulte la sección <build> en *pom.xml* para ver cómo se configuró este comando para funcionar.
-
 Empaquetando la aplicación
 -------------------------
 
