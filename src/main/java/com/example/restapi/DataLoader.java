@@ -49,8 +49,14 @@ public class DataLoader {
         Habitacion habitacion2 = new Habitacion(102, 80.0, false, "Limpia", true, "Doble");
         Habitacion habitacion3 = new Habitacion(103, 150.0, true, "Sucia", false, "Suite");
         Habitacion habitacion4 = new Habitacion(104, 85.0, true, "Limpia", false, "Doble");
+        Habitacion habitacion5 = new Habitacion(105, 90.0, false, "Sucia", true, "Individual");
+        Habitacion habitacion6 = new Habitacion(106, 120.0, true, "Limpia", false, "Suite");
+        Habitacion habitacion7 = new Habitacion(107, 110.0, false, "Sucia", false, "Doble");
+        Habitacion habitacion8 = new Habitacion(108, 95.0, true, "Limpia", true, "Individual");
+        Habitacion habitacion9 = new Habitacion(109, 130.0, false, "Sucia", false, "Suite");
+        Habitacion habitacion10 = new Habitacion(110, 100.0, true, "Limpia", false, "Doble");
 
-        habitacionRepository.saveAll(List.of(habitacion1, habitacion2, habitacion3, habitacion4));
+        habitacionRepository.saveAll(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5, habitacion6, habitacion7, habitacion8, habitacion9, habitacion10));
         habitacionRepository.flush(); // Sincronizar con la base de datos
 
         // Crear Reservas (usamos IDs generados por Hibernate)
