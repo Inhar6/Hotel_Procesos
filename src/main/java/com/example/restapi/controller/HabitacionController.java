@@ -60,6 +60,17 @@ public class HabitacionController {
     public List<Habitacion> getHabitacionesUrgentes() {
         return habitacionService.getHabitacionesUrgentes();
     }
+    // Método para obtener habitaciones que no están limpias
+    @GetMapping("/habitaciones/noLimpias")
+    public List<Habitacion> getHabitacionesNoLimpias() {
+        return habitacionService.getHabitacionesNoLimpias();
+    }
+
+    // Método para obtener una habitación que necesita limpieza urgente
+    @GetMapping("/habitaciones/limpiezaUrgente")
+    public Habitacion getHabitacionParaLimpiezaUrgente() {
+        return habitacionService.getHabitacionParaLimpiezaUrgente();
+    }
 
     //Informe de ocupacion (Gerente)
     @GetMapping("/ocupacion")
