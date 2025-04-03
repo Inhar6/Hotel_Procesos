@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpieza - Habitaciones No Limpias</title>
+    <link rel="stylesheet" href="stylesLimpieza.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Habitaciones No Limpias</h1>
+
+        <!-- Tabla de habitaciones no limpias -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="habitaciones-no-limpias-list"></tbody>
+        </table>
+
+        <button onclick="volver()">Volver</button>
+    </div>
+
+    <script>
+        async function cargarNoLimpias() {
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones/noLimpias");
+                const habitaciones = await response.json();
+                mostrarHabitacionesNoLimpias(habitaciones);
+            } catch (error) {
+                console.error("Error al cargar habitaciones no limpias:", error);
+            }
+        }
+
+        function mostrarHabitacionesNoLimpias(habitaciones) {
+            const tbody = document.getElementById("habitaciones-no-limpias-list");
+            tbody.innerHTML = "";
+            habitaciones.forEach(hab => {
+                const row = `<tr>
+                    <td>${hab.id}</td>
+                    <td>${hab.tipo}</td>
+                    <td>${hab.precioPorNoche} €</td>
+                    <td class="${hab.disponible ? 'libre' : 'ocupada'}">${hab.disponible ? 'Libre' : 'Ocupada'}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function volver() {
+            window.location.href = "personal.html";
+        }
+
+        window.onload = cargarNoLimpias;
+    </script>
+</body>
+
+</html>
