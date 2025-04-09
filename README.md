@@ -1,4 +1,4 @@
-[![Java CI with Maven](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/java-ci.yml/badge.svg)]
+[![Java CI with Maven](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml/badge.svg)](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml)
 
 
 HOTEL PROCESOS
