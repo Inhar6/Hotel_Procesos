@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.restapi.model.CheckIn;
-import com.example.restapi.model.Reserva;
 
 @Repository
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
