@@ -155,7 +155,6 @@ class HabitacionServiceTest {
     @Test
     void testObtenerInformeOcupacion() {
         when(habitacionRepository.findAll()).thenReturn(Arrays.asList(habitacion1, habitacion2));
-
         Map<String, Object> informe = habitacionService.obtenerInformeOcupacion();
 
         assertNotNull(informe);
