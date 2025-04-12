@@ -34,4 +34,17 @@ public class ClienteTest {
         assertEquals("PayPal", cliente.getMetodoPago());
         assertEquals("987654321", cliente.getTelefono());
     }
+    @Test
+    public void testGetId() {
+        Cliente cliente = new Cliente();
+        cliente.setId(1L);
+        assertEquals(1L, cliente.getId());
+    }
+
+    @Test
+    public void testSetId() {
+        Cliente cliente = new Cliente();
+        cliente.setId(2L);
+        assertEquals(2L, cliente.getId());
+    }
 }

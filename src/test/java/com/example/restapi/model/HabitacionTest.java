@@ -36,4 +36,17 @@ public class HabitacionTest {
         assertTrue(habitacion.isTieneProblemas());
         assertEquals("Suite", habitacion.getTipo());
     }
+    @Test
+    public void testGetId() {
+        Habitacion habitacion = new Habitacion();
+        habitacion.setId(1L);
+        assertEquals(1L, habitacion.getId());
+    }
+
+    @Test
+    public void testSetId() {
+        Habitacion habitacion = new Habitacion();
+        habitacion.setId(2L);
+        assertEquals(2L, habitacion.getId());
+    }
 }

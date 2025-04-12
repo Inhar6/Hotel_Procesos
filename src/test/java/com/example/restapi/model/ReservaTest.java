@@ -71,4 +71,19 @@ public class ReservaTest {
         String expected = "Reserva{id=null, cliente=John Doe, habitacion=101, fechaCheckIn=2023-10-01, fechaCheckOut=2023-10-05, totalPagar=400.0, estado='Pendiente', metodoPago='Tarjeta de Crédito'}";
         assertEquals(expected, reserva.toString());
     }
+    @Test
+    public void testGetId() {
+        reserva.setId(1L);
+        assertEquals(1L, reserva.getId());
+    }
+
+    @Test
+    public void testSetId() {
+        reserva.setId(2L);
+        assertEquals(2L, reserva.getId());
+    }
+    @Test
+    public void testGetClienteId() {
+        assertEquals(null, reserva.getClienteId());
+    }
 }
