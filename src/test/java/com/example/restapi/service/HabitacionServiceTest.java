@@ -8,14 +8,17 @@ import com.example.restapi.model.Habitacion;
 import com.example.restapi.repository.HabitacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 class HabitacionServiceTest {
 
     @Mock
@@ -24,15 +27,17 @@ class HabitacionServiceTest {
     @InjectMocks
     private HabitacionService habitacionService;
 
+    private Habitacion habitacion1;
+    private Habitacion habitacion2;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        habitacion1 = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
+        habitacion2 = new Habitacion(102, 150.0, false, "Sucio", true, "Doble");
     }
 
     @Test
     void testGetAllHabitaciones() {
-        Habitacion habitacion1 = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
-        Habitacion habitacion2 = new Habitacion(102, 150.0, false, "Sucio", true, "Doble");
         when(habitacionRepository.findAll()).thenReturn(Arrays.asList(habitacion1, habitacion2));
 
         List<Habitacion> habitaciones = habitacionService.getAllHabitaciones();
@@ -43,8 +48,7 @@ class HabitacionServiceTest {
 
     @Test
     void testGetHabitacionById() {
-        Habitacion habitacion = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
-        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion));
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion1));
 
         Optional<Habitacion> foundHabitacion = habitacionService.getHabitacionById(1L);
 
@@ -54,22 +58,30 @@ class HabitacionServiceTest {
     }
 
     @Test
-    void testCreateHabitacion() {
-        Habitacion habitacion = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
-        when(habitacionRepository.save(any(Habitacion.class))).thenReturn(habitacion);
+    void testGetHabitacionByIdNotFound() {
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Habitacion createdHabitacion = habitacionService.createHabitacion(habitacion);
+        Optional<Habitacion> foundHabitacion = habitacionService.getHabitacionById(1L);
+
+        assertFalse(foundHabitacion.isPresent());
+        verify(habitacionRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void testCreateHabitacion() {
+        when(habitacionRepository.save(any(Habitacion.class))).thenReturn(habitacion1);
+
+        Habitacion createdHabitacion = habitacionService.createHabitacion(habitacion1);
 
         assertNotNull(createdHabitacion);
         assertEquals(101, createdHabitacion.getNumero());
-        verify(habitacionRepository, times(1)).save(habitacion);
+        verify(habitacionRepository, times(1)).save(habitacion1);
     }
 
     @Test
     void testUpdateHabitacion() throws Exception {
-        Habitacion existingHabitacion = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
         Habitacion updatedDetails = new Habitacion(101, 120.0, true, "Limpia", false, "Suite");
-        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(existingHabitacion));
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion1));
         when(habitacionRepository.save(any(Habitacion.class))).thenReturn(updatedDetails);
 
         Habitacion updatedHabitacion = habitacionService.updateHabitacion(1L, updatedDetails);
@@ -77,7 +89,21 @@ class HabitacionServiceTest {
         assertEquals(120.0, updatedHabitacion.getPrecioPorNoche());
         assertEquals("Suite", updatedHabitacion.getTipo());
         verify(habitacionRepository, times(1)).findById(1L);
-        verify(habitacionRepository, times(1)).save(existingHabitacion);
+        verify(habitacionRepository, times(1)).save(habitacion1);
+    }
+
+    @Test
+    void testUpdateHabitacionNotFound() {
+        Habitacion updatedDetails = new Habitacion(101, 120.0, true, "Limpia", false, "Suite");
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            habitacionService.updateHabitacion(1L, updatedDetails);
+        });
+
+        assertEquals("Habitación no encontrada", exception.getMessage());
+        verify(habitacionRepository, times(1)).findById(1L);
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
     }
 
     @Test
@@ -92,8 +118,20 @@ class HabitacionServiceTest {
     }
 
     @Test
+    void testDeleteHabitacionNotFound() {
+        when(habitacionRepository.existsById(1L)).thenReturn(false);
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            habitacionService.deleteHabitacion(1L);
+        });
+
+        assertEquals("Habitación no encontrada con id: 1", exception.getMessage());
+        verify(habitacionRepository, times(1)).existsById(1L);
+        verify(habitacionRepository, never()).deleteById(1L);
+    }
+
+    @Test
     void testGetHabitacionesDisponibles() {
-        Habitacion habitacion1 = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
         when(habitacionRepository.findByDisponibleTrue()).thenReturn(Arrays.asList(habitacion1));
 
         List<Habitacion> habitacionesDisponibles = habitacionService.getHabitacionesDisponibles();
@@ -105,13 +143,63 @@ class HabitacionServiceTest {
 
     @Test
     void testGetHabitacionesNoLimpias() {
-        Habitacion habitacion1 = new Habitacion(102, 150.0, false, "Sucio", true, "Doble");
-        when(habitacionRepository.findByEstadoLimpiezaNot("Limpia")).thenReturn(Arrays.asList(habitacion1));
+        when(habitacionRepository.findByEstadoLimpiezaNot("Limpia")).thenReturn(Arrays.asList(habitacion2));
 
         List<Habitacion> habitacionesNoLimpias = habitacionService.getHabitacionesNoLimpias();
 
         assertEquals(1, habitacionesNoLimpias.size());
         assertEquals("Sucio", habitacionesNoLimpias.get(0).getEstadoLimpieza());
         verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
+    }
+
+    @Test
+    void testObtenerInformeOcupacion() {
+        when(habitacionRepository.findAll()).thenReturn(Arrays.asList(habitacion1, habitacion2));
+
+        Map<String, Object> informe = habitacionService.obtenerInformeOcupacion();
+
+        assertNotNull(informe);
+        assertEquals(2, informe.get("totalHabitaciones"));
+        assertEquals(1, informe.get("habitacionesOcupadas"));
+        assertEquals(1, informe.get("habitacionesDisponibles"));
+        assertEquals("50,00%", informe.get("porcentajeOcupacion"));
+        verify(habitacionRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetHabitacionUrgente() {
+        when(habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia"))
+                .thenReturn(Arrays.asList(habitacion1));
+
+        Habitacion habitacionUrgente = habitacionService.getHabitacionUrgente();
+
+        assertNotNull(habitacionUrgente);
+        assertEquals(101, habitacionUrgente.getNumero());
+        verify(habitacionRepository, times(1))
+                .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
+    }
+
+    @Test
+    void testGetHabitacionParaLimpiezaUrgente() {
+        when(habitacionRepository.findByEstadoLimpiezaNot("Limpia")).thenReturn(Arrays.asList(habitacion2));
+
+        Habitacion habitacionParaLimpiezaUrgente = habitacionService.getHabitacionParaLimpiezaUrgente();
+
+        assertNotNull(habitacionParaLimpiezaUrgente);
+        assertEquals("Sucio", habitacionParaLimpiezaUrgente.getEstadoLimpieza());
+        verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
+    }
+
+    @Test
+    void testGetHabitacionesUrgentes() {
+        when(habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia"))
+                .thenReturn(Arrays.asList(habitacion1));
+
+        List<Habitacion> habitacionesUrgentes = habitacionService.getHabitacionesUrgentes();
+
+        assertEquals(1, habitacionesUrgentes.size());
+        assertEquals(101, habitacionesUrgentes.get(0).getNumero());
+        verify(habitacionRepository, times(1))
+                .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
     }
 }
