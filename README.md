@@ -62,6 +62,29 @@ y el cliente de muestra ejecutándose, ya que SpringBoot cambia la forma en que 
 
 Por lo tanto, en un desarrollo real, sería recomendable crear diferentes proyectos Maven para aplicaciones servidor y cliente, facilitando la distribución y mantenimiento de cada aplicación por separado.
 
+Estrategia de Pruebas
+---------------------
+
+En este proyecto, hemos implementado una estrategia de pruebas que incluye tanto tests unitarios como tests de integración para asegurar la calidad y el correcto funcionamiento de la aplicación.
+
+### Tests Unitarios
+
+Los tests unitarios se han utilizado principalmente para verificar la lógica de negocio en las clases de modelos y servicios. Estos tests se ejecutan en aislamiento utilizando mocks y Junit para simular las dependencias externas.
+
+Para ejecutar los tests unitarios, utiliza el siguiente comando:
+
+    mvn test
+
+### Tests de Integración
+
+Los tests de integración se han diseñado para verificar la interacción entre diferentes componentes del sistema. En este proyecto, los tests de integración se centran en los repositorios y los controladores, asegurando que las operaciones de base de datos y las rutas HTTP funcionen correctamente.
+
+Para ejecutar los tests de integración, utiliza el siguiente comando:
+
+    mvn verify
+
+Este comando ejecutará los tests de integración y generará un informe de cobertura de código si tienes configurado el plugin JaCoCo.
+
 Referencias
 ----------
 
