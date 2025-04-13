@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.example.restapi.model.Cliente;
+import com.example.restapi.model.Habitacion;
+import com.example.restapi.model.Reserva;
 import com.example.restapi.repository.*;
-import com.example.restapi.model.*;
 
 @Component
 public class DataLoader {
