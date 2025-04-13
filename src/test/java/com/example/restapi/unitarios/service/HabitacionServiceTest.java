@@ -1,4 +1,4 @@
-package com.example.restapi.service;
+package com.example.restapi.unitarios.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.restapi.model.Habitacion;
 import com.example.restapi.repository.HabitacionRepository;
+import com.example.restapi.service.HabitacionService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

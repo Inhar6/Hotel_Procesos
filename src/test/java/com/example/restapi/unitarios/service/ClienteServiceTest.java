@@ -1,7 +1,9 @@
-package com.example.restapi.service;
+package com.example.restapi.unitarios.service;
 
 import com.example.restapi.model.Cliente;
 import com.example.restapi.repository.ClienteRepository;
+import com.example.restapi.service.ClienteService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,10 @@
 
-package com.example.restapi.model;
+package com.example.restapi.unitarios.model;
 
 import org.junit.jupiter.api.Test;
+
+import com.example.restapi.model.Habitacion;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HabitacionTest {

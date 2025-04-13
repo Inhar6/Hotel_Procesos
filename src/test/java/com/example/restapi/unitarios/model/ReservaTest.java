@@ -1,7 +1,11 @@
-package com.example.restapi.model;
+package com.example.restapi.unitarios.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.example.restapi.model.Cliente;
+import com.example.restapi.model.Habitacion;
+import com.example.restapi.model.Reserva;
 
 import java.time.LocalDate;
 
