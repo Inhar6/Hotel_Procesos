@@ -20,6 +20,7 @@
                     <th>Tipo</th>
                     <th>Precio</th>
                     <th>Estado</th>
+                    <th>Limpiar</th>
                 </tr>
             </thead>
             <tbody id="habitaciones-no-limpias-list"></tbody>
@@ -48,9 +49,33 @@
                     <td>${hab.tipo}</td>
                     <td>${hab.precioPorNoche} €</td>
                     <td class="${hab.disponible ? 'libre' : 'ocupada'}">${hab.disponible ? 'Libre' : 'Ocupada'}</td>
+                    <td>
+                        <button onclick="marcarHabitacionComoLimpia(${hab.id})">Marcar como limpia</button>
+                    </td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
+        }
+        async function marcarHabitacionComoLimpia(roomId) {
+            if (confirm('¿Estás seguro de marcar esta habitación como limpia?')) {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/${roomId}/limpiar`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    if (response.ok) {
+                        // Eliminar la fila de la tabla
+                        document.getElementById(`row-${roomId}`).remove();
+                        alert('Habitación marcada como limpia');
+                    } else {
+                        const errorText = await response.text();
+                        alert(`Error al marcar la habitación como limpia: ${response.status} - ${errorText}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`Error en la solicitud: ${error.message}`);
+                }
+            }
         }
 
         function volver() {
