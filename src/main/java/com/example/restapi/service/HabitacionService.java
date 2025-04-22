@@ -1,15 +1,16 @@
 package com.example.restapi.service;
 
 
-import com.example.restapi.model.Habitacion;
-import com.example.restapi.repository.HabitacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.restapi.model.Habitacion;
+import com.example.restapi.repository.HabitacionRepository;
 
 @Service
 public class HabitacionService {
@@ -50,6 +51,13 @@ public class HabitacionService {
     // Método para obtener habitaciones que no están limpias
     public List<Habitacion> getHabitacionesNoLimpias() {
         return habitacionRepository.findByEstadoLimpiezaNot("Limpia");
+    }
+
+    public Habitacion marcarHabitacionComoLimpia(Long id) {
+        Habitacion habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
+        habitacion.setEstadoLimpieza("Limpia"); // Ajusta "Limpia" según el valor que uses
+        return habitacionRepository.save(habitacion);
     }
     
      // Método para obtener una habitación que necesita limpieza urgente
