@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservas del Cliente</title>
+  <link rel="stylesheet" href="stylesClienteWeb.css">
+</head>
+<body>
+  <h1>Reservas del Cliente</h1>
+
+  <div class="container">
+    <table id="tablaReservas">
+      <thead>
+        <tr>
+          <th>N.º Habitación</th>
+          <th>Tipo</th>
+          <th>Precio/Noche</th>
+          <th>Método de Pago</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Se rellenará dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    function mostrarReservas() {
+      const email = localStorage.getItem("clienteEmail");
+      if (!email) {
+        alert("No has iniciado sesión.");
+        window.location.href = "clientes.html";
+        return;
+      }
+  
+      fetch(`http://localhost:8080/api/reservas/por-email?email=${email}`)
+
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("No se encontraron reservas.");
+          }
+          return response.json();
+        })
+        .then(reservas => {
+          const tbody = document.querySelector("#tablaReservas tbody");
+          tbody.innerHTML = "";
+  
+          reservas.forEach(reserva => {
+            const h = reserva.habitacion;
+  
+            const row = `
+              <tr>
+                <td>${h.numero}</td>
+                <td>${h.tipo}</td>
+                <td>${h.precioPorNoche} €</td>
+                <td>${reserva.metodoPago || "No especificado"}</td>
+              </tr>
+            `;
+  
+            tbody.innerHTML += row;
+          });
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("No se pudieron cargar las reservas.");
+        });
+    }
+  
+    // Llama a la función cuando la página carga
+    window.onload = mostrarReservas;
+  </script>
+  
+</body>
+</html>
