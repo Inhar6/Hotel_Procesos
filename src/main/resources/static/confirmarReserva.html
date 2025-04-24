@@ -54,7 +54,8 @@
             const fechaCheckIn = document.getElementById("checkIn").value;
             const fechaCheckOut = document.getElementById("checkOut").value;
             const metodoPago = document.getElementById("metodoPago").value;
-            const clienteId = 1; // Suponiendo cliente logeado
+            //const clienteId = 1; // Suponiendo cliente logeado
+            const clienteId = localStorage.getItem("clienteId");
 
             if (!fechaCheckIn || !fechaCheckOut) {
                 alert("Por favor, completa todos los datos.");

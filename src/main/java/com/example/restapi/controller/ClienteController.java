@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,19 +43,30 @@ public class ClienteController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
         String email = credenciales.get("email");
         String contraseña = credenciales.get("contraseña");
-
+    
         if (email == null || contraseña == null) {
             return ResponseEntity.badRequest().body("Email y contraseña son requeridos.");
         }
-
-        boolean valido = clienteService.verificarCredenciales(email, contraseña);
-
-        if (valido) {
-            return ResponseEntity.ok().body("Inicio de sesión exitoso.");
-        } else {
-            return ResponseEntity.status(401).body("Credenciales incorrectas.");
+    
+        Optional<Cliente> clienteOptional = clienteService.getClienteByEmail(email);
+    
+        // Verificamos que exista y que la contraseña coincida
+        if (clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+    
+            if (cliente.getContraseña().equals(contraseña)) {
+                Map<String, Object> datosCliente = new HashMap<>();
+                datosCliente.put("id", cliente.getId());
+                datosCliente.put("email", cliente.getEmail());
+                datosCliente.put("nombre", cliente.getNombre());
+    
+                return ResponseEntity.ok(datosCliente);
+            }
         }
+    
+        return ResponseEntity.status(401).body("Credenciales incorrectas.");
     }
+
     
     // Método para registrar un nuevo cliente
     @PostMapping("/registro")
