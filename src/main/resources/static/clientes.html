@@ -59,20 +59,22 @@
                     body: JSON.stringify({ email, contraseña: password })
                 });
 
-                const data = await response.text();
                 if (response.ok) {
+                    const data = await response.json(); // solo esto, sin usar .text()
                     alert("Inicio de sesión exitoso");
-                    localStorage.setItem("clienteEmail", email);  // Guardar sesión
-                    window.location.href = "reserva.html";  // Redirigir
-                    window.location.href = "reservasCliente.html";  // Redirigir
+                    localStorage.setItem("clienteId", data.id); 
+                    localStorage.setItem("clienteEmail", data.email); 
+                    window.location.href = "reserva.html";
                 } else {
-                    alert("Error: " + data);
+                    const errorText = await response.text(); // esto solo si response.ok es falso
+                    alert("Error: " + errorText);
                 }
             } catch (error) {
                 console.error("Error:", error);
                 alert("Error al conectar con el servidor");
             }
         }
+
 
         async function register(event) {
             event.preventDefault();
