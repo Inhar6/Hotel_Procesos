@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Reportar Problema</title>
-  <link rel="stylesheet" href="stylesReservaProblema.css">
+  <link rel="stylesheet" href="reservaProblema.css">
 </head>
 <body>
   <h1>Reportar Problema en Habitación</h1>
@@ -58,12 +58,12 @@
       emailField.value = clienteEmail;
     }
 
-    document.getElementById("reporteForm").addEventListener("submit", function(event) {
+    document.getElementById("reporteForm").addEventListener("submit", async function(event) {
       event.preventDefault();
 
       const nombre = document.getElementById("nombre").value.trim();
       const email = document.getElementById("email").value.trim();
-      const numeroHabitacion = document.getElementById("numeroHabitacion").value.trim();
+      const numeroHabitacion = String(document.getElementById("numeroHabitacion").value.trim()); // Convertir a cadena
       const fecha = document.getElementById("fecha").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const sugerencias = document.getElementById("sugerencias").value.trim();
@@ -75,19 +75,50 @@
         return;
       }
 
-      // Aquí iría la lógica para enviar el reporte, por ejemplo, una llamada a una API
-      console.log("Reporte enviado:", {
-        nombre,
-        email,
-        numeroHabitacion,
-        fecha,
-        descripcion,
-        sugerencias,
-        urgencia
-      });
+      // Verificar si hay clienteEmail
+      if (!email) {
+        alert("No has iniciado sesión. Por favor, inicia sesión para reportar un problema.");
+        window.location.href = "clientes.html";
+        return;
+      }
 
-      alert("Reporte enviado con éxito.");
-      document.getElementById("reporteForm").reset();
+      try {
+        // Obtener reservas del cliente
+        const response = await fetch(`http://localhost:8080/api/reservas/por-email?email=${email}`);
+        if (!response.ok) {
+          throw new Error("No se encontraron reservas");
+        }
+        const reservas = await response.json();
+        console.log("Reservas obtenidas:", reservas); // Depuración: inspeccionar el JSON
+
+        // Extraer números de habitación
+        const clienteReservas = reservas.map(reserva => String(reserva.habitacion.numero)); // Asegurar que sea cadena
+        console.log("Números de habitación:", clienteReservas); // Depuración: inspeccionar la lista
+        console.log("Número ingresado:", numeroHabitacion); // Depuración: inspeccionar el input
+
+        // Validar si el número de habitación está reservado
+        if (!clienteReservas.includes(numeroHabitacion)) {
+          alert("Error: El número de habitación ingresado no está reservado por usted.");
+          return;
+        }
+
+        // Aquí iría la lógica para enviar el reporte, por ejemplo, una llamada a una API
+        console.log("Reporte enviado:", {
+          nombre,
+          email,
+          numeroHabitacion,
+          fecha,
+          descripcion,
+          sugerencias,
+          urgencia
+        });
+
+        alert("Reporte enviado con éxito.");
+        document.getElementById("reporteForm").reset();
+      } catch (error) {
+        console.error("Error:", error);
+        alert("No se pudieron cargar las reservas. Por favor, intenta de nuevo.");
+      }
     });
 
     // Establecer la fecha actual como valor predeterminado
