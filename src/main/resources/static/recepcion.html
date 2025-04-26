@@ -6,6 +6,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recepción - Habitaciones</title>
     <link rel="stylesheet" href="stylesRecepcion.css">
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .modal-content p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+        .modal-content select, .modal-content input {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .modal-content button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .modal-content .confirm-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .modal-content .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-content button:hover {
+            opacity: 0.9;
+        }
+        /* Estilos para centrar los botones */
+        .buttons-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Espacio entre botones */
+            margin-top: 20px;
+        }
+        .buttons-section button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,8 +135,26 @@
             <button class="modificar-btn" onclick="modificarReserva()">Modificar Reserva</button>
             <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
             <button class="checkin-btn" onclick="irACheckIn()">Realizar Check-In</button>
-            <button class="checkout-btn" onclick="realizarCheckOut()">Realizar Check-Out</button>
+            <button class="checkout-btn" onclick="mostrarModalCheckOut()">Realizar Check-Out</button>
             <button onclick="volver()">Volver</button>
+        </div>
+
+        <!-- Modal para Check-Out -->
+        <div id="modalCheckOut" class="modal">
+            <div class="modal-content">
+                <h3>Realizar Check-Out</h3>
+                <p>Introduzca el ID de la reserva y seleccione el método de pago para completar el check-out.</p>
+                <input type="number" id="reservaId" placeholder="ID de la reserva" required>
+                <select id="metodoPago" required>
+                    <option value="">Selecciona un método de pago</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                    <option value="PayPal">PayPal</option>
+                </select>
+                <button class="confirm-btn" onclick="realizarCheckOut()">Confirmar</button>
+                <button class="cancel-btn" onclick="cerrarModalCheckOut()">Cancelar</button>
+            </div>
         </div>
     </div>
 
@@ -77,7 +169,7 @@
                 const response = await fetch("http://localhost:8080/api/personal/habitaciones");
                 const habitaciones = await response.json();
                 mostrarHabitaciones(habitaciones);
-                await cargarReservas(); // Cargar también las reservas
+                await cargarReservas();
             } catch (error) {
                 console.error("Error al cargar habitaciones:", error);
             }
@@ -172,7 +264,7 @@
             reservas.forEach(reserva => {
                 const metodoPago = reserva.metodoPago || 'N/A';
                 const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
-                const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-'); // Convertir "CheckIn Realizado" a "checkin-realizado"
+                const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
                 const row = `<tr>
                     <td>${reserva.id || 'N/A'}</td>
                     <td>${reserva.habitacion?.numero || 'N/A'}</td>
@@ -251,23 +343,96 @@
             window.location.href = "checkin.html";
         }
 
+        function mostrarModalCheckOut() {
+            console.log("Mostrando modal de Check-Out");
+            const modal = document.getElementById("modalCheckOut");
+            modal.style.display = "flex";
+            document.getElementById("reservaId").value = "";
+            document.getElementById("metodoPago").value = "";
+        }
+
+        function cerrarModalCheckOut() {
+            console.log("Cerrando modal de Check-Out");
+            const modal = document.getElementById("modalCheckOut");
+            modal.style.display = "none";
+        }
+
         async function realizarCheckOut() {
-            const reservaId = prompt("Introduce el ID de la reserva para realizar el Check-Out:");
-            if (reservaId) {
-                try {
-                    const response = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
-                        method: "POST" // Cambiado de PUT a POST
-                    });
-                    const resultado = await response.text();
-                    if (response.ok) {
-                        alert("Check-Out realizado con éxito: " + resultado);
-                        cargarTodas();
-                    } else {
-                        alert("Error al realizar el Check-Out: " + resultado);
-                    }
-                } catch (error) {
-                    alert("Error al conectar con el servidor: " + error.message);
+            const reservaId = document.getElementById("reservaId").value;
+            const metodoPago = document.getElementById("metodoPago").value;
+
+            if (!reservaId) {
+                alert("El ID de la reserva es obligatorio.");
+                return;
+            }
+            if (!metodoPago) {
+                alert("Debes seleccionar un método de pago.");
+                return;
+            }
+
+            try {
+                // Obtener los datos actuales de la reserva para enviar un cuerpo completo
+                const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (!reservaResponse.ok) {
+                    const errorText = await reservaResponse.text();
+                    alert("Error al obtener datos de la reserva: " + errorText);
+                    return;
                 }
+                const reserva = await reservaResponse.json();
+                console.log("Datos actuales de la reserva:", reserva);
+
+                // Preparar datos para actualizar el método de pago
+                const datosUpdate = {
+                    habitacionId: reserva.habitacion?.id || null,
+                    fechaCheckIn: reserva.fechaCheckIn,
+                    fechaCheckOut: reserva.fechaCheckOut,
+                    metodoPago: metodoPago
+                };
+                console.log("Enviando solicitud de actualización de método de pago con datos:", datosUpdate);
+
+                // Actualizar el método de pago
+                const updateResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosUpdate)
+                });
+
+                const updateResultado = await updateResponse.text();
+                console.log("Respuesta de actualización de método de pago:", updateResultado);
+
+                if (!updateResponse.ok) {
+                    alert("Error al actualizar el método de pago: " + updateResultado);
+                    return;
+                }
+
+                // Realizar el check-out solo si la actualización fue exitosa
+                const datosCheckout = {
+                    metodoPago: metodoPago
+                };
+                console.log("Enviando solicitud de check-out con datos:", datosCheckout);
+
+                const checkoutResponse = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosCheckout)
+                });
+
+                const checkoutResultado = await checkoutResponse.text();
+                console.log("Respuesta de check-out:", checkoutResultado);
+
+                if (checkoutResponse.ok) {
+                    alert("Check-Out realizado con éxito: " + checkoutResultado);
+                    cerrarModalCheckOut();
+                    await cargarTodas();
+                } else {
+                    alert("Error al realizar el Check-Out: " + checkoutResultado);
+                }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("Error al conectar con el servidor: " + error.message);
             }
         }
 
@@ -275,7 +440,13 @@
             window.location.href = "personal.html";
         }
 
-        window.onload = cargarTodas;
+        // Asegurarse de que el modal esté oculto al cargar la página
+        window.onload = function() {
+            console.log("Página cargada, asegurando que el modal esté oculto");
+            const modal = document.getElementById("modalCheckOut");
+            modal.style.display = "none";
+            cargarTodas();
+        };
     </script>
 </body>
 
