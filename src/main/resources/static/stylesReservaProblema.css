@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     color: white;
     flex-direction: column;
-    padding-top: 20px; /* Mantenido para acercar el título */
+    padding-top: 10px;
 }
 
 /* Contenedor principal centrado */
@@ -48,7 +48,7 @@ body {
 
 /* Títulos */
 h1 {
-    margin: 10px 0; /* Mantenido para acercar el título a la caja */
+    margin: 10px 0;
     font-size: 28px;
     color: #ffffff;
 }
@@ -73,8 +73,8 @@ label {
     font-weight: bold;
     margin-bottom: 5px;
     color: #fff;
-    width: 100%; /* Asegura que ocupe todo el ancho */
-    text-align: left; /* Alinea el texto a la izquierda */
+    width: 100%;
+    text-align: left;
 }
 
 input, select, textarea {
@@ -133,7 +133,8 @@ button:hover {
 .button-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between; /* Enviar Reporte a la izquierda, Volver a la derecha */
     gap: 15px;
     margin-top: 20px;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
 }

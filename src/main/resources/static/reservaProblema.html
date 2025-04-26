@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Reportar Problema</title>
-  <link rel="stylesheet" href="reservaProblema.css">
+  <link rel="stylesheet" href="stylesReservaProblema.css">
 </head>
 <body>
   <h1>Reportar Problema en Habitación</h1>
@@ -37,26 +37,43 @@
         <option value="Media">Media</option>
         <option value="Alta">Alta</option>
       </select>
-
-      
     </form>
     <div class="button-container">
-      <button type="submit">Enviar Reporte</button>
+      <button type="submit" form="reporteForm">Enviar Reporte</button>
       <button onclick="window.location.href='reservasCliente.html'">Volver</button>
     </div>
   </div>
 
   <script>
+    // Autocompletar campos Nombre y Correo Electrónico desde localStorage
+    const nombreField = document.getElementById("nombre");
+    const emailField = document.getElementById("email");
+    const clienteNombre = localStorage.getItem("clienteNombre");
+    const clienteEmail = localStorage.getItem("clienteEmail");
+
+    if (clienteNombre) {
+      nombreField.value = clienteNombre;
+    }
+    if (clienteEmail) {
+      emailField.value = clienteEmail;
+    }
+
     document.getElementById("reporteForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
-      const nombre = document.getElementById("nombre").value;
-      const email = document.getElementById("email").value;
-      const numeroHabitacion = document.getElementById("numeroHabitacion").value;
+      const nombre = document.getElementById("nombre").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const numeroHabitacion = document.getElementById("numeroHabitacion").value.trim();
       const fecha = document.getElementById("fecha").value;
-      const descripcion = document.getElementById("descripcion").value;
-      const sugerencias = document.getElementById("sugerencias").value;
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const sugerencias = document.getElementById("sugerencias").value.trim();
       const urgencia = document.getElementById("urgencia").value;
+
+      // Validar campos obligatorios
+      if (!nombre || !email || !numeroHabitacion || !fecha || !descripcion || !urgencia) {
+        alert("Por favor, completa todos los campos obligatorios (excepto Sugerencias).");
+        return;
+      }
 
       // Aquí iría la lógica para enviar el reporte, por ejemplo, una llamada a una API
       console.log("Reporte enviado:", {
