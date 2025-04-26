@@ -48,6 +48,15 @@ body {
     align-items: center;
 }
 
+/* Contenedor de botones */
+.button-container {
+    display: flex;
+    flex-direction: row; /* Asegura que los botones estén en una fila */
+    justify-content: center;
+    gap: 15px; /* Espacio entre botones */
+    margin-top: 20px;
+}
+
 /* Animación de aparición */
 @keyframes fadeIn {
     from {
@@ -140,9 +149,10 @@ input:focus {
     outline: 2px solid #4ca1af;
 }
 
+
 /* Botón principal */
 button {
-    width: 100%;
+    width: 200px; /* Ancho fijo para los botones */
     padding: 12px;
     background-color: #4ca1af;
     border: none;
@@ -152,7 +162,6 @@ button {
     border-radius: 8px;
     transition: all 0.3s;
     font-weight: bold;
-    margin-top: 10px;
 }
 
 button:hover {
@@ -160,6 +169,8 @@ button:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
 }
+
+
 
 /* Enlaces */
 a {

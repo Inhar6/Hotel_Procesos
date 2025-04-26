@@ -22,7 +22,10 @@
         <!-- Se rellenará dinámicamente -->
       </tbody>
     </table>
-    <button onclick="window.location.href='reserva.html'">Volver</button>
+    <div class="button-container">
+      <button class="reportar-problemas" onclick="window.location.href='reservaProblema.html'">Reportar problemas</button>
+      <button onclick="window.location.href='reserva.html'">Volver</button>
+    </div>
   </div>
   <script>
     function mostrarReservas() {
@@ -34,7 +37,6 @@
       }
   
       fetch(`http://localhost:8080/api/reservas/por-email?email=${email}`)
-
         .then(response => {
           if (!response.ok) {
             throw new Error("No se encontraron reservas.");
