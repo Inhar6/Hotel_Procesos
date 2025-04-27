@@ -1,5 +1,5 @@
 package com.example.restapi.model;
-
+// me he ayudado de chatgpt para ver que caracteristicas poner.
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -15,10 +15,6 @@ public class Problema {
    private LocalDateTime fechaReporte;
 
    private boolean resuelto;
-
-   // Opcional: si quieres relacionarlo a una habitación en el futuro
-   // @ManyToOne
-   // private Habitacion habitacion;
 
    // Getters y Setters
    public Long getId() {
