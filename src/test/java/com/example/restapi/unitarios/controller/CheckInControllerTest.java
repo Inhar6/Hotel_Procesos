@@ -60,9 +60,79 @@ public class CheckInControllerTest {
     }
 
     @Test
-    public void testRealizarCheckIn_FaltanCamposObligatorios() {
+    public void testRealizarCheckIn_NombreHuespedNulo() {
         // Arrange
-        datosCheckIn.setNombreHuesped(null); // Campo obligatorio faltante
+        datosCheckIn.setNombreHuesped(null);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_ApellidosHuespedNulo() {
+        // Arrange
+        datosCheckIn.setApellidosHuesped(null);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_DocumentoNumeroNulo() {
+        // Arrange
+        datosCheckIn.setDocumentoNumero(null);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckInNulo() {
+        // Arrange
+        datosCheckIn.setFechaCheckIn(null);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckOutNulo() {
+        // Arrange
+        datosCheckIn.setFechaCheckOut(null);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_MetodoPagoNulo() {
+        // Arrange
+        datosCheckIn.setMetodoPago(null);
 
         // Act
         ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
@@ -88,9 +158,38 @@ public class CheckInControllerTest {
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckOutInvalida() {
+    public void testRealizarCheckIn_FechaCheckInHoy() {
         // Arrange
-        datosCheckIn.setFechaCheckOut(datosCheckIn.getFechaCheckIn()); // Check-out igual a check-in
+        datosCheckIn.setFechaCheckIn(LocalDate.now());
+        when(checkInService.realizarCheckIn(any(CheckIn.class))).thenReturn(true);
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Check-in realizado con éxito.", response.getBody());
+        verify(checkInService, times(1)).realizarCheckIn(datosCheckIn);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckOutIgualCheckIn() {
+        // Arrange
+        datosCheckIn.setFechaCheckOut(datosCheckIn.getFechaCheckIn());
+
+        // Act
+        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("La fecha de check-out debe ser posterior a la fecha de check-in.", response.getBody());
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckOutAnteriorCheckIn() {
+        // Arrange
+        datosCheckIn.setFechaCheckOut(datosCheckIn.getFechaCheckIn().minusDays(1));
 
         // Act
         ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);

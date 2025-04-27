@@ -23,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-public class ReservaRepositoryIntegrationTest {
+public class ReservaRepositoryIT {
 
     @Autowired
     private ReservaRepository reservaRepository;
