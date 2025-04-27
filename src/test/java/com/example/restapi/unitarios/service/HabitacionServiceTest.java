@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,10 @@ class HabitacionServiceTest {
     @BeforeEach
     void setUp() {
         habitacion1 = new Habitacion(101, 100.0, true, "Limpia", false, "Individual");
+        habitacion1.setId(1L);
+        
         habitacion2 = new Habitacion(102, 150.0, false, "Sucio", true, "Doble");
+        habitacion2.setId(2L);
     }
 
     @Test
@@ -45,6 +49,16 @@ class HabitacionServiceTest {
         List<Habitacion> habitaciones = habitacionService.getAllHabitaciones();
 
         assertEquals(2, habitaciones.size());
+        verify(habitacionRepository, times(1)).findAll();
+    }
+    
+    @Test
+    void testGetAllHabitacionesEmpty() {
+        when(habitacionRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Habitacion> habitaciones = habitacionService.getAllHabitaciones();
+
+        assertTrue(habitaciones.isEmpty());
         verify(habitacionRepository, times(1)).findAll();
     }
 
@@ -99,7 +113,7 @@ class HabitacionServiceTest {
         Habitacion updatedDetails = new Habitacion(101, 120.0, true, "Limpia", false, "Suite");
         when(habitacionRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(Exception.class, () -> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             habitacionService.updateHabitacion(1L, updatedDetails);
         });
 
@@ -123,7 +137,7 @@ class HabitacionServiceTest {
     void testDeleteHabitacionNotFound() {
         when(habitacionRepository.existsById(1L)).thenReturn(false);
 
-        Exception exception = assertThrows(Exception.class, () -> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             habitacionService.deleteHabitacion(1L);
         });
 
@@ -142,6 +156,16 @@ class HabitacionServiceTest {
         assertTrue(habitacionesDisponibles.get(0).isDisponible());
         verify(habitacionRepository, times(1)).findByDisponibleTrue();
     }
+    
+    @Test
+    void testGetHabitacionesDisponiblesEmpty() {
+        when(habitacionRepository.findByDisponibleTrue()).thenReturn(Collections.emptyList());
+
+        List<Habitacion> habitacionesDisponibles = habitacionService.getHabitacionesDisponibles();
+
+        assertTrue(habitacionesDisponibles.isEmpty());
+        verify(habitacionRepository, times(1)).findByDisponibleTrue();
+    }
 
     @Test
     void testGetHabitacionesNoLimpias() {
@@ -151,6 +175,16 @@ class HabitacionServiceTest {
 
         assertEquals(1, habitacionesNoLimpias.size());
         assertEquals("Sucio", habitacionesNoLimpias.get(0).getEstadoLimpieza());
+        verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
+    }
+    
+    @Test
+    void testGetHabitacionesNoLimpiasEmpty() {
+        when(habitacionRepository.findByEstadoLimpiezaNot("Limpia")).thenReturn(Collections.emptyList());
+
+        List<Habitacion> habitacionesNoLimpias = habitacionService.getHabitacionesNoLimpias();
+
+        assertTrue(habitacionesNoLimpias.isEmpty());
         verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
     }
 
@@ -163,7 +197,20 @@ class HabitacionServiceTest {
         assertEquals(2, informe.get("totalHabitaciones"));
         assertEquals(1, informe.get("habitacionesOcupadas"));
         assertEquals(1, informe.get("habitacionesDisponibles"));
-        //assertEquals("50,00%", informe.get("porcentajeOcupacion"));
+        assertEquals("50,00%", informe.get("porcentajeOcupacion"));
+        verify(habitacionRepository, times(1)).findAll();
+    }
+    
+    @Test
+    void testObtenerInformeOcupacionSinHabitaciones() {
+        when(habitacionRepository.findAll()).thenReturn(Collections.emptyList());
+        Map<String, Object> informe = habitacionService.obtenerInformeOcupacion();
+
+        assertNotNull(informe);
+        assertEquals(0, informe.get("totalHabitaciones"));
+        assertEquals(0, informe.get("habitacionesOcupadas"));
+        assertEquals(0, informe.get("habitacionesDisponibles"));
+        assertEquals("0,00%", informe.get("porcentajeOcupacion"));
         verify(habitacionRepository, times(1)).findAll();
     }
 
@@ -179,6 +226,20 @@ class HabitacionServiceTest {
         verify(habitacionRepository, times(1))
                 .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
     }
+    
+    @Test
+    void testGetHabitacionUrgenteNoHayDisponibles() {
+        when(habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia"))
+                .thenReturn(Collections.emptyList());
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            habitacionService.getHabitacionUrgente();
+        });
+
+        assertEquals("No hay habitaciones disponibles para asignación urgente", exception.getMessage());
+        verify(habitacionRepository, times(1))
+                .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
+    }
 
     @Test
     void testGetHabitacionParaLimpiezaUrgente() {
@@ -188,6 +249,18 @@ class HabitacionServiceTest {
 
         assertNotNull(habitacionParaLimpiezaUrgente);
         assertEquals("Sucio", habitacionParaLimpiezaUrgente.getEstadoLimpieza());
+        verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
+    }
+    
+    @Test
+    void testGetHabitacionParaLimpiezaUrgenteNoHayPendientes() {
+        when(habitacionRepository.findByEstadoLimpiezaNot("Limpia")).thenReturn(Collections.emptyList());
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            habitacionService.getHabitacionParaLimpiezaUrgente();
+        });
+
+        assertEquals("No hay habitaciones que necesiten limpieza urgente", exception.getMessage());
         verify(habitacionRepository, times(1)).findByEstadoLimpiezaNot("Limpia");
     }
 
@@ -202,5 +275,43 @@ class HabitacionServiceTest {
         assertEquals(101, habitacionesUrgentes.get(0).getNumero());
         verify(habitacionRepository, times(1))
                 .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
+    }
+    
+    @Test
+    void testGetHabitacionesUrgentesEmpty() {
+        when(habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia"))
+                .thenReturn(Collections.emptyList());
+
+        List<Habitacion> habitacionesUrgentes = habitacionService.getHabitacionesUrgentes();
+
+        assertTrue(habitacionesUrgentes.isEmpty());
+        verify(habitacionRepository, times(1))
+                .findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse("Limpia");
+    }
+    
+    @Test
+    void testMarcarHabitacionComoLimpia() {
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion1));
+        when(habitacionRepository.save(any(Habitacion.class))).thenReturn(habitacion1);
+        
+        Habitacion habitacionLimpia = habitacionService.marcarHabitacionComoLimpia(1L);
+        
+        assertNotNull(habitacionLimpia);
+        assertEquals("Limpia", habitacionLimpia.getEstadoLimpieza());
+        verify(habitacionRepository, times(1)).findById(1L);
+        verify(habitacionRepository, times(1)).save(habitacion1);
+    }
+    
+    @Test
+    void testMarcarHabitacionComoLimpiaNotFound() {
+        when(habitacionRepository.findById(99L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            habitacionService.marcarHabitacionComoLimpia(99L);
+        });
+        
+        assertEquals("Habitación no encontrada", exception.getMessage());
+        verify(habitacionRepository, times(1)).findById(99L);
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
     }
 }
