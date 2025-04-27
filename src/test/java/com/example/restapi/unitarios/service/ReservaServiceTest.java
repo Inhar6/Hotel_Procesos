@@ -71,6 +71,39 @@ public class ReservaServiceTest {
     }
 
     @Test
+    public void testReservarHabitacionClienteNoExiste() {
+        when(clienteRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        boolean result = reservaService.reservarHabitacion(1L, 1L, LocalDate.now(), LocalDate.now().plusDays(2), "Tarjeta");
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
+
+    @Test
+    public void testReservarHabitacionHabitacionNoExiste() {
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        boolean result = reservaService.reservarHabitacion(1L, 1L, LocalDate.now(), LocalDate.now().plusDays(2), "Tarjeta");
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
+
+    @Test
+    public void testReservarHabitacionNoDisponible() {
+        habitacion.setDisponible(false);
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion));
+        
+        boolean result = reservaService.reservarHabitacion(1L, 1L, LocalDate.now(), LocalDate.now().plusDays(2), "Tarjeta");
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
+
+    @Test
     public void testModificarReserva() {
         Habitacion nuevaHabitacion = new Habitacion();
         nuevaHabitacion.setId(2L);
@@ -91,6 +124,63 @@ public class ReservaServiceTest {
     }
 
     @Test
+    public void testModificarReservaReservaNoExiste() {
+        when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+    }
+
+    @Test
+    public void testModificarReservaHabitacionNoExiste() {
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(habitacionRepository.findById(2L)).thenReturn(Optional.empty());
+        
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(reserva);
+    }
+
+    @Test
+    public void testModificarReservaMismaHabitacion() {
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion));
+        
+        LocalDate nuevaFechaCheckIn = LocalDate.now().plusDays(1);
+        LocalDate nuevaFechaCheckOut = LocalDate.now().plusDays(4);
+        
+        boolean result = reservaService.modificarReserva(1L, 1L, nuevaFechaCheckIn, nuevaFechaCheckOut, "Efectivo");
+        
+        assertTrue(result);
+        assertEquals(nuevaFechaCheckIn, reserva.getFechaCheckIn());
+        assertEquals(nuevaFechaCheckOut, reserva.getFechaCheckOut());
+        assertEquals("Efectivo", reserva.getMetodoPago());
+        verify(reservaRepository, times(1)).save(reserva);
+        // No debería intentar liberar la habitación actual
+        verify(habitacionRepository, never()).save(habitacion);
+    }
+
+    @Test
+    public void testModificarReservaNuevaHabitacionNoDisponible() {
+        Habitacion nuevaHabitacion = new Habitacion();
+        nuevaHabitacion.setId(2L);
+        nuevaHabitacion.setDisponible(false);  // Habitación no disponible
+        
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(habitacionRepository.findById(2L)).thenReturn(Optional.of(nuevaHabitacion));
+        
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        
+        assertFalse(result);
+        // No debería modificar la reserva ni las habitaciones
+        verify(reservaRepository, never()).save(any(Reserva.class));
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
+    }
+
+    @Test
     public void testCancelarReserva() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
 
@@ -101,6 +191,29 @@ public class ReservaServiceTest {
         assertTrue(habitacion.isDisponible());
         verify(reservaRepository, times(1)).save(reserva);
         verify(habitacionRepository, times(1)).save(habitacion);
+    }
+
+    @Test
+    public void testCancelarReservaNoExiste() {
+        when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        boolean result = reservaService.cancelarReserva(1L);
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
+    }
+
+    @Test
+    public void testCancelarReservaYaCancelada() {
+        reserva.cancelarReserva();  // Establece el estado a "Cancelada"
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        
+        boolean result = reservaService.cancelarReserva(1L);
+        
+        assertFalse(result);
+        verify(reservaRepository, never()).save(any(Reserva.class));
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
     }
 
     @Test
@@ -126,6 +239,16 @@ public class ReservaServiceTest {
     }
 
     @Test
+    public void testGetReservaByIdNoExiste() {
+        when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Optional<Reserva> foundReserva = reservaService.getReservaById(1L);
+        
+        assertFalse(foundReserva.isPresent());
+        verify(reservaRepository, times(1)).findById(1L);
+    }
+
+    @Test
     public void testGetAllReservas() {
         when(reservaRepository.findAll()).thenReturn(List.of(reserva));
 
@@ -134,5 +257,16 @@ public class ReservaServiceTest {
         assertEquals(1, reservas.size());
         assertEquals(reserva, reservas.get(0));
         verify(reservaRepository, times(1)).findAll();
+    }
+    
+    @Test
+    public void testObtenerReservasPendientes() {
+        when(reservaRepository.findByEstado("Pendiente")).thenReturn(List.of(reserva));
+        
+        List<Reserva> reservasPendientes = reservaService.obtenerReservasPendientes();
+        
+        assertEquals(1, reservasPendientes.size());
+        assertEquals(reserva, reservasPendientes.get(0));
+        verify(reservaRepository, times(1)).findByEstado("Pendiente");
     }
 }
