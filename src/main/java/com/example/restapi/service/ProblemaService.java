@@ -1,6 +1,7 @@
 package com.example.restapi.service;
 
 import com.example.restapi.model.Problema;
+import java.time.LocalDate;
 import com.example.restapi.repository.ProblemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class ProblemaService {
    private ProblemaRepository problemaRepository;
 
    public Problema reportarProblema(Problema problema) {
-      problema.setFechaReporte(LocalDateTime.now());
+      problema.setFechaReporte(LocalDate.now());
       problema.setResuelto(false);
       return problemaRepository.save(problema);
    }

@@ -9,20 +9,113 @@
 
 <body>
     <h1>Panel de Mantenimiento</h1>
-
-   
-   <div id="notificacion"></div>
-
-   
-   <table id="tablaProblemas">
-      <tr>
-         <th>ID</th>
-         <th>Descripción</th>
-         <th>Fecha Reporte</th>
-         <th>Habitación</th>
-         <th>Estado</th>
-         <th>Acciones</th> 
-      </tr>
-   </table>
-</body>
+ 
+    
+    <div id="notificacion"></div>
+ 
+    
+    <table id="tablaProblemas">
+       <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Email</th>
+          <th>Habitación</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Sugerencias</th>
+          <th>Urgencia</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+       </tr>
+    </table>
+ 
+    <script>
+       let ultimoIdProblemaVisto = 0;
+ 
+       async function verificarNuevosProblemas() {
+          try {
+             const response = await fetch('http://localhost:8080/api/problemas/no-resueltos');
+             if (!response.ok) {
+                throw new Error('Error al comprobar problemas no resueltos');
+             }
+ 
+             const problemas = await response.json();
+ 
+             if (problemas.length > 0) {
+                const maxIdActual = Math.max(...problemas.map(p => p.id));
+ 
+                if (maxIdActual > ultimoIdProblemaVisto) {
+                   mostrarNotificacion('¡Nuevo problema reportado en mantenimiento!');
+                   actualizarTablaProblemas(problemas);
+                   ultimoIdProblemaVisto = maxIdActual;
+                } else {
+                   actualizarTablaProblemas(problemas); 
+                }
+             }
+          } catch (error) {
+             console.error('Error buscando problemas:', error);
+          }
+       }
+ 
+       function mostrarNotificacion(mensaje) {
+          const noti = document.getElementById('notificacion');
+          noti.innerText = mensaje;
+          noti.style.display = 'block';
+ 
+          setTimeout(() => {
+             noti.style.display = 'none';
+          }, 3000);
+       }
+ 
+       function actualizarTablaProblemas(problemas) {
+          const tabla = document.getElementById('tablaProblemas');
+          tabla.querySelectorAll('tr:not(:first-child)').forEach(e => e.remove());
+ 
+          problemas.forEach(problema => {
+             const fila = document.createElement('tr');
+ 
+             fila.innerHTML = `
+                <td>${problema.id}</td>
+                <td>${problema.nombre}</td>
+                <td>${problema.email}</td>
+                <td>${problema.numeroHabitacion}</td>
+                <td>${problema.fechaReporte}</td>
+                <td>${problema.descripcion}</td>
+                <td>${problema.sugerencias || ''}</td>
+                <td>${problema.urgencia}</td>
+                <td>${problema.resuelto ? 'Resuelto' : 'Pendiente'}</td>
+                <td>
+                   ${problema.resuelto ? '' : `<button onclick="resolverProblema(${problema.id})">Marcar como resuelto</button>`}
+                </td>
+             `;
+ 
+             tabla.appendChild(fila);
+          });
+       }
+ 
+       async function resolverProblema(id) {
+          try {
+             const response = await fetch(`http://localhost:8080/api/problemas/resolver/${id}`, {
+                method: 'PUT'
+             });
+ 
+             if (response.ok) {
+                mostrarNotificacion('Problema marcado como resuelto.');
+                verificarNuevosProblemas(); 
+             } else {
+                console.error('Error al marcar el problema como resuelto');
+             }
+          } catch (error) {
+             console.error('Error resolviendo problema:', error);
+          }
+       }
+ 
+       
+       setInterval(verificarNuevosProblemas, 10000);
+ 
+       
+       verificarNuevosProblemas();
+    </script>
+ 
+ </body>
 </html>
