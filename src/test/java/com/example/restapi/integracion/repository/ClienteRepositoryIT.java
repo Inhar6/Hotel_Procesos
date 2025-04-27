@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-public class ClienteRepositoryIntegrationTest {
+public class ClienteRepositoryIT {
 
     @Autowired
     private ClienteRepository clienteRepository;
