@@ -127,4 +127,9 @@ public class ReservaService {
     public List<Reserva> getAllReservas() {
         return reservaRepository.findAll();
     }
+
+    public List<Reserva> obtenerReservasPendientes() {
+        return reservaRepository.findByEstado("Pendiente");
+    }
+
 }

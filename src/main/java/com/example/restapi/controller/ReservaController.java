@@ -128,4 +128,11 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo cancelar la reserva. Verifica que exista.");
         }
     }
+
+    @GetMapping("/nuevas")
+    public ResponseEntity<List<Reserva>> obtenerNuevasReservas() {
+        List<Reserva> reservasNuevas = reservaService.obtenerReservasPendientes();
+        return ResponseEntity.ok(reservasNuevas);
+    }
+
 }
