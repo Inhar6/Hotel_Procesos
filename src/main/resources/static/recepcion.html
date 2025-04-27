@@ -451,7 +451,24 @@
             modal.style.display = "none";
             cargarTodas();
         };
+        
+        async function verificarNuevasReservas() {
+            try {
+                const response = await fetch('http://localhost:8080/api/reservas/nuevas');
+                if (!response.ok) {
+                    throw new Error('Error al comprobar nuevas reservas');
+                }
 
+                const reservas = await response.json();
+
+                if (reservas.length > 0) {
+                    mostrarNotificacion('¡Tienes nuevas reservas pendientes!');
+                    actualizarTablaReservas(reservas);
+                }
+            } catch (error) {
+                console.error('Error buscando nuevas reservas:', error);
+            }
+        }
     </script>
 
 
