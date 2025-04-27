@@ -480,6 +480,31 @@
                 noti.style.display = 'none';
             }, 3000); // Ocultar después de 3 segundos
         }
+
+        function actualizarTablaReservas(reservas) {
+            const tabla = document.getElementById('tablaReservas');
+
+            // Elimina todas las filas anteriores excepto la cabecera
+            tabla.querySelectorAll('tr:not(:first-child)').forEach(e => e.remove());
+
+            // Añade nuevas filas
+            reservas.forEach(reserva => {
+                const fila = document.createElement('tr');
+
+                fila.innerHTML = `
+                    <td>${reserva.id}</td>
+                    <td>${reserva.fechaInicio}</td>
+                    <td>${reserva.fechaFin}</td>
+                    <td>${reserva.cliente ? reserva.cliente.nombre : 'Cliente desconocido'}</td>
+                    <td>${reserva.habitacion ? reserva.habitacion.tipo : 'Habitación desconocida'}</td>
+                    <td>${reserva.estado}</td>
+                `;
+
+                tabla.appendChild(fila);
+            });
+        }
+
+        setInterval(verificarNuevasReservas, 10000);
     </script>
 
 
