@@ -451,7 +451,7 @@
             modal.style.display = "none";
             cargarTodas();
         };
-        
+
         async function verificarNuevasReservas() {
             try {
                 const response = await fetch('http://localhost:8080/api/reservas/nuevas');
@@ -468,6 +468,17 @@
             } catch (error) {
                 console.error('Error buscando nuevas reservas:', error);
             }
+
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const noti = document.getElementById('notificacion');
+            noti.innerText = mensaje;
+            noti.style.display = 'block';
+            
+            setTimeout(() => {
+                noti.style.display = 'none';
+            }, 3000); // Ocultar después de 3 segundos
         }
     </script>
 
