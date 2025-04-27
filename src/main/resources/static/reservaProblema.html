@@ -5,6 +5,7 @@
   <title>Reportar Problema</title>
   <link rel="stylesheet" href="stylesReservaProblema.css">
 </head>
+
 <body>
   <h1>Reportar Problema en Habitación</h1>
 
@@ -102,22 +103,44 @@
           return;
         }
 
-        // Aquí iría la lógica para enviar el reporte, por ejemplo, una llamada a una API
-        console.log("Reporte enviado:", {
-          nombre,
-          email,
-          numeroHabitacion,
-          fecha,
-          descripcion,
-          sugerencias,
-          urgencia
-        });
+        
+        try {
+          const nuevoProblema = {
+              nombre: nombre,
+              email: email,
+              numeroHabitacion: numeroHabitacion,
+              fechaReporte: fecha,
+              descripcion: descripcion,
+              sugerencias: sugerencias,
+              urgencia: urgencia,
+              resuelto: false 
+          };
+
+          const enviarProblema = await fetch('http://localhost:8080/api/problemas/reportar', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(nuevoProblema)
+          });
+
+          if (enviarProblema.ok) {
+              alert("Reporte enviado con éxito.");
+              document.getElementById("reporteForm").reset();
+          } else {
+              alert("Error al enviar el reporte. Inténtalo de nuevo más tarde.");
+          }
+        } catch (error) {
+          console.error("Error enviando problema:", error);
+          alert("No se pudo enviar el reporte. Revisa tu conexión.");
+        }
+
 
         alert("Reporte enviado con éxito.");
         document.getElementById("reporteForm").reset();
       } catch (error) {
         console.error("Error:", error);
-        alert("No se pudieron cargar las reservas. Por favor, intenta de nuevo.");
+        alert("No se pudieron cargar las reservas. Intenta de nuevo.");
       }
     });
 
