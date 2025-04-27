@@ -86,6 +86,11 @@ button:hover {
     color: white;
 }
 
+.mantenimiento {
+    background-color: #6d9eeb;
+    color: white;
+}
+
 .volver {
     background-color: #aaaaaa;
     color: white;
@@ -93,7 +98,7 @@ button:hover {
 }
 
 /* Hover para todos los botones */
-.gerente:hover, .limpieza:hover, .recepcion:hover, .volver:hover {
+.gerente:hover, .limpieza:hover, .recepcion:hover, .volver:hover, .mantenimiento:hover {
     transform: scale(1.1);
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
 }
