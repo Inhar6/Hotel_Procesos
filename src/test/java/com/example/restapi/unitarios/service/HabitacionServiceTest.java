@@ -197,7 +197,7 @@ class HabitacionServiceTest {
         assertEquals(2, informe.get("totalHabitaciones"));
         assertEquals(1, informe.get("habitacionesOcupadas"));
         assertEquals(1, informe.get("habitacionesDisponibles"));
-        assertEquals("50,00%", informe.get("porcentajeOcupacion"));
+        assertEquals(String.format("%.2f%%", 50.00), informe.get("porcentajeOcupacion"));
         verify(habitacionRepository, times(1)).findAll();
     }
     
@@ -210,7 +210,7 @@ class HabitacionServiceTest {
         assertEquals(0, informe.get("totalHabitaciones"));
         assertEquals(0, informe.get("habitacionesOcupadas"));
         assertEquals(0, informe.get("habitacionesDisponibles"));
-        assertEquals("0,00%", informe.get("porcentajeOcupacion"));
+        assertEquals(String.format("%.2f%%", 0.00), informe.get("porcentajeOcupacion"));
         verify(habitacionRepository, times(1)).findAll();
     }
 
