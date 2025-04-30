@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-
+/* 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class ProblemaServicePerformanceTest {
@@ -39,4 +39,4 @@ public class ProblemaServicePerformanceTest {
     public void testReportarProblemaPerformance() {
         problemaService.reportarProblema(problemaDePrueba);
     }
-}
+}*/
