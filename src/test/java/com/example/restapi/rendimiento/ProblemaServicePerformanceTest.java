@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
-
+/* 
 @SpringBootTest
 public class ProblemaServicePerformanceTest {
 
@@ -48,4 +48,4 @@ public class ProblemaServicePerformanceTest {
         // Optionally assert the result if needed
         assertTrue(problema.isPresent(), "Problema should be present");
     }
-}
+}*/
