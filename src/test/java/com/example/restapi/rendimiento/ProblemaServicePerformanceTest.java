@@ -42,7 +42,7 @@ public class ProblemaServicePerformanceTest {
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000)
-    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = (float) 0.1)
+    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = 0.1f)
     public void testReportarProblemaPerformance() {
         Problema result = problemaService.reportarProblema(testProblema);
         assertTrue(result != null && result.getFechaReporte() != null, "Problema should be reported with a date");
@@ -50,7 +50,7 @@ public class ProblemaServicePerformanceTest {
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000)
-    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = (float) 0.1)
+    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = 0.1f)
     public void testObtenerProblemasNoResueltosPerformance() {
         List<Problema> problemas = problemaService.obtenerProblemasNoResueltos();
         assertTrue(problemas.size() > 0, "There should be unresolved problems");
@@ -58,7 +58,7 @@ public class ProblemaServicePerformanceTest {
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 10000)
-    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = (float) 0.1)
+    @JUnitPerfTestRequirement(executionsPerSec = 50, allowedErrorPercentage = 0.1f)
     public void testObtenerProblemaPorIdPerformance() {
         Optional<Problema> problema = problemaService.obtenerProblemaPorId(1L);
         assertTrue(problema.isPresent(), "Problema should be present");
