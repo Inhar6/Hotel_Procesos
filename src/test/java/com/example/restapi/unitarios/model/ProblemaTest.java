@@ -1,7 +1,9 @@
-package com.example.restapi.model;
+package com.example.restapi.unitarios.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.example.restapi.model.Problema;
 
 import java.time.LocalDate;
 
