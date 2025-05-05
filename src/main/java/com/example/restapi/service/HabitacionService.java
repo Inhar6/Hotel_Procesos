@@ -59,6 +59,13 @@ public class HabitacionService {
         habitacion.setEstadoLimpieza("Limpia"); // Ajusta "Limpia" según el valor que uses
         return habitacionRepository.save(habitacion);
     }
+
+    public Habitacion marcarHabitacionComoSucia(Long id) {
+        Habitacion habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
+        habitacion.setEstadoLimpieza("Sucia"); // Ajusta "Sucia" según el valor que uses
+        return habitacionRepository.save(habitacion);
+    }
     
      // Método para obtener una habitación que necesita limpieza urgente
      public Habitacion getHabitacionParaLimpiezaUrgente() {

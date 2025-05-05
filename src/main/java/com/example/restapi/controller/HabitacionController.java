@@ -2,6 +2,7 @@ package com.example.restapi.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,16 @@ public class HabitacionController {
         }
     }
 
+    @PutMapping("habitaciones/{id}/servicioLimpieza")
+    public ResponseEntity<Habitacion> marcarHabitacionComoSucia(@PathVariable Long id) {
+        try {
+            Habitacion habitacion = habitacionService.marcarHabitacionComoSucia(id);
+            return ResponseEntity.ok(habitacion);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     // Método para obtener una habitación que necesita limpieza urgente
     @GetMapping("/habitaciones/limpiezaUrgente")
     public Habitacion getHabitacionParaLimpiezaUrgente() {
@@ -94,5 +105,17 @@ public class HabitacionController {
     public Map<String, Object> obtenerOcupacionHotel() {
         return habitacionService.obtenerInformeOcupacion();
     }
+
+    //Sacar la habitacion por el id
+    @GetMapping("/habitaciones/{id}")
+    public ResponseEntity<Optional<Habitacion>> getHabitacionPorId(@PathVariable Long id) {
+    try {
+        Optional<Habitacion> habitacion = habitacionService.getHabitacionById(id);
+        return ResponseEntity.ok(habitacion);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    }
+
 
 }
