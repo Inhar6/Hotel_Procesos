@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Información de la Habitación</title>
+  <link rel="stylesheet" href="stylesClienteWeb.css">
+</head>
+<body>
+  <div class="container" id="infoHabitacion">
+    <h1>Información de la Habitación</h1>
+    <p><strong>Número:</strong> <span id="numeroHabitacion"></span></p>
+    <p><strong>Tipo:</strong> <span id="tipoHabitacion"></span></p>
+    <p><strong>Precio por Noche:</strong> <span id="precioHabitacion"></span> €</p>
+    <p><strong>Estado:</strong> <span id="estadoHabitacion"></span></p>
+  </div>
+
+  <div class="container" id="acciones">
+    <button class="btn" onclick="window.location.href='reservasCliente.html'">Volver</button>
+    <button class="btn" onclick="solicitarServicio()">Solicitar Servicio de Habitación</button>
+  </div>
+
+  <script>
+    // Función para obtener datos de la habitación
+    async function obtenerDatosHabitacion() {
+      const habitacionId = localStorage.getItem("habitacionId");
+      if (!habitacionId) {
+        alert('No se pudo identificar la habitación.');
+        window.location.href = "reservasCliente.html";
+        return;
+      }
+
+      console.log(`Fetching data for habitacionId: ${habitacionId}`); // Debugging
+
+      try {
+        const response = await fetch(`/api/personal/habitaciones/${habitacionId}`);
+        console.log(`Response status: ${response.status}`); // Debugging
+        console.log(`Response status text: ${response.statusText}`); // Debugging
+
+        if (!response.ok) {
+          throw new Error('Error al obtener datos de la habitación');
+        }
+        const habitacion = await response.json();
+        console.log(habitacion); // Debugging
+        document.getElementById('numeroHabitacion').textContent = habitacion.numero;
+        document.getElementById('tipoHabitacion').textContent = habitacion.tipo;
+        document.getElementById('precioHabitacion').textContent = habitacion.precioPorNoche;
+        document.getElementById('estadoHabitacion').textContent = habitacion.estado;
+      } catch (error) {
+        console.error(error);
+        alert(`No se pudo cargar la información de la habitación con ID: ${habitacionId}.`);
+      }
+    }
+
+    // Llamar a la función para obtener datos al cargar la página
+    obtenerDatosHabitacion();
+
+    async function solicitarServicio() {
+      const habitacionId = localStorage.getItem("habitacionId");
+      if (!habitacionId) {
+        alert('No se pudo identificar la habitación.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/personal/habitaciones/${habitacionId}/servicioLimpieza`, {
+          method: 'PUT'
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al cambiar el estado de limpieza');
+        }
+
+        const habitacion = await response.json();
+        alert("Servicio de habitación solicitado. Estado actualizado a 'Sucia'.");
+        document.getElementById('estadoHabitacion').textContent = habitacion.estado;
+      } catch (error) {
+        console.error(error);
+        alert('No se pudo cambiar el estado de limpieza.');
+      }
+    }
+  </script>
+</body>
+</html>
