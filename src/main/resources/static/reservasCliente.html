@@ -16,6 +16,7 @@
           <th>Tipo</th>
           <th>Precio/Noche</th>
           <th>Método de Pago</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -56,6 +57,7 @@
                 <td>${h.tipo}</td>
                 <td>${h.precioPorNoche} €</td>
                 <td>${reserva.metodoPago || "No especificado"}</td>
+                <td><button onclick="guardarIdHabitacionYRedirigir(${h.id})">Informacion</button></td> <!-- Cambiado a h.id -->
               </tr>
             `;
   
@@ -66,6 +68,11 @@
           console.error("Error:", error);
           alert("No se pudieron cargar las reservas.");
         });
+    }
+
+    function guardarIdHabitacionYRedirigir(habitacionId) {
+      localStorage.setItem("habitacionId", habitacionId);
+      window.location.href = "servicioHabitacion.html";
     }
   
     // Llama a la función cuando la página carga
