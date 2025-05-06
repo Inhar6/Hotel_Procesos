@@ -19,8 +19,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y doxygen graphviz
 
-    - name: Generate Doxygen Documentation
-      run: doxygen Doxyfile
+    - name: Generate Maven Site
+      run: mvn site
 
     - name: Organize docs folder
       run: |
