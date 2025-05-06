@@ -1,0 +1,120 @@
+\doxysection{com.\+example.\+restapi.\+controller.\+Habitacion\+Controller Class Reference}
+\hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController}{}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController}\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a567cec24eaf601a6b0865fcc0f19f9eb}{Habitacion\+Controller}} (Habitacion\+Service habitacion\+Service)
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0af87321db8704e78587c1c77549d0ab}{get\+All\+Habitaciones}} ()
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a2acaf9e19f215834862a152d44ee31ba}{get\+Habitaciones\+Disponibles}} ()
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_aea8c9ee7c2606cffb76a2ce0bf941ec8}{get\+Habitaciones\+Disponibles\+Por\+Tipo}} (@Path\+Variable String tipo)
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4574a502d9ed58d86a4ff753ae7ff930}{get\+Habitaciones\+Disponibles\+Por\+Precio}} (@Path\+Variable double precio\+Max)
+\item 
+Habitacion \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ad3608a0f13ba3e6dd305fecd7fbe964d}{get\+Habitacion\+Urgente}} ()
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ae1846974ee115766c893075205911063}{get\+Habitaciones\+Urgentes}} ()
+\item 
+List$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a117e8a9d4068240ef5519274e5c51c70}{get\+Habitaciones\+No\+Limpias}} ()
+\item 
+Response\+Entity$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0ae81eb54fdc87665391230456bb62fd}{marcar\+Habitacion\+Como\+Limpia}} (@Path\+Variable Long id)
+\item 
+Response\+Entity$<$ Habitacion $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_af56067420ce34e84b24abfc0147a5d4e}{marcar\+Habitacion\+Como\+Sucia}} (@Path\+Variable Long id)
+\item 
+Habitacion \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a1815e8921047d2f37edfdee16820b555}{get\+Habitacion\+Para\+Limpieza\+Urgente}} ()
+\item 
+Map$<$ String, Object $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a906b7053d9d5192196f0d93ba18a7496}{obtener\+Ocupacion\+Hotel}} ()
+\item 
+Response\+Entity$<$ Optional$<$ Habitacion $>$ $>$ \mbox{\hyperlink{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4092d280f69b5a1b1f3bf13637c91156}{get\+Habitacion\+Por\+Id}} (@Path\+Variable Long id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a567cec24eaf601a6b0865fcc0f19f9eb}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a567cec24eaf601a6b0865fcc0f19f9eb} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!HabitacionController@{HabitacionController}}
+\index{HabitacionController@{HabitacionController}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{HabitacionController()}{HabitacionController()}}
+{\footnotesize\ttfamily com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+Habitacion\+Controller (\begin{DoxyParamCaption}\item[{Habitacion\+Service}]{habitacion\+Service }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0af87321db8704e78587c1c77549d0ab}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0af87321db8704e78587c1c77549d0ab} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getAllHabitaciones@{getAllHabitaciones}}
+\index{getAllHabitaciones@{getAllHabitaciones}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getAllHabitaciones()}{getAllHabitaciones()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+All\+Habitaciones (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a2acaf9e19f215834862a152d44ee31ba}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a2acaf9e19f215834862a152d44ee31ba} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionesDisponibles@{getHabitacionesDisponibles}}
+\index{getHabitacionesDisponibles@{getHabitacionesDisponibles}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionesDisponibles()}{getHabitacionesDisponibles()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitaciones\+Disponibles (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4574a502d9ed58d86a4ff753ae7ff930}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4574a502d9ed58d86a4ff753ae7ff930} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionesDisponiblesPorPrecio@{getHabitacionesDisponiblesPorPrecio}}
+\index{getHabitacionesDisponiblesPorPrecio@{getHabitacionesDisponiblesPorPrecio}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionesDisponiblesPorPrecio()}{getHabitacionesDisponiblesPorPrecio()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitaciones\+Disponibles\+Por\+Precio (\begin{DoxyParamCaption}\item[{@Path\+Variable double}]{precio\+Max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_aea8c9ee7c2606cffb76a2ce0bf941ec8}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_aea8c9ee7c2606cffb76a2ce0bf941ec8} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionesDisponiblesPorTipo@{getHabitacionesDisponiblesPorTipo}}
+\index{getHabitacionesDisponiblesPorTipo@{getHabitacionesDisponiblesPorTipo}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionesDisponiblesPorTipo()}{getHabitacionesDisponiblesPorTipo()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitaciones\+Disponibles\+Por\+Tipo (\begin{DoxyParamCaption}\item[{@Path\+Variable String}]{tipo }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a117e8a9d4068240ef5519274e5c51c70}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a117e8a9d4068240ef5519274e5c51c70} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionesNoLimpias@{getHabitacionesNoLimpias}}
+\index{getHabitacionesNoLimpias@{getHabitacionesNoLimpias}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionesNoLimpias()}{getHabitacionesNoLimpias()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitaciones\+No\+Limpias (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ae1846974ee115766c893075205911063}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ae1846974ee115766c893075205911063} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionesUrgentes@{getHabitacionesUrgentes}}
+\index{getHabitacionesUrgentes@{getHabitacionesUrgentes}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionesUrgentes()}{getHabitacionesUrgentes()}}
+{\footnotesize\ttfamily List$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitaciones\+Urgentes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a1815e8921047d2f37edfdee16820b555}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a1815e8921047d2f37edfdee16820b555} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionParaLimpiezaUrgente@{getHabitacionParaLimpiezaUrgente}}
+\index{getHabitacionParaLimpiezaUrgente@{getHabitacionParaLimpiezaUrgente}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionParaLimpiezaUrgente()}{getHabitacionParaLimpiezaUrgente()}}
+{\footnotesize\ttfamily Habitacion com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitacion\+Para\+Limpieza\+Urgente (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4092d280f69b5a1b1f3bf13637c91156}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a4092d280f69b5a1b1f3bf13637c91156} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionPorId@{getHabitacionPorId}}
+\index{getHabitacionPorId@{getHabitacionPorId}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionPorId()}{getHabitacionPorId()}}
+{\footnotesize\ttfamily Response\+Entity$<$ Optional$<$ Habitacion $>$ $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitacion\+Por\+Id (\begin{DoxyParamCaption}\item[{@Path\+Variable Long}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ad3608a0f13ba3e6dd305fecd7fbe964d}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_ad3608a0f13ba3e6dd305fecd7fbe964d} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!getHabitacionUrgente@{getHabitacionUrgente}}
+\index{getHabitacionUrgente@{getHabitacionUrgente}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{getHabitacionUrgente()}{getHabitacionUrgente()}}
+{\footnotesize\ttfamily Habitacion com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+get\+Habitacion\+Urgente (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0ae81eb54fdc87665391230456bb62fd}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a0ae81eb54fdc87665391230456bb62fd} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!marcarHabitacionComoLimpia@{marcarHabitacionComoLimpia}}
+\index{marcarHabitacionComoLimpia@{marcarHabitacionComoLimpia}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{marcarHabitacionComoLimpia()}{marcarHabitacionComoLimpia()}}
+{\footnotesize\ttfamily Response\+Entity$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+marcar\+Habitacion\+Como\+Limpia (\begin{DoxyParamCaption}\item[{@Path\+Variable Long}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_af56067420ce34e84b24abfc0147a5d4e}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_af56067420ce34e84b24abfc0147a5d4e} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!marcarHabitacionComoSucia@{marcarHabitacionComoSucia}}
+\index{marcarHabitacionComoSucia@{marcarHabitacionComoSucia}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{marcarHabitacionComoSucia()}{marcarHabitacionComoSucia()}}
+{\footnotesize\ttfamily Response\+Entity$<$ Habitacion $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+marcar\+Habitacion\+Como\+Sucia (\begin{DoxyParamCaption}\item[{@Path\+Variable Long}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a906b7053d9d5192196f0d93ba18a7496}\label{classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController_a906b7053d9d5192196f0d93ba18a7496} 
+\index{com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}!obtenerOcupacionHotel@{obtenerOcupacionHotel}}
+\index{obtenerOcupacionHotel@{obtenerOcupacionHotel}!com.example.restapi.controller.HabitacionController@{com.example.restapi.controller.HabitacionController}}
+\doxysubsubsection{\texorpdfstring{obtenerOcupacionHotel()}{obtenerOcupacionHotel()}}
+{\footnotesize\ttfamily Map$<$ String, Object $>$ com.\+example.\+restapi.\+controller.\+Habitacion\+Controller.\+obtener\+Ocupacion\+Hotel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/example/restapi/controller/\mbox{\hyperlink{HabitacionController_8java}{Habitacion\+Controller.\+java}}\end{DoxyCompactItemize}

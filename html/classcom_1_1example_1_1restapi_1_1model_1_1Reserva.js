@@ -1,0 +1,25 @@
+var classcom_1_1example_1_1restapi_1_1model_1_1Reserva =
+[
+    [ "Reserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#afb6b05286930397e380b599de440e2b4", null ],
+    [ "Reserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a20eb689ab10503852c1de1cf81e2e8b3", null ],
+    [ "cancelarReserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ac147f8487499eb91d4d382fc9c214f3a", null ],
+    [ "confirmarReserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ab49db6adbefe8a9fce93d0085354e8dc", null ],
+    [ "getCliente", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#aad4162604af69e4f503372e3ea536b50", null ],
+    [ "getClienteId", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a246a21b59197fd2da1f14409fcbfd505", null ],
+    [ "getEstado", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a07fc16711b4ab292d00520c6819915dd", null ],
+    [ "getFechaCheckIn", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ab6ff929da6f6f59df809e76e0cff61b9", null ],
+    [ "getFechaCheckOut", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ac76a894dca6f1574616acd27c8dc7aea", null ],
+    [ "getHabitacion", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a2e08686229185bc1cd270c1d78677dc2", null ],
+    [ "getId", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#aaf0565c9ff256d46591b2aecd1147bc2", null ],
+    [ "getMetodoPago", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a88170dc74c77320e5b2a25ebe7423678", null ],
+    [ "getTotalPagar", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ab42cca27bd31a0059bd4b8421d8ff4f8", null ],
+    [ "setCliente", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#aed6ee6fff904d5af6f99cd5f1bdc3330", null ],
+    [ "setEstado", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a0b264373f615a9a714f894c1b3d23e85", null ],
+    [ "setFechaCheckIn", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ae048191e409992a9fc75b4687e7bc99e", null ],
+    [ "setFechaCheckOut", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#aebac941f1f3494d1a0517edf304a378c", null ],
+    [ "setHabitacion", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a18629d72889728795e91f9dc846a286c", null ],
+    [ "setId", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a48363173b0549f4f75edded26fab17dc", null ],
+    [ "setMetodoPago", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#abc66b180cf4980c2b48843cf9bc44e78", null ],
+    [ "setTotalPagar", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#a684d77cbf6ec0a895749a84c535f8999", null ],
+    [ "toString", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html#ac22688a6f98e006c8dfe760a30b02e07", null ]
+];
