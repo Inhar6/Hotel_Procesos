@@ -1,0 +1,41 @@
+name: Doxygen Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Doxygen
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz
+
+    - name: Generate Doxygen Documentation
+      run: doxygen Doxyfile
+
+    - name: Organize docs folder
+      run: |
+        mkdir -p docs
+        rm -rf docs/site
+        mkdir -p docs/site
+        cp -r target/site/* docs/site/
+        cp -r target/reports/* docs/site/reports/
+        rm -rf docs/doxygen
+        mkdir -p docs/doxygen
+        cp -r target/doxygen/html/* docs/doxygen/
+
+    - name: Deploy Documentation to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs
+        branch: gh-pages
+        token: ${{ secrets.GITHUB_TOKEN }}
