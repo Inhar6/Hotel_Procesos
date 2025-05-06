@@ -43,6 +43,12 @@ jobs:
           cp -r target/doxygen/html/* docs/doxygen/
         fi
 
+    - name: Build with Jekyll
+      uses: actions/jekyll-build-pages@v1
+      with:
+        source: ./docs  # Asegúrate de que esta ruta sea correcta
+        destination: ./docs/_site
+        
     - name: Deploy Documentation to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
