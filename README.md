@@ -1,5 +1,6 @@
 [![Java CI with Maven](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml/badge.svg)](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml)
 
+[![Doxygen Documentation](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/doxygen.yml/badge.svg)](https://github.com/Inhar6/Hotel_Procesos/actions/workflows/doxygen.yml)
 
 HOTEL PROCESOS
 =============================
