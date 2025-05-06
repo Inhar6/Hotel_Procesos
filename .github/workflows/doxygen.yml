@@ -49,4 +49,3 @@ jobs:
         folder: docs
         branch: gh-pages
         token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
