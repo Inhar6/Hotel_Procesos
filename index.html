@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación del Proyecto</title>
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>HOTEL PROCESOS - Documentación</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +24,12 @@
             color: white;
             padding: 20px;
             text-align: center;
+        }
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         h1 {
             margin-top: 0;
@@ -50,6 +55,21 @@
         section {
             margin-bottom: 30px;
         }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .api-methods {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            margin-bottom: 15px;
+        }
         footer {
             background-color: #333;
             color: white;
@@ -62,68 +82,123 @@
 <body>
     <div class="container">
         <header>
-            <h1>Documentación del Proyecto</h1>
-            <p>Bienvenido a la documentación oficial</p>
+            <h1>HOTEL PROCESOS</h1>
+            <p>Sistema de Gestión Hotelera</p>
+            <div class="badges">
+                <a href="https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml">
+                    <img src="https://github.com/Inhar6/Hotel_Procesos/actions/workflows/maven.yml/badge.svg" alt="Java CI with Maven">
+                </a>
+                <a href="https://github.com/Inhar6/Hotel_Procesos/actions/workflows/doxygen.yml">
+                    <img src="https://github.com/Inhar6/Hotel_Procesos/actions/workflows/doxygen.yml/badge.svg" alt="Doxygen Documentation">
+                </a>
+            </div>
         </header>
 
         <nav>
             <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#informacion">Información</a></li>
-                <li><a href="#documentacion">Documentación</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#proyecto">Proyecto</a></li>
+                <li><a href="#lanzamiento">Lanzamiento</a></li>
+                <li><a href="#api-rest">API REST</a></li>
+                <li><a href="#empaquetado">Empaquetado</a></li>
+                <li><a href="#pruebas">Pruebas</a></li>
+                <li><a href="#referencias">Referencias</a></li>
             </ul>
         </nav>
 
-        <section id="inicio">
-            <h2>Inicio</h2>
-            <p>Esta es la página principal de la documentación de nuestro proyecto. Aquí encontrarás toda la información necesaria para entender y utilizar nuestro sistema.</p>
-        </section>
-
-        <section id="informacion">
-            <h2>Información del Proyecto</h2>
-            <p>Este proyecto es una aplicación desarrollada con Spring Boot y Maven que permite gestionar [descripción breve de la funcionalidad principal].</p>
-            <p>Características principales:</p>
+        <section id="proyecto">
+            <h2>Sobre el Proyecto</h2>
+            <p>Este proyecto va encarado a la asignatura de Procesos del Software y Calidad. Principalmente está creado para la gestión de un hotel desde distintos puntos de vista.</p>
+            <p>Para el desarrollo de dicho proyecto se han utilizado las tecnologías de:</p>
             <ul>
-                <li>Gestión de usuarios</li>
-                <li>Sistema de reservas</li>
-                <li>Panel de administración</li>
-                <li>Reportes y estadísticas</li>
+                <li>SpringBoot</li>
+                <li>SQL</li>
+                <li>Maven</li>
             </ul>
+            <p>La estructura básica de un proyecto SpringBoot se puede inicializar utilizando <em>Spring initializr</em> en <a href="https://start.spring.io/" target="_blank">https://start.spring.io/</a>.</p>
         </section>
 
-        <section id="documentacion">
-            <h2>Documentación Técnica</h2>
-            <h3>Requisitos</h3>
-            <ul>
-                <li>Java 11 o superior</li>
-                <li>Maven 3.6 o superior</li>
-                <li>Base de datos MySQL/PostgreSQL</li>
-            </ul>
+        <section id="lanzamiento">
+            <h2>Lanzamiento del Proyecto</h2>
+            <p>Sigue estos pasos para lanzar el proyecto correctamente:</p>
             
-            <h3>Instalación</h3>
-            <pre><code>git clone https://github.com/tu-usuario/tu-repositorio.git
-cd tu-repositorio
-mvn clean install</code></pre>
+            <h3>1. Verificar Dependencias</h3>
+            <p>Primero, verifique todas las dependencias requeridas especificadas por el archivo pom.xml y la configuración de la base de datos contenida en el archivo <code>src/main/resources/application.properties</code>.</p>
             
-            <h3>Configuración</h3>
-            <p>Para configurar la aplicación, edita el archivo <code>application.properties</code> con los parámetros de tu entorno.</p>
+            <h3>2. Compilar el Proyecto</h3>
+            <p>Ejecute el siguiente comando para verificar la descarga de todas las dependencias y verificar que todo se compile correctamente:</p>
+            <pre><code>mvn compile</code></pre>
             
-            <h3>API Rest</h3>
-            <p>La documentación completa de la API está disponible en la ruta <code>/swagger-ui.html</code> cuando la aplicación está en ejecución.</p>
+            <h3>3. Configurar la Base de Datos</h3>
+            <p>Asegúrese de que la base de datos MySQL esté configurada correctamente antes de conectar la aplicación para usarla. Utilice el contenido del archivo <code>src/main/resources/dbsetup.sql</code> para crear la base de datos, un usuario específico 'spq' (contraseña: 'spq') para la aplicación y otórguele privilegios.</p>
+            <p>Si utiliza el cliente de línea de comandos para MySQL, puede ejecutar el siguiente comando:</p>
+            <pre><code>mysql –uroot -p < src/main/resources/dbsetup.sql</code></pre>
+            <p>De lo contrario, podría utilizar el contenido del archivo en cualquier otro cliente MySQL que esté utilizando.</p>
+            
+            <h3>4. Iniciar el Servidor</h3>
+            <p>Ahora, inicie el servidor usando el siguiente comando:</p>
+            <pre><code>mvn spring-boot:run</code></pre>
+            <p>Si no hay errores, debería obtener una aplicación web ejecutándose y sirviendo su contenido en <a href="http://localhost:8080/">http://localhost:8080/</a>. Puede presionar Ctrl+C para detener la aplicación.</p>
         </section>
 
-        <section id="contacto">
-            <h2>Contacto</h2>
-            <p>Si tienes alguna pregunta o sugerencia, no dudes en contactarnos:</p>
+        <section id="api-rest">
+            <h2>API REST</h2>
+            <p>La aplicación expone una API REST, utilizada por la aplicación web e implementada en las clases HabitacionController y ClienteController. Por ejemplo, algunos métodos son:</p>
+            
+            <div class="api-methods">
+                <p><strong>Muestra todas las habitaciones registradas:</strong></p>
+                <pre><code>GET http://localhost:8080/api/personal/habitaciones</code></pre>
+            </div>
+            
+            <p>Para ver la lista completa de métodos de la API REST, puede visitar la interfaz de Swagger en: <a href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a>.</p>
+            <p>Consulte las anotaciones en las clases <em>HabitacionController</em> y <em>ClienteController</em>, las dependencias requeridas en el archivo <em>pom.xml</em> y el archivo <em>application.properties</em> para su configuración.</p>
+        </section>
+
+        <section id="empaquetado">
+            <h2>Empaquetando la Aplicación</h2>
+            <p>La aplicación se puede empaquetar ejecutando el siguiente comando:</p>
+            <pre><code>mvn package</code></pre>
+            <p>Esto incluirá todas las bibliotecas necesarias para SpringBoot dentro de <code>target/rest-api-0.0.1-SNAPSHOT.jar</code>, que se pueden distribuir.</p>
+            
+            <h3>Iniciar el Servidor</h3>
+            <p>Una vez empaquetado, el servidor se puede iniciar con:</p>
+            <pre><code>java -jar rest-api-0.0.1-SNAPSHOT.jar</code></pre>
+            
+            <h3>Ejecutar el Cliente de Muestra</h3>
+            <p>Y el cliente de muestra ejecutándose, ya que SpringBoot cambia la forma en que se ejecuta el cargador de Java predeterminado:</p>
+            <pre><code>java -cp rest-api-0.0.1-SNAPSHOT.jar -Dloader.main=com.example.restapi.client.BookManager org.springframework.boot.loader.launch.PropertiesLauncher localhost 8080</code></pre>
+            
+            <p>Por lo tanto, en un desarrollo real, sería recomendable crear diferentes proyectos Maven para aplicaciones servidor y cliente, facilitando la distribución y mantenimiento de cada aplicación por separado.</p>
+        </section>
+
+        <section id="pruebas">
+            <h2>Estrategia de Pruebas</h2>
+            <p>En este proyecto, hemos implementado una estrategia de pruebas que incluye tanto tests unitarios como tests de integración para asegurar la calidad y el correcto funcionamiento de la aplicación.</p>
+            
+            <h3>Tests Unitarios</h3>
+            <p>Los tests unitarios se han utilizado principalmente para verificar la lógica de negocio en las clases de modelos y servicios. Estos tests se ejecutan en aislamiento utilizando mocks y Junit para simular las dependencias externas.</p>
+            <p>Para ejecutar los tests unitarios, utiliza el siguiente comando:</p>
+            <pre><code>mvn test</code></pre>
+            
+            <h3>Tests de Integración</h3>
+            <p>Los tests de integración se han diseñado para verificar la interacción entre diferentes componentes del sistema. En este proyecto, los tests de integración se centran en los repositorios y los controladores, asegurando que las operaciones de base de datos y las rutas HTTP funcionen correctamente.</p>
+            <p>Para ejecutar los tests de integración, utiliza el siguiente comando:</p>
+            <pre><code>mvn verify</code></pre>
+            <p>Este comando ejecutará los tests de integración y generará un informe de cobertura de código si tienes configurado el plugin JaCoCo.</p>
+        </section>
+
+        <section id="referencias">
+            <h2>Referencias</h2>
             <ul>
-                <li>Email: ejemplo@correo.com</li>
-                <li>GitHub: <a href="https://github.com/tu-usuario">tu-usuario</a></li>
+                <li><a href="https://medium.com/@pratik.941/building-rest-api-using-spring-boot-a-comprehensive-guide-3e9b6d7a8951" target="_blank">Very good explanation of the project</a></li>
+                <li><a href="https://spring.io/guides/tutorials/rest" target="_blank">Building REST services with Spring</a></li>
+                <li><a href="https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/#mcetoc_1heq9ft3o1v" target="_blank">Good example documenting how to generate Swagger APIs in Spring Boot</a></li>
+                <li><a href="https://medium.com/@yunuseulucay/end-to-end-spring-boot-with-mysql-and-docker-2c42a6e036c0" target="_blank">Docker example with Spring</a></li>
+                <li>Repositorio "SpringBoot + REST API + MySQL" utilizado en clase</li>
             </ul>
         </section>
 
         <footer>
-            <p>&copy; 2025 Nombre del Proyecto. Todos los derechos reservados.</p>
+            <p>&copy; 2025 HOTEL PROCESOS - Todos los derechos reservados</p>
         </footer>
     </div>
 </body>
