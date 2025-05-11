@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HabitacionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rest-api</a> &gt; <a href="index.source.html" class="el_package">com.example.restapi.service</a> &gt; <span class="el_source">HabitacionService.java</span></div><h1>HabitacionService.java</h1><pre class="source lang-java linenums">package com.example.restapi.service;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.restapi.model.Habitacion;
+import com.example.restapi.repository.HabitacionRepository;
+
+@Service
+public class HabitacionService {
+
+    private final HabitacionRepository habitacionRepository;
+
+    @Autowired
+<span class="fc" id="L21">    public HabitacionService(HabitacionRepository habitacionRepository) {</span>
+<span class="fc" id="L22">        this.habitacionRepository = habitacionRepository;</span>
+<span class="fc" id="L23">    }</span>
+
+    public List&lt;Habitacion&gt; getAllHabitaciones() {
+<span class="fc" id="L26">        return habitacionRepository.findAll();</span>
+    }
+
+    //Habitaciones libres
+    public List&lt;Habitacion&gt; getHabitacionesDisponibles() {
+<span class="fc" id="L31">        return habitacionRepository.findByDisponibleTrue();</span>
+    }
+
+    public Optional&lt;Habitacion&gt; getHabitacionById(Long id) {
+<span class="fc" id="L35">        return habitacionRepository.findById(id);</span>
+    }
+
+    //Habitacion Urgente
+    public List&lt;Habitacion&gt; getHabitacionesUrgentes() {
+<span class="fc" id="L40">        return habitacionRepository.findByDisponibleTrueAndEstadoLimpiezaAndTieneProblemasFalse(&quot;Limpia&quot;);</span>
+    }
+    
+    public Habitacion getHabitacionUrgente() {
+<span class="fc" id="L44">        List&lt;Habitacion&gt; habitacionesUrgentes = getHabitacionesUrgentes();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (habitacionesUrgentes.isEmpty()) {</span>
+<span class="fc" id="L46">            throw new RuntimeException(&quot;No hay habitaciones disponibles para asignación urgente&quot;);</span>
+        }
+<span class="fc" id="L48">        return habitacionesUrgentes.get(0); // Devuelve la primera habitación disponible</span>
+    }
+
+    // Método para obtener habitaciones que no están limpias
+    public List&lt;Habitacion&gt; getHabitacionesNoLimpias() {
+<span class="fc" id="L53">        return habitacionRepository.findByEstadoLimpiezaNot(&quot;Limpia&quot;);</span>
+    }
+
+    public Habitacion marcarHabitacionComoLimpia(Long id) {
+<span class="fc" id="L57">        Habitacion habitacion = habitacionRepository.findById(id)</span>
+<span class="fc" id="L58">                .orElseThrow(() -&gt; new RuntimeException(&quot;Habitación no encontrada&quot;));</span>
+<span class="fc" id="L59">        habitacion.setEstadoLimpieza(&quot;Limpia&quot;); // Ajusta &quot;Limpia&quot; según el valor que uses</span>
+<span class="fc" id="L60">        return habitacionRepository.save(habitacion);</span>
+    }
+
+    public Habitacion marcarHabitacionComoSucia(Long id) {
+<span class="nc" id="L64">        Habitacion habitacion = habitacionRepository.findById(id)</span>
+<span class="nc" id="L65">                .orElseThrow(() -&gt; new RuntimeException(&quot;Habitación no encontrada&quot;));</span>
+<span class="nc" id="L66">        habitacion.setEstadoLimpieza(&quot;Sucia&quot;); // Ajusta &quot;Sucia&quot; según el valor que uses</span>
+<span class="nc" id="L67">        return habitacionRepository.save(habitacion);</span>
+    }
+    
+     // Método para obtener una habitación que necesita limpieza urgente
+     public Habitacion getHabitacionParaLimpiezaUrgente() {
+<span class="fc" id="L72">        List&lt;Habitacion&gt; habitacionesNoLimpias = getHabitacionesNoLimpias();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (habitacionesNoLimpias.isEmpty()) {</span>
+<span class="fc" id="L74">            throw new RuntimeException(&quot;No hay habitaciones que necesiten limpieza urgente&quot;);</span>
+        }
+<span class="fc" id="L76">        return habitacionesNoLimpias.get(0); // Devuelve la primera habitación que necesita limpieza</span>
+    }
+
+    //Informe de ocupacion (Gerente)
+    public Map&lt;String, Object&gt; obtenerInformeOcupacion() {
+<span class="fc" id="L81">        List&lt;Habitacion&gt; habitaciones = habitacionRepository.findAll();</span>
+<span class="fc" id="L82">        int totalHabitaciones = habitaciones.size();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        int ocupadas = (int) habitaciones.stream().filter(h -&gt; !h.isDisponible()).count();</span>
+<span class="fc" id="L84">        int disponibles = totalHabitaciones - ocupadas;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        double porcentajeOcupacion = (totalHabitaciones == 0) ? 0 : (ocupadas * 100.0) / totalHabitaciones;</span>
+
+<span class="fc" id="L87">        Map&lt;String, Object&gt; informe = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L88">        informe.put(&quot;totalHabitaciones&quot;, totalHabitaciones);</span>
+<span class="fc" id="L89">        informe.put(&quot;habitacionesOcupadas&quot;, ocupadas);</span>
+<span class="fc" id="L90">        informe.put(&quot;habitacionesDisponibles&quot;, disponibles);</span>
+<span class="fc" id="L91">        informe.put(&quot;porcentajeOcupacion&quot;, String.format(&quot;%.2f%%&quot;, porcentajeOcupacion));</span>
+
+<span class="fc" id="L93">        return informe;</span>
+    }
+
+    /*
+     * BD
+     */
+    public Habitacion createHabitacion(Habitacion habitacion) {
+<span class="fc" id="L100">        return habitacionRepository.save(habitacion);</span>
+    }
+
+    public Habitacion updateHabitacion(Long id, Habitacion habitacionDetails) {
+<span class="fc" id="L104">        Optional&lt;Habitacion&gt; optionalHabitacion = habitacionRepository.findById(id);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (optionalHabitacion.isPresent()) {</span>
+<span class="fc" id="L106">            Habitacion habitacion = optionalHabitacion.get();</span>
+<span class="fc" id="L107">            habitacion.setNumero(habitacionDetails.getNumero());</span>
+<span class="fc" id="L108">            habitacion.setTipo(habitacionDetails.getTipo());</span>
+<span class="fc" id="L109">            habitacion.setPrecioPorNoche(habitacionDetails.getPrecioPorNoche());</span>
+<span class="fc" id="L110">            habitacion.setDisponible(habitacionDetails.isDisponible());</span>
+<span class="fc" id="L111">            return habitacionRepository.save(habitacion);</span>
+        } else {
+<span class="fc" id="L113">            throw new RuntimeException(&quot;Habitación no encontrada&quot;);</span>
+        }
+    }
+
+    public void deleteHabitacion(Long id) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (habitacionRepository.existsById(id)) {</span>
+<span class="fc" id="L119">            habitacionRepository.deleteById(id);</span>
+        } else {
+<span class="fc" id="L121">            throw new RuntimeException(&quot;Habitación no encontrada con id: &quot; + id);</span>
+        }
+<span class="fc" id="L123">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

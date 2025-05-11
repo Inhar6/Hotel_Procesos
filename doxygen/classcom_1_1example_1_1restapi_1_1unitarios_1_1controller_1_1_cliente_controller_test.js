@@ -1,0 +1,26 @@
+var classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test =
+[
+    [ "setUp", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a64737ef9f8637a376a94ca582869b333", null ],
+    [ "testCreateCliente_ErrorCreacion", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a2c951ae73f8c93ec462c9be2dd49ee02", null ],
+    [ "testCreateCliente_Success", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a85d563b60412c6df348485de266fecde", null ],
+    [ "testDeleteCliente_ClienteExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a333a991ece7b520b4dbe545549db5aae", null ],
+    [ "testDeleteCliente_ClienteNoExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ad0b18cf3b02f66ccd8d999b682a8b68a", null ],
+    [ "testGetAllClientes_Empty", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a49183898faeee3a9fac2ad3963618119", null ],
+    [ "testGetAllClientes_Error", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a875e7dd6038d8d16c198ddd186d48dd3", null ],
+    [ "testGetAllClientes_Success", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ad84c74da73a9cbe6d1bffc9d194fe682", null ],
+    [ "testGetClienteById_ClienteExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ab1050a5db80b1c6415c8c5a64c1ac386", null ],
+    [ "testGetClienteById_ClienteNoExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#aa64a27f2e97639ae26944991358ef054", null ],
+    [ "testGetClienteById_Error", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a1d635a5cb2a2a662964449a937a203ad", null ],
+    [ "testLogin_ContrasenaIncorrecta", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ae4a55633dfe31e4b250a071befd0159a", null ],
+    [ "testLogin_ContrasenaNula", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ab562fb4039658a0fecb2bb2efbd69c9d", null ],
+    [ "testLogin_CredencialesCorrectas", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#aedca741d350392574e2f53ef0523e2b9", null ],
+    [ "testLogin_EmailNoExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a58248f0d49aa675f7039a9b190946b17", null ],
+    [ "testLogin_EmailNulo", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#aa4b51a5fc2f06010c2a16ee215d67716", null ],
+    [ "testLogin_EmailYContrasenaNulos", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a40d8514c1d2c35a745b2a314703aeb00", null ],
+    [ "testLogin_Error", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a4ce15707483d0368e033dce508a6e2cc", null ],
+    [ "testRegistrarCliente_EmailNoRegistrado", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a5c0b10598004c7513a0386d2e2883412", null ],
+    [ "testRegistrarCliente_EmailYaRegistrado", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#afa196e9e56429e3e28f46d3ab8a6f43a", null ],
+    [ "testRegistrarCliente_ErrorCreacion", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#ae8a04ffe100179b22d7f8e05880b4910", null ],
+    [ "testUpdateCliente_ClienteExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a5335b7b5dcb79e3c54bd174e705ab308", null ],
+    [ "testUpdateCliente_ClienteNoExiste", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html#a65a9f772e2d68c71aff509830b2e9cd6", null ]
+];

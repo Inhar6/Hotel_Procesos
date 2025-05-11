@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "HOTEL_PROCESOS", "index.html", [
     [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", null ]
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -45,10 +45,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"CheckInControllerTest_8java.html",
-"classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html#abced145996a83156cf753776a361f2f3",
-"interfacecom_1_1example_1_1restapi_1_1repository_1_1ReservaRepository.html#a6b5ac5e1f8614c7fbb44a389e4b4e004"
+"_check_in_8java.html",
+"classcom_1_1example_1_1restapi_1_1model_1_1_cliente.html#a6ac169e851e0314081b45bc3e3e98150",
+"classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_check_in_controller_test.html#acd17a4372c92d918f054fe30380cb466",
+"classcom_1_1example_1_1restapi_1_1unitarios_1_1service_1_1_cliente_service_test.html#aa2c64b108b2cf5e45ac68091d3843e57"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';

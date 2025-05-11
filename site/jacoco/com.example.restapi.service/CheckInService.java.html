@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckInService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rest-api</a> &gt; <a href="index.source.html" class="el_package">com.example.restapi.service</a> &gt; <span class="el_source">CheckInService.java</span></div><h1>CheckInService.java</h1><pre class="source lang-java linenums">package com.example.restapi.service;
+
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.restapi.model.CheckIn;
+import com.example.restapi.model.Reserva;
+import com.example.restapi.repository.CheckInRepository;
+import com.example.restapi.repository.ReservaRepository;
+
+@Service
+public class CheckInService {
+
+    private final CheckInRepository checkInRepository;
+    private final ReservaRepository reservaRepository;
+
+    @Autowired
+<span class="fc" id="L18">    public CheckInService(CheckInRepository checkInRepository, ReservaRepository reservaRepository) {</span>
+<span class="fc" id="L19">        this.checkInRepository = checkInRepository;</span>
+<span class="fc" id="L20">        this.reservaRepository = reservaRepository;</span>
+<span class="fc" id="L21">    }</span>
+
+    public boolean realizarCheckIn(CheckIn datosCheckIn) {
+<span class="fc" id="L24">        Optional&lt;Reserva&gt; reservaOpt = reservaRepository.findById(datosCheckIn.getReservaId());</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (reservaOpt.isEmpty()) {</span>
+<span class="fc" id="L26">            return false;</span>
+        }
+
+<span class="fc" id="L29">        Reserva reserva = reservaOpt.get();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (&quot;CheckIn Realizado&quot;.equals(reserva.getEstado())) {</span>
+<span class="fc" id="L31">            return false;</span>
+        }
+
+<span class="fc" id="L34">        reserva.setEstado(&quot;CheckIn Realizado&quot;);</span>
+<span class="fc" id="L35">        reservaRepository.save(reserva);</span>
+<span class="fc" id="L36">        checkInRepository.save(datosCheckIn);</span>
+
+<span class="fc" id="L38">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

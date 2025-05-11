@@ -1,9 +1,9 @@
 var dir_ee83e09d0b031ec7793e5a8f4a886891 =
 [
-    [ "CheckInController.java", "CheckInController_8java.html", "CheckInController_8java" ],
-    [ "CheckOutController.java", "CheckOutController_8java.html", "CheckOutController_8java" ],
-    [ "ClienteController.java", "ClienteController_8java.html", "ClienteController_8java" ],
-    [ "HabitacionController.java", "HabitacionController_8java.html", "HabitacionController_8java" ],
-    [ "ProblemaController.java", "ProblemaController_8java.html", "ProblemaController_8java" ],
-    [ "ReservaController.java", "ReservaController_8java.html", "ReservaController_8java" ]
+    [ "CheckInController.java", "_check_in_controller_8java.html", "_check_in_controller_8java" ],
+    [ "CheckOutController.java", "_check_out_controller_8java.html", "_check_out_controller_8java" ],
+    [ "ClienteController.java", "_cliente_controller_8java.html", "_cliente_controller_8java" ],
+    [ "HabitacionController.java", "_habitacion_controller_8java.html", "_habitacion_controller_8java" ],
+    [ "ProblemaController.java", "_problema_controller_8java.html", "_problema_controller_8java" ],
+    [ "ReservaController.java", "_reserva_controller_8java.html", "_reserva_controller_8java" ]
 ];
