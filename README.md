@@ -86,6 +86,51 @@ Para ejecutar los tests de integración, utiliza el siguiente comando:
 
 Este comando ejecutará los tests de integración y generará un informe de cobertura de código si tienes configurado el plugin JaCoCo.
 
+Documentación y GitHub Pages
+----------------------------
+
+Este proyecto utiliza Doxygen para generar documentación y GitHub Pages para alojarla. La documentación incluye detalles sobre pruebas unitarias, pruebas de integración y pruebas de rendimiento.
+
+### Generación de Informes de Doxygen
+
+Para generar informes de Doxygen, puedes usar los siguientes comandos de Maven:
+
+- Generar informes de Doxygen: `mvn doxygen:report` o `mvn site`
+
+### Mover la Documentación a la Carpeta `docs`
+
+Si deseas generar toda la documentación y moverla a la carpeta `docs` de tu proyecto, sigue estos pasos:
+
+1. Ejecuta las pruebas unitarias y de cobertura:
+   ```bash
+   mvn test jacoco:report
+   ```
+
+2. Ejecuta las pruebas de rendimiento:
+   ```bash
+   mvn -Pperformance integration-test
+   ```
+
+3. Asegúrate de que los informes de rendimiento también se muevan a la carpeta `target/site/reports`:
+   ```bash
+   mvn -Pperformance resources:copy-resources@copy-perf-report
+   ```
+
+4. Mueve todo el contenido a la carpeta `docs`:
+   ```bash
+   mvn post-site
+   ```
+
+### GitHub Pages
+
+El proyecto está configurado para usar GitHub Pages para alojar la documentación. La rama `gh-pages` se utiliza para este propósito. Puedes ver la documentación en la siguiente URL:
+
+- [GitHub Pages para Hotel_Procesos](https://inhar6.github.io/Hotel_Procesos)
+
+Nota: La carpeta `docs` no está incluida en el repositorio en GitHub, ya que está listada en el archivo `.gitignore`.
+
+
+
 Referencias
 ----------
 
