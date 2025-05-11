@@ -127,9 +127,6 @@ El proyecto está configurado para usar GitHub Pages para alojar la documentaci�
 
 - [GitHub Pages para Hotel_Procesos](https://inhar6.github.io/Hotel_Procesos)
 
-Nota: La carpeta `docs` no está incluida en el repositorio en GitHub, ya que está listada en el archivo `.gitignore`.
-
-
 
 Referencias
 ----------
