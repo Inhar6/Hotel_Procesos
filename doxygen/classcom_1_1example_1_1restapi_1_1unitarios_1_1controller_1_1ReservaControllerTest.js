@@ -27,6 +27,7 @@ var classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControll
     [ "testModificarReserva_IdInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#afe3aa571c14077c44e830baa86fe3725", null ],
     [ "testModificarReserva_NullHabitacionId", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a5063b47b0ce5433dbce6def27685f890", null ],
     [ "testModificarReserva_NullMetodoPago", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a1a45520a21776a0be3df39c5b010f18b", null ],
+    [ "testModificarReserva_SoloMetodoPago", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a29a0fefe001638d82ccce813724c42b7", null ],
     [ "testModificarReserva_TotalPagarInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a277516b5dc38e197be1d5601e77807e2", null ],
     [ "testObtenerNuevasReservas", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#aa96b774dd8338834e96c65eebb6353a7", null ]
 ];
