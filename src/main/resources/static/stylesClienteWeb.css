@@ -259,7 +259,7 @@ a:hover {
     }
 
     /* Estilo para el botón de Modificar Reserva */
-    .modificar-btn {
+    .modificar-reserva {
     background-color: #ffa200; 
     color: white;
     padding: 12px 20px;
@@ -268,7 +268,7 @@ a:hover {
     cursor: pointer;
     }
 
-    .modificar-btn:hover {
+    .modificar-reserva:hover {
     background-color: #784c00; 
     }
     
