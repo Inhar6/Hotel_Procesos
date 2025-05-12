@@ -101,7 +101,7 @@
                 <h3>Modificar Reserva</h3>
                 <p>Introduzca los detalles para modificar la reserva.</p>
                 <input type="number" id="modificarReservaId" placeholder="ID de la reserva" required>
-                <input type="number" id="habitacionId" placeholder="Número de la habitación" required>
+                <input type="number" id="habitacionId" placeholder="ID de la habitación" required>
                 <label for="fechaCheckIn">Fecha Check-In</label>
                 <input type="date" id="fechaCheckIn" required>
                 <label for="fechaCheckOut">Fecha Check-Out</label>
@@ -280,7 +280,7 @@
             }
         }
 
-        function mostrarModalModificarReserva() {
+        async function mostrarModalModificarReserva() {
             const modal = document.getElementById("modalModificarReserva");
             modal.style.display = "flex";
             document.getElementById("modificarReservaId").value = "";
@@ -288,6 +288,36 @@
             document.getElementById("fechaCheckIn").value = "";
             document.getElementById("fechaCheckOut").value = "";
             document.getElementById("metodoPagoModificar").value = "";
+
+            // Añadir evento para prellenar campos cuando se ingrese el reservaId
+            const reservaIdInput = document.getElementById("modificarReservaId");
+            reservaIdInput.addEventListener("change", async () => {
+                const reservaId = reservaIdInput.value;
+                if (reservaId) {
+                    try {
+                        const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                            method: "GET",
+                            headers: { "Accept": "application/json" }
+                        });
+                        if (response.ok) {
+                            const reserva = await response.json();
+                            document.getElementById("habitacionId").value = reserva.habitacion?.id || "";
+                            document.getElementById("fechaCheckIn").value = reserva.fechaCheckIn.split("T")[0] || "";
+                            document.getElementById("fechaCheckOut").value = reserva.fechaCheckOut.split("T")[0] || "";
+                            document.getElementById("metodoPagoModificar").value = reserva.metodoPago || "";
+                        } else {
+                            alert("Reserva no encontrada. Verifica el ID.");
+                            document.getElementById("habitacionId").value = "";
+                            document.getElementById("fechaCheckIn").value = "";
+                            document.getElementById("fechaCheckOut").value = "";
+                            document.getElementById("metodoPagoModificar").value = "";
+                        }
+                    } catch (error) {
+                        console.error("Error al obtener la reserva:", error);
+                        alert("Error al conectar con el servidor: " + error.message);
+                    }
+                }
+            }, { once: true }); // Ejecutar solo una vez por apertura del modal
         }
 
         function cerrarModalModificarReserva() {
@@ -307,13 +337,49 @@
                 return;
             }
 
+            // Validar fechas
+            const checkInDate = new Date(fechaCheckIn);
+            const checkOutDate = new Date(fechaCheckOut);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (checkInDate < today) {
+                alert("La fecha de Check-In no puede ser anterior a hoy.");
+                return;
+            }
+            if (checkOutDate <= checkInDate) {
+                alert("La fecha de Check-Out debe ser posterior a la fecha de Check-In.");
+                return;
+            }
+
             try {
+                // Obtener los datos actuales de la reserva
+                const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (!reservaResponse.ok) {
+                    const errorText = await reservaResponse.text();
+                    alert("Error al obtener datos de la reserva: " + errorText);
+                    return;
+                }
+                const reserva = await reservaResponse.json();
+                console.log("Datos actuales de la reserva:", reserva);
+
+                // Validar que la reserva esté en estado "Pendiente"
+                if (reserva.estado.toLowerCase() !== "pendiente") {
+                    alert("Solo se pueden modificar reservas en estado Pendiente.");
+                    return;
+                }
+
+                // Preparar datos para la actualización
                 const datos = {
                     habitacionId: parseInt(habitacionId),
                     fechaCheckIn: fechaCheckIn,
                     fechaCheckOut: fechaCheckOut,
                     metodoPago: metodoPago
                 };
+
                 const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
