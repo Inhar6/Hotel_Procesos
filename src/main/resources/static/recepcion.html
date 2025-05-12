@@ -101,9 +101,11 @@
                 <h3>Modificar Reserva</h3>
                 <p>Introduzca los detalles para modificar la reserva.</p>
                 <input type="number" id="modificarReservaId" placeholder="ID de la reserva" required>
-                <input type="number" id="habitacionId" placeholder="ID de la habitación" required>
-                <input type="date" id="fechaCheckIn" placeholder="Fecha Check-In (YYYY-MM-DD)" required>
-                <input type="date" id="fechaCheckOut" placeholder="Fecha Check-Out (YYYY-MM-DD)" required>
+                <input type="number" id="habitacionId" placeholder="Número de la habitación" required>
+                <label for="fechaCheckIn">Fecha Check-In</label>
+                <input type="date" id="fechaCheckIn" required>
+                <label for="fechaCheckOut">Fecha Check-Out</label>
+                <input type="date" id="fechaCheckOut" required>
                 <select id="metodoPagoModificar" required>
                     <option value="">Selecciona un método de pago</option>
                     <option value="Tarjeta">Tarjeta</option>

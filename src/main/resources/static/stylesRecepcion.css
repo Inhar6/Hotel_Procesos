@@ -289,3 +289,11 @@ table td.checkout-realizado {
     cursor: pointer;
     font-size: 14px;
 }
+.modal-content label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px 10px; /* Ajusta el margen izquierdo */
+    color: #000;
+    font-size: 14px;
+    font-weight: normal;
+}
