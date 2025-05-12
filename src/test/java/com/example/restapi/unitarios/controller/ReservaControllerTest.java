@@ -1,6 +1,7 @@
 package com.example.restapi.unitarios.controller;
 
 import com.example.restapi.controller.ReservaController;
+import com.example.restapi.model.Habitacion;
 import com.example.restapi.model.Reserva;
 import com.example.restapi.service.ReservaService;
 
@@ -168,6 +169,16 @@ public class ReservaControllerTest {
     @Test
     public void testModificarReserva_Exito() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
         when(reservaService.modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble()))
                 .thenReturn(true);
 
@@ -177,12 +188,23 @@ public class ReservaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Reserva modificada con éxito."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, times(1)).modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_Fallo() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
         when(reservaService.modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble()))
                 .thenReturn(false);
 
@@ -192,12 +214,21 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("No se pudo modificar la reserva. Verifica que la reserva exista y la habitación esté disponible."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, times(1)).modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FaltaHabitacionId() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -205,12 +236,22 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Faltan campos obligatorios en los datos."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FaltaFechaCheckIn() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -218,12 +259,22 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Faltan campos obligatorios en los datos."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FaltaFechaCheckOut() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -231,38 +282,72 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Faltan campos obligatorios en los datos."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FaltaMetodoPago() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"habitacionId\":2,\"fechaCheckIn\":\"2025-05-01\",\"fechaCheckOut\":\"2025-05-05\",\"totalPagar\":400.0}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Faltan campos obligatorios en los datos."));
+                .andExpect(content().string("El método de pago es obligatorio."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FaltaTotalPagar() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
+        when(reservaService.modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), eq("Tarjeta"), anyDouble()))
+                .thenReturn(true);
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"habitacionId\":2,\"fechaCheckIn\":\"2025-05-01\",\"fechaCheckOut\":\"2025-05-05\",\"metodoPago\":\"Tarjeta\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Faltan campos obligatorios en los datos."));
+                .andExpect(status().isOk())
+                .andExpect(content().string("Reserva modificada con éxito."));
 
-        verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
+        verify(reservaService, times(1)).getReservaById(id);
+        verify(reservaService, times(1)).modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), eq("Tarjeta"), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FormatoFechaCheckInInvalido() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -270,12 +355,23 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Las fechas deben estar en formato YYYY-MM-DD."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_FormatoFechaCheckOutInvalido() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -283,12 +379,23 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Las fechas deben estar en formato YYYY-MM-DD."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_IdInvalido() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -296,12 +403,23 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("El ID de la habitación debe ser un número válido."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_TotalPagarInvalido() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -309,12 +427,21 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("El totalPagar debe ser un número válido."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_NullHabitacionId() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -322,25 +449,46 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Faltan campos obligatorios en los datos."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_NullMetodoPago() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
 
         mockMvc.perform(put("/api/reservas/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"habitacionId\":2,\"fechaCheckIn\":\"2025-05-01\",\"fechaCheckOut\":\"2025-05-05\",\"metodoPago\":null,\"totalPagar\":400.0}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Faltan campos obligatorios en los datos."));
+                .andExpect(content().string("El método de pago es obligatorio."));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, never()).modificarReserva(anyLong(), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
     }
 
     @Test
     public void testModificarReserva_ErrorInesperado() throws Exception {
         Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
         when(reservaService.modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble()))
                 .thenThrow(new RuntimeException("Error inesperado"));
 
@@ -350,7 +498,34 @@ public class ReservaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Error inesperado: Error inesperado"));
 
+        verify(reservaService, times(1)).getReservaById(id);
         verify(reservaService, times(1)).modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), anyString(), anyDouble());
+    }
+
+    @Test
+    public void testModificarReserva_SoloMetodoPago() throws Exception {
+        Long id = 1L;
+        Reserva reserva = new Reserva();
+        reserva.setId(id);
+        reserva.setHabitacion(new Habitacion(101, 100.0, true, "Limpia", false, "Doble"));
+        reserva.getHabitacion().setId(2L);
+        reserva.setFechaCheckIn(LocalDate.of(2025, 5, 1));
+        reserva.setFechaCheckOut(LocalDate.of(2025, 5, 5));
+        reserva.setMetodoPago("Efectivo");
+        reserva.setTotalPagar(400.0);
+
+        when(reservaService.getReservaById(id)).thenReturn(Optional.of(reserva));
+        when(reservaService.modificarReserva(eq(id), anyLong(), any(LocalDate.class), any(LocalDate.class), eq("Tarjeta"), anyDouble()))
+                .thenReturn(true);
+
+        mockMvc.perform(put("/api/reservas/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Reserva modificada con éxito."));
+
+        verify(reservaService, times(1)).getReservaById(id);
+        verify(reservaService, times(1)).modificarReserva(id, 2L, LocalDate.of(2025, 5, 1), LocalDate.of(2025, 5, 5), "Tarjeta", 400.0);
     }
 
     @Test

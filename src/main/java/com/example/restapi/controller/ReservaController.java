@@ -93,49 +93,70 @@ public class ReservaController {
             @PathVariable Long id,
             @RequestBody Map<String, Object> datos) {
         try {
-            if (!datos.containsKey("habitacionId") || datos.get("habitacionId") == null ||
-                !datos.containsKey("fechaCheckIn") || datos.get("fechaCheckIn") == null ||
-                !datos.containsKey("fechaCheckOut") || datos.get("fechaCheckOut") == null ||
-                !datos.containsKey("metodoPago") || datos.get("metodoPago") == null ||
-                !datos.containsKey("totalPagar") || datos.get("totalPagar") == null) {
+            // Verificar que la reserva existe
+            Optional<Reserva> reservaOpt = reservaService.getReservaById(id);
+            if (reservaOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró la reserva con ID: " + id);
+            }
+            Reserva reserva = reservaOpt.get();
+
+            // Requerir al menos el método de pago
+            if (!datos.containsKey("metodoPago") || datos.get("metodoPago") == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Faltan campos obligatorios en los datos.");
+                        .body("El método de pago es obligatorio.");
             }
 
-            Long habitacionId;
-            try {
-                habitacionId = Long.parseLong(datos.get("habitacionId").toString());
-            } catch (NumberFormatException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("El ID de la habitación debe ser un número válido.");
+            // Obtener valores, usando los de la reserva existente si no se proporcionan
+            Long habitacionId = reserva.getHabitacion() != null ? reserva.getHabitacion().getId() : null;
+            if (datos.containsKey("habitacionId") && datos.get("habitacionId") != null) {
+                try {
+                    habitacionId = Long.parseLong(datos.get("habitacionId").toString());
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("El ID de la habitación debe ser un número válido.");
+                }
             }
 
-            LocalDate fechaCheckIn;
-            try {
-                fechaCheckIn = LocalDate.parse(datos.get("fechaCheckIn").toString());
-            } catch (DateTimeParseException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Las fechas deben estar en formato YYYY-MM-DD.");
+            LocalDate fechaCheckIn = reserva.getFechaCheckIn();
+            if (datos.containsKey("fechaCheckIn") && datos.get("fechaCheckIn") != null) {
+                try {
+                    fechaCheckIn = LocalDate.parse(datos.get("fechaCheckIn").toString());
+                } catch (DateTimeParseException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Las fechas deben estar en formato YYYY-MM-DD.");
+                }
             }
 
-            LocalDate fechaCheckOut;
-            try {
-                fechaCheckOut = LocalDate.parse(datos.get("fechaCheckOut").toString());
-            } catch (DateTimeParseException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Las fechas deben estar en formato YYYY-MM-DD.");
+            LocalDate fechaCheckOut = reserva.getFechaCheckOut();
+            if (datos.containsKey("fechaCheckOut") && datos.get("fechaCheckOut") != null) {
+                try {
+                    fechaCheckOut = LocalDate.parse(datos.get("fechaCheckOut").toString());
+                } catch (DateTimeParseException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Las fechas deben estar en formato YYYY-MM-DD.");
+                }
             }
 
             String metodoPago = datos.get("metodoPago").toString();
 
-            Double totalPagar;
-            try {
-                totalPagar = Double.parseDouble(datos.get("totalPagar").toString());
-            } catch (NumberFormatException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("El totalPagar debe ser un número válido.");
+            double totalPagar = reserva.getTotalPagar(); // Usar el valor existente (double)
+            if (datos.containsKey("totalPagar") && datos.get("totalPagar") != null) {
+                try {
+                    totalPagar = Double.parseDouble(datos.get("totalPagar").toString());
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("El totalPagar debe ser un número válido.");
+                }
             }
 
+            // Validar que los campos no sean nulos
+            if (habitacionId == null || fechaCheckIn == null || fechaCheckOut == null || metodoPago.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Faltan campos obligatorios en los datos.");
+            }
+
+            // Llamar al servicio
             boolean exito = reservaService.modificarReserva(id, habitacionId, fechaCheckIn, fechaCheckOut, metodoPago, totalPagar);
 
             if (exito) {
