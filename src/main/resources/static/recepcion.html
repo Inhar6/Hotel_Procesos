@@ -1,513 +1,578 @@
-    <!DOCTYPE html>
-    <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepción - Habitaciones</title>
+    <link rel="stylesheet" href="stylesRecepcion.css">
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .modal-content p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+        .modal-content select, .modal-content input {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+            color: #000; /* Asegurar texto negro */
+        }
+        .modal-content button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .modal-content .confirm-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .modal-content .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-content button:hover {
+            opacity: 0.9;
+        }
+        /* Estilos para centrar los botones */
+        .buttons-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Espacio entre botones */
+            margin-top: 20px;
+        }
+        .buttons-section button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="notificacion" style="display:none; position:fixed; top:20px; right:20px; background-color:#4ca1af; color:white; padding:15px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
+        ¡Nueva reserva registrada!
+    </div>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Recepción - Habitaciones</title>
-        <link rel="stylesheet" href="stylesRecepcion.css">
-        <style>
-            /* Estilos para el modal */
-            .modal {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-            .modal-content {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 10px;
-                width: 350px;
-                text-align: center;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            }
-            .modal-content h3 {
-                margin-bottom: 10px;
-                color: #333;
-            }
-            .modal-content p {
-                margin-bottom: 15px;
-                color: #555;
-                font-size: 14px;
-            }
-            .modal-content select, .modal-content input {
-                width: calc(100% - 20px);
-                margin: 10px auto;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 14px;
-                box-sizing: border-box;
-            }
-            .modal-content button {
-                padding: 10px 20px;
-                margin: 5px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            .modal-content .confirm-btn {
-                background-color: #28a745;
-                color: white;
-            }
-            .modal-content .cancel-btn {
-                background-color: #dc3545;
-                color: white;
-            }
-            .modal-content button:hover {
-                opacity: 0.9;
-            }
-            /* Estilos para centrar los botones */
-            .buttons-section {
-                display: flex;
-                justify-content: center;
-                gap: 10px; /* Espacio entre botones */
-                margin-top: 20px;
-            }
-            .buttons-section button {
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-        </style>
-    </head>
+    <div class="container">
+        <h1>Gestión de Habitaciones</h1>
 
-    <body>
-        <div id="notificacion" style="display:none; position:fixed; top:20px; right:20px; background-color:#4ca1af; color:white; padding:15px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
-            ¡Nueva reserva registrada!
+        <!-- Botones de filtro -->
+        <div class="filter-section">
+            <button onclick="cargarTodas()">Todas</button>
+            <button onclick="cargarDisponibles()">Disponibles</button>
+            <button onclick="cargarUrgentes()">Urgentes</button>
+            <select id="tipoFiltro" onchange="filtrarPorTipo()">
+                <option value="">Filtrar por tipo</option>
+                <option value="individual">Individual</option>
+                <option value="doble">Doble</option>
+                <option value="suite">Suite</option>
+            </select>
+            <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
         </div>
 
-        <div class="container">
-            <h1>Gestión de Habitaciones</h1>
+        <!-- Tabla de habitaciones -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="habitaciones-list"></tbody>
+        </table>
 
-            <!-- Botones de filtro -->
-            <div class="filter-section">
-                <button onclick="cargarTodas()">Todas</button>
-                <button onclick="cargarDisponibles()">Disponibles</button>
-                <button onclick="cargarUrgentes()">Urgentes</button>
-                <select id="tipoFiltro" onchange="filtrarPorTipo()">
-                    <option value="">Filtrar por tipo</option>
-                    <option value="individual">Individual</option>
-                    <option value="doble">Doble</option>
-                    <option value="suite">Suite</option>
+        <!-- Tabla de Gestión de Reservas -->
+        <h2>Gestión de Reservas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Reserva</th>
+                    <th>Habitación</th>
+                    <th>Cliente</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Total (€)</th>
+                    <th>Estado</th>
+                    <th>Método Pago</th>
+                </tr>
+            </thead>
+            <tbody id="reservas-list"></tbody>
+        </table>
+
+        <div class="buttons-section">
+            <button class="modificar-btn" onclick="mostrarModalModificarReserva()">Modificar Reserva</button>
+            <button class="cancelar-btn" onclick="mostrarModalCancelarReserva()">Cancelar Reserva</button>
+            <button class="checkin-btn" onclick="irACheckIn()">Realizar Check-In</button>
+            <button class="checkout-btn" onclick="mostrarModalCheckOut()">Realizar Check-Out</button>
+            <button onclick="volver()">Volver</button>
+        </div>
+
+        <!-- Modal para Check-Out -->
+        <div id="modalCheckOut" class="modal">
+            <div class="modal-content">
+                <h3>Realizar Check-Out</h3>
+                <p>Introduzca el ID de la reserva y seleccione el método de pago para completar el check-out.</p>
+                <input type="number" id="reservaId" placeholder="ID de la reserva" required>
+                <select id="metodoPago" required>
+                    <option value="">Selecciona un método de pago</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Efectivo">Efectivo</option>
                 </select>
-                <input type="number" id="precioMax" placeholder="Precio máximo" oninput="filtrarPorPrecio()">
-            </div>
-
-            <!-- Tabla de habitaciones -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Precio</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="habitaciones-list"></tbody>
-            </table>
-
-            <!-- Tabla de Gestión de Reservas -->
-            <h2>Gestión de Reservas</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID Reserva</th>
-                        <th>Habitación</th>
-                        <th>Cliente</th>
-                        <th>Check-In</th>
-                        <th>Check-Out</th>
-                        <th>Total (€)</th>
-                        <th>Estado</th>
-                        <th>Método Pago</th>
-                    </tr>
-                </thead>
-                <tbody id="reservas-list"></tbody>
-            </table>
-
-            <div class="buttons-section">
-                <button class="modificar-btn" onclick="modificarReserva()">Modificar Reserva</button>
-                <button class="cancelar-btn" onclick="cancelarReserva()">Cancelar Reserva</button>
-                <button class="checkin-btn" onclick="irACheckIn()">Realizar Check-In</button>
-                <button class="checkout-btn" onclick="mostrarModalCheckOut()">Realizar Check-Out</button>
-                <button onclick="volver()">Volver</button>
-            </div>
-
-            <!-- Modal para Check-Out -->
-            <div id="modalCheckOut" class="modal">
-                <div class="modal-content">
-                    <h3>Realizar Check-Out</h3>
-                    <p>Introduzca el ID de la reserva y seleccione el método de pago para completar el check-out.</p>
-                    <input type="number" id="reservaId" placeholder="ID de la reserva" required>
-                    <select id="metodoPago" required>
-                        <option value="">Selecciona un método de pago</option>
-                        <option value="Tarjeta">Tarjeta</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Transferencia">Transferencia</option>
-                        <option value="PayPal">PayPal</option>
-                    </select>
-                    <button class="confirm-btn" onclick="realizarCheckOut()">Confirmar</button>
-                    <button class="cancel-btn" onclick="cerrarModalCheckOut()">Cancelar</button>
-                </div>
+                <button class="confirm-btn" onclick="realizarCheckOut()">Confirmar</button>
+                <button class="cancel-btn" onclick="cerrarModalCheckOut()">Cancelar</button>
             </div>
         </div>
 
-        <script>
-            function formatearFecha(fecha) {
-                const date = new Date(fecha);
-                return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            }
+        <!-- Modal para Cancelar Reserva -->
+        <div id="modalCancelarReserva" class="modal">
+            <div class="modal-content">
+                <h3>Cancelar Reserva</h3>
+                <p>Introduzca el ID de la reserva que desea cancelar.</p>
+                <input type="number" id="cancelarReservaId" placeholder="ID de la reserva" required>
+                <button class="confirm-btn" onclick="realizarCancelacion()">Confirmar</button>
+                <button class="cancel-btn" onclick="cerrarModalCancelarReserva()">Cancelar</button>
+            </div>
+        </div>
 
-            async function cargarTodas() {
+        <!-- Modal para Modificar Reserva -->
+        <div id="modalModificarReserva" class="modal">
+            <div class="modal-content">
+                <h3>Modificar Reserva</h3>
+                <p>Introduzca los detalles para modificar la reserva.</p>
+                <input type="number" id="modificarReservaId" placeholder="ID de la reserva" required>
+                <input type="number" id="habitacionId" placeholder="ID de la habitación" required>
+                <input type="date" id="fechaCheckIn" placeholder="Fecha Check-In (YYYY-MM-DD)" required>
+                <input type="date" id="fechaCheckOut" placeholder="Fecha Check-Out (YYYY-MM-DD)" required>
+                <select id="metodoPagoModificar" required>
+                    <option value="">Selecciona un método de pago</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Efectivo">Efectivo</option>
+                </select>
+                <button class="confirm-btn" onclick="realizarModificacion()">Confirmar</button>
+                <button class="cancel-btn" onclick="cerrarModalModificarReserva()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatearFecha(fecha) {
+            const date = new Date(fecha);
+            return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        async function cargarTodas() {
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+                await cargarReservas();
+            } catch (error) {
+                console.error("Error al cargar habitaciones:", error);
+            }
+        }
+
+        async function cargarDisponibles() {
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones/disponibles");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            } catch (error) {
+                console.error("Error al cargar disponibles:", error);
+            }
+        }
+
+        async function cargarUrgentes() {
+            try {
+                const response = await fetch("http://localhost:8080/api/personal/habitaciones/urgentes");
+                const habitaciones = await response.json();
+                mostrarHabitaciones(habitaciones);
+            } catch (error) {
+                console.error("Error al cargar urgentes:", error);
+            }
+        }
+
+        async function filtrarPorTipo() {
+            const tipo = document.getElementById("tipoFiltro").value;
+            if (tipo) {
                 try {
-                    const response = await fetch("http://localhost:8080/api/personal/habitaciones");
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/tipo/${tipo}`);
                     const habitaciones = await response.json();
                     mostrarHabitaciones(habitaciones);
-                    await cargarReservas();
                 } catch (error) {
-                    console.error("Error al cargar habitaciones:", error);
+                    console.error("Error al filtrar por tipo:", error);
                 }
             }
+        }
 
-            async function cargarDisponibles() {
+        async function filtrarPorPrecio() {
+            const precioMax = document.getElementById("precioMax").value;
+            if (precioMax) {
                 try {
-                    const response = await fetch("http://localhost:8080/api/personal/habitaciones/disponibles");
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/precio/${precioMax}`);
                     const habitaciones = await response.json();
                     mostrarHabitaciones(habitaciones);
                 } catch (error) {
-                    console.error("Error al cargar disponibles:", error);
+                    console.error("Error al filtrar por precio:", error);
                 }
             }
+        }
 
-            async function cargarUrgentes() {
-                try {
-                    const response = await fetch("http://localhost:8080/api/personal/habitaciones/urgentes");
-                    const habitaciones = await response.json();
-                    mostrarHabitaciones(habitaciones);
-                } catch (error) {
-                    console.error("Error al cargar urgentes:", error);
-                }
-            }
+        function mostrarHabitaciones(habitaciones) {
+            const tbody = document.getElementById("habitaciones-list");
+            tbody.innerHTML = "";
+            habitaciones.forEach(hab => {
+                const row = `<tr>
+                    <td>${hab.id}</td>
+                    <td>${hab.tipo}</td>
+                    <td>${hab.precioPorNoche} €</td>
+                    <td class="${hab.disponible ? 'libre' : 'ocupada'}">${hab.disponible ? 'Libre' : 'Ocupada'}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
 
-            async function filtrarPorTipo() {
-                const tipo = document.getElementById("tipoFiltro").value;
-                if (tipo) {
-                    try {
-                        const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/tipo/${tipo}`);
-                        const habitaciones = await response.json();
-                        mostrarHabitaciones(habitaciones);
-                    } catch (error) {
-                        console.error("Error al filtrar por tipo:", error);
-                    }
-                }
-            }
-
-            async function filtrarPorPrecio() {
-                const precioMax = document.getElementById("precioMax").value;
-                if (precioMax) {
-                    try {
-                        const response = await fetch(`http://localhost:8080/api/personal/habitaciones/disponibles/precio/${precioMax}`);
-                        const habitaciones = await response.json();
-                        mostrarHabitaciones(habitaciones);
-                    } catch (error) {
-                        console.error("Error al filtrar por precio:", error);
-                    }
-                }
-            }
-
-            function mostrarHabitaciones(habitaciones) {
-                const tbody = document.getElementById("habitaciones-list");
-                tbody.innerHTML = "";
-                habitaciones.forEach(hab => {
-                    const row = `<tr>
-                        <td>${hab.id}</td>
-                        <td>${hab.tipo}</td>
-                        <td>${hab.precioPorNoche} €</td>
-                        <td class="${hab.disponible ? 'libre' : 'ocupada'}">${hab.disponible ? 'Libre' : 'Ocupada'}</td>
-                    </tr>`;
-                    tbody.innerHTML += row;
+        async function cargarReservas() {
+            try {
+                const response = await fetch("http://localhost:8080/api/reservas", {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
                 });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error ${response.status}: ${errorText}`);
+                }
+                const reservas = await response.json();
+                console.log("Reservas recibidas:", reservas);
+                mostrarReservas(reservas);
+            } catch (error) {
+                console.error("Error al cargar reservas:", error);
+                alert(`No se pudieron cargar las reservas. Detalle: ${error.message}`);
+            }
+        }
+
+        function mostrarReservas(reservas) {
+            const tbody = document.getElementById("reservas-list");
+            tbody.innerHTML = "";
+            if (!reservas || reservas.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='8'>No hay reservas disponibles</td></tr>";
+                return;
+            }
+            reservas.forEach(reserva => {
+                const metodoPago = reserva.metodoPago || 'N/A';
+                const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
+                const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
+                const row = `<tr>
+                    <td>${reserva.id || 'N/A'}</td>
+                    <td>${reserva.habitacion?.numero || 'N/A'}</td>
+                    <td>${reserva.clienteId || 'N/A'}</td>
+                    <td>${formatearFecha(reserva.fechaCheckIn)}</td>
+                    <td>${formatearFecha(reserva.fechaCheckOut)}</td>
+                    <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+                    <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
+                    <td>${metodoPagoCapitalizado}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function mostrarModalCancelarReserva() {
+            const modal = document.getElementById("modalCancelarReserva");
+            modal.style.display = "flex";
+            document.getElementById("cancelarReservaId").value = "";
+        }
+
+        function cerrarModalCancelarReserva() {
+            const modal = document.getElementById("modalCancelarReserva");
+            modal.style.display = "none";
+        }
+
+        async function realizarCancelacion() {
+            const reservaId = document.getElementById("cancelarReservaId").value;
+
+            if (!reservaId) {
+                alert("El ID de la reserva es obligatorio.");
+                return;
             }
 
-            async function cargarReservas() {
-                try {
-                    const response = await fetch("http://localhost:8080/api/reservas", {
-                        method: 'GET',
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Error ${response.status}: ${errorText}`);
-                    }
-                    const reservas = await response.json();
-                    console.log("Reservas recibidas:", reservas);
-                    mostrarReservas(reservas);
-                } catch (error) {
-                    console.error("Error al cargar reservas:", error);
-                    alert(`No se pudieron cargar las reservas. Detalle: ${error.message}`);
-                }
-            }
-
-            function mostrarReservas(reservas) {
-                const tbody = document.getElementById("reservas-list");
-                tbody.innerHTML = "";
-                if (!reservas || reservas.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='8'>No hay reservas disponibles</td></tr>";
-                    return;
-                }
-                reservas.forEach(reserva => {
-                    const metodoPago = reserva.metodoPago || 'N/A';
-                    const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
-                    const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
-                    const row = `<tr>
-                        <td>${reserva.id || 'N/A'}</td>
-                        <td>${reserva.habitacion?.numero || 'N/A'}</td>
-                        <td>${reserva.clienteId || 'N/A'}</td>
-                        <td>${formatearFecha(reserva.fechaCheckIn)}</td>
-                        <td>${formatearFecha(reserva.fechaCheckOut)}</td>
-                        <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
-                        <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
-                        <td>${metodoPagoCapitalizado}</td>
-                    </tr>`;
-                    tbody.innerHTML += row;
+            try {
+                const response = await fetch(`http://localhost:8080/api/reservas/cancelar/${reservaId}`, {
+                    method: "PUT"
                 });
-            }
-
-            async function cancelarReserva() {
-                const reservaId = prompt("Introduce el ID de la reserva a cancelar:");
-                if (reservaId) {
-                    try {
-                        const response = await fetch(`http://localhost:8080/api/reservas/cancelar/${reservaId}`, {
-                            method: "PUT"
-                        });
-                        const resultado = await response.text();
-                        if (response.ok) {
-                            alert(resultado);
-                            cargarTodas();
-                        } else {
-                            if (resultado === "La reserva ya está cancelada.") {
-                                alert("No se puede cancelar porque la reserva ya está cancelada.");
-                            } else {
-                                alert("Error: " + resultado);
-                            }
-                        }
-                    } catch (error) {
-                        alert("Error al conectar con el servidor: " + error.message);
-                    }
-                }
-            }
-
-            async function modificarReserva() {
-                const reservaId = prompt("Introduce el ID de la reserva a modificar:");
-                if (reservaId) {
-                    const habitacionId = prompt("Introduce el nuevo ID de la habitación:");
-                    const fechaCheckIn = prompt("Introduce la nueva fecha de Check-In (YYYY-MM-DD):");
-                    const fechaCheckOut = prompt("Introduce la nueva fecha de Check-Out (YYYY-MM-DD):");
-                    const metodoPago = prompt("Introduce el nuevo método de pago:");
-                    if (habitacionId && fechaCheckIn && fechaCheckOut && metodoPago) {
-                        try {
-                            const datos = {
-                                habitacionId: habitacionId,
-                                fechaCheckIn: fechaCheckIn,
-                                fechaCheckOut: fechaCheckOut,
-                                metodoPago: metodoPago
-                            };
-                            const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
-                                method: "PUT",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(datos)
-                            });
-                            const resultado = await response.text();
-                            if (response.ok) {
-                                alert(resultado);
-                                cargarTodas();
-                            } else {
-                                alert("Error: " + resultado);
-                            }
-                        } catch (error) {
-                            alert("Error al conectar con el servidor: " + error.message);
-                        }
+                const resultado = await response.text();
+                if (response.ok) {
+                    alert(resultado);
+                    cerrarModalCancelarReserva();
+                    cargarTodas();
+                } else {
+                    if (resultado === "La reserva ya está cancelada.") {
+                        alert("No se puede cancelar porque la reserva ya está cancelada.");
                     } else {
-                        alert("Todos los campos son obligatorios.");
+                        alert("Error: " + resultado);
                     }
                 }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("Error al conectar con el servidor: " + error.message);
+            }
+        }
+
+        function mostrarModalModificarReserva() {
+            const modal = document.getElementById("modalModificarReserva");
+            modal.style.display = "flex";
+            document.getElementById("modificarReservaId").value = "";
+            document.getElementById("habitacionId").value = "";
+            document.getElementById("fechaCheckIn").value = "";
+            document.getElementById("fechaCheckOut").value = "";
+            document.getElementById("metodoPagoModificar").value = "";
+        }
+
+        function cerrarModalModificarReserva() {
+            const modal = document.getElementById("modalModificarReserva");
+            modal.style.display = "none";
+        }
+
+        async function realizarModificacion() {
+            const reservaId = document.getElementById("modificarReservaId").value;
+            const habitacionId = document.getElementById("habitacionId").value;
+            const fechaCheckIn = document.getElementById("fechaCheckIn").value;
+            const fechaCheckOut = document.getElementById("fechaCheckOut").value;
+            const metodoPago = document.getElementById("metodoPagoModificar").value;
+
+            if (!reservaId || !habitacionId || !fechaCheckIn || !fechaCheckOut || !metodoPago) {
+                alert("Todos los campos son obligatorios.");
+                return;
             }
 
-            function irACheckIn() {
-                window.location.href = "checkin.html";
-            }
-
-            function mostrarModalCheckOut() {
-                console.log("Mostrando modal de Check-Out");
-                const modal = document.getElementById("modalCheckOut");
-                modal.style.display = "flex";
-                document.getElementById("reservaId").value = "";
-                document.getElementById("metodoPago").value = "";
-            }
-
-            function cerrarModalCheckOut() {
-                console.log("Cerrando modal de Check-Out");
-                const modal = document.getElementById("modalCheckOut");
-                modal.style.display = "none";
-            }
-
-            async function realizarCheckOut() {
-                const reservaId = document.getElementById("reservaId").value;
-                const metodoPago = document.getElementById("metodoPago").value;
-
-                if (!reservaId) {
-                    alert("El ID de la reserva es obligatorio.");
-                    return;
-                }
-                if (!metodoPago) {
-                    alert("Debes seleccionar un método de pago.");
-                    return;
-                }
-
-                try {
-                    // Obtener los datos actuales de la reserva para enviar un cuerpo completo
-                    const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
-                        method: "GET",
-                        headers: { "Accept": "application/json" }
-                    });
-                    if (!reservaResponse.ok) {
-                        const errorText = await reservaResponse.text();
-                        alert("Error al obtener datos de la reserva: " + errorText);
-                        return;
-                    }
-                    const reserva = await reservaResponse.json();
-                    console.log("Datos actuales de la reserva:", reserva);
-
-                    // Preparar datos para actualizar el método de pago
-                    const datosUpdate = {
-                        habitacionId: reserva.habitacion?.id || null,
-                        fechaCheckIn: reserva.fechaCheckIn,
-                        fechaCheckOut: reserva.fechaCheckOut,
-                        metodoPago: metodoPago
-                    };
-                    console.log("Enviando solicitud de actualización de método de pago con datos:", datosUpdate);
-
-                    // Actualizar el método de pago
-                    const updateResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datosUpdate)
-                    });
-
-                    const updateResultado = await updateResponse.text();
-                    console.log("Respuesta de actualización de método de pago:", updateResultado);
-
-                    if (!updateResponse.ok) {
-                        alert("Error al actualizar el método de pago: " + updateResultado);
-                        return;
-                    }
-
-                    // Realizar el check-out solo si la actualización fue exitosa
-                    const datosCheckout = {
-                        metodoPago: metodoPago
-                    };
-                    console.log("Enviando solicitud de check-out con datos:", datosCheckout);
-
-                    const checkoutResponse = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datosCheckout)
-                    });
-
-                    const checkoutResultado = await checkoutResponse.text();
-                    console.log("Respuesta de check-out:", checkoutResultado);
-
-                    if (checkoutResponse.ok) {
-                        alert("Check-Out realizado con éxito: " + checkoutResultado);
-                        cerrarModalCheckOut();
-                        await cargarTodas();
-                    } else {
-                        alert("Error al realizar el Check-Out: " + checkoutResultado);
-                    }
-                } catch (error) {
-                    console.error("Error al conectar con el servidor:", error);
-                    alert("Error al conectar con el servidor: " + error.message);
-                }
-            }
-
-            function volver() {
-                window.location.href = "personal.html";
-            }
-
-            // Asegurarse de que el modal esté oculto al cargar la página
-            window.onload = function() {
-                console.log("Página cargada, asegurando que el modal esté oculto");
-                const modal = document.getElementById("modalCheckOut");
-                modal.style.display = "none";
-                cargarTodas();
-            };
-
-            async function verificarNuevasReservas() {
-                try {
-                    const response = await fetch('http://localhost:8080/api/reservas/nuevas');
-                    if (!response.ok) {
-                        throw new Error('Error al comprobar nuevas reservas');
-                    }
-
-                    const reservas = await response.json();
-
-                    if (reservas.length > 0) {
-                        mostrarNotificacion('¡Tienes nuevas reservas pendientes!');
-                        actualizarTablaReservas(reservas);
-                    }
-                } catch (error) {
-                    console.error('Error buscando nuevas reservas:', error);
-                }
-
-            }
-
-            function mostrarNotificacion(mensaje) {
-                const noti = document.getElementById('notificacion');
-                noti.innerText = mensaje;
-                noti.style.display = 'block';
-                
-                setTimeout(() => {
-                    noti.style.display = 'none';
-                }, 3000); // Ocultar después de 3 segundos
-            }
-
-            function actualizarTablaReservas(reservas) {
-                const tabla = document.getElementById('tablaReservas');
-
-                // Elimina todas las filas anteriores excepto la cabecera
-                tabla.querySelectorAll('tr:not(:first-child)').forEach(e => e.remove());
-
-                // Añade nuevas filas
-                reservas.forEach(reserva => {
-                    const fila = document.createElement('tr');
-
-                    fila.innerHTML = `
-                        <td>${reserva.id}</td>
-                        <td>${reserva.fechaInicio}</td>
-                        <td>${reserva.fechaFin}</td>
-                        <td>${reserva.cliente ? reserva.cliente.nombre : 'Cliente desconocido'}</td>
-                        <td>${reserva.habitacion ? reserva.habitacion.tipo : 'Habitación desconocida'}</td>
-                        <td>${reserva.estado}</td>
-                    `;
-
-                    tabla.appendChild(fila);
+            try {
+                const datos = {
+                    habitacionId: parseInt(habitacionId),
+                    fechaCheckIn: fechaCheckIn,
+                    fechaCheckOut: fechaCheckOut,
+                    metodoPago: metodoPago
+                };
+                const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datos)
                 });
+                const resultado = await response.text();
+                if (response.ok) {
+                    alert(resultado || "Reserva modificada exitosamente.");
+                    cerrarModalModificarReserva();
+                    cargarTodas();
+                } else {
+                    alert("Error: " + resultado);
+                }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("Error al conectar con el servidor: " + error.message);
+            }
+        }
+
+        function irACheckIn() {
+            window.location.href = "checkin.html";
+        }
+
+        function mostrarModalCheckOut() {
+            console.log("Mostrando modal de Check-Out");
+            const modal = document.getElementById("modalCheckOut");
+            modal.style.display = "flex";
+            document.getElementById("reservaId").value = "";
+            document.getElementById("metodoPago").value = "";
+        }
+
+        function cerrarModalCheckOut() {
+            console.log("Cerrando modal de Check-Out");
+            const modal = document.getElementById("modalCheckOut");
+            modal.style.display = "none";
+        }
+
+        async function realizarCheckOut() {
+            const reservaId = document.getElementById("reservaId").value;
+            const metodoPago = document.getElementById("metodoPago").value;
+
+            if (!reservaId) {
+                alert("El ID de la reserva es obligatorio.");
+                return;
+            }
+            if (!metodoPago) {
+                alert("Debes seleccionar un método de pago.");
+                return;
             }
 
-            setInterval(verificarNuevasReservas, 10000);
-        </script>
+            try {
+                // Obtener los datos actuales de la reserva para enviar un cuerpo completo
+                const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (!reservaResponse.ok) {
+                    const errorText = await reservaResponse.text();
+                    alert("Error al obtener datos de la reserva: " + errorText);
+                    return;
+                }
+                const reserva = await reservaResponse.json();
+                console.log("Datos actuales de la reserva:", reserva);
 
+                // Preparar datos para actualizar el método de pago
+                const datosUpdate = {
+                    habitacionId: reserva.habitacion?.id || null,
+                    fechaCheckIn: reserva.fechaCheckIn,
+                    fechaCheckOut: reserva.fechaCheckOut,
+                    metodoPago: metodoPago
+                };
+                console.log("Enviando solicitud de actualización de método de pago con datos:", datosUpdate);
 
-    </body>
+                // Actualizar el método de pago
+                const updateResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosUpdate)
+                });
 
-    </html>
+                const updateResultado = await updateResponse.text();
+                console.log("Respuesta de actualización de método de pago:", updateResultado);
+
+                if (!updateResponse.ok) {
+                    alert("Error al actualizar el método de pago: " + updateResultado);
+                    return;
+                }
+
+                // Realizar el check-out solo si la actualización fue exitosa
+                const datosCheckout = {
+                    metodoPago: metodoPago
+                };
+                console.log("Enviando solicitud de check-out con datos:", datosCheckout);
+
+                const checkoutResponse = await fetch(`http://localhost:8080/api/reservas/checkout/${reservaId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosCheckout)
+                });
+
+                const checkoutResultado = await checkoutResponse.text();
+                console.log("Respuesta de check-out:", checkoutResultado);
+
+                if (checkoutResponse.ok) {
+                    alert("Check-Out realizado con éxito: " + checkoutResultado);
+                    cerrarModalCheckOut();
+                    await cargarTodas();
+                } else {
+                    alert("Error al realizar el Check-Out: " + checkoutResultado);
+                }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("Error al conectar con el servidor: " + error.message);
+            }
+        }
+
+        function volver() {
+            window.location.href = "personal.html";
+        }
+
+        // Asegurarse de que los modales estén ocultos al cargar la página
+        window.onload = function() {
+            console.log("Página cargada, asegurando que los modales estén ocultos");
+            const modalCheckOut = document.getElementById("modalCheckOut");
+            const modalCancelar = document.getElementById("modalCancelarReserva");
+            const modalModificar = document.getElementById("modalModificarReserva");
+            modalCheckOut.style.display = "none";
+            modalCancelar.style.display = "none";
+            modalModificar.style.display = "none";
+            cargarTodas();
+        };
+
+        async function verificarNuevasReservas() {
+            try {
+                const response = await fetch('http://localhost:8080/api/reservas/nuevas');
+                if (!response.ok) {
+                    throw new Error('Error al comprobar nuevas reservas');
+                }
+
+                const reservas = await response.json();
+
+                if (reservas.length > 0) {
+                    mostrarNotificacion('¡Tienes nuevas reservas pendientes!');
+                    actualizarTablaReservas(reservas);
+                }
+            } catch (error) {
+                console.error('Error buscando nuevas reservas:', error);
+            }
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const noti = document.getElementById('notificacion');
+            noti.innerText = mensaje;
+            noti.style.display = 'block';
+            
+            setTimeout(() => {
+                noti.style.display = 'none';
+            }, 3000); // Ocultar después de 3 segundos
+        }
+
+        function actualizarTablaReservas(reservas) {
+            const tabla = document.getElementById("reservas-list");
+
+            // Elimina todas las filas anteriores
+            tabla.innerHTML = "";
+
+            // Añade nuevas filas
+            reservas.forEach(reserva => {
+                const metodoPago = reserva.metodoPago || 'N/A';
+                const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
+                const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
+                const row = `<tr>
+                    <td>${reserva.id || 'N/A'}</td>
+                    <td>${reserva.habitacion?.numero || 'N/A'}</td>
+                    <td>${reserva.clienteId || 'N/A'}</td>
+                    <td>${formatearFecha(reserva.fechaCheckIn)}</td>
+                    <td>${formatearFecha(reserva.fechaCheckOut)}</td>
+                    <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+                    <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
+                    <td>${metodoPagoCapitalizado}</td>
+                </tr>`;
+                tabla.innerHTML += row;
+            });
+        }
+
+        setInterval(verificarNuevasReservas, 10000);
+    </script>
+</body>
+</html>
