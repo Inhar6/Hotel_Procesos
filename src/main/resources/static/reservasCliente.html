@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Reservas del Cliente</title>
   <link rel="stylesheet" href="stylesClienteWeb.css">
+  
 </head>
 <body>
   <h1>Reservas del Cliente</h1>
@@ -12,6 +13,7 @@
     <table id="tablaReservas">
       <thead>
         <tr>
+          <th>ID Reserva</th> <!-- Nueva columna -->
           <th>N.º Habitación</th>
           <th>Tipo</th>
           <th>Precio/Noche</th>
@@ -24,10 +26,23 @@
       </tbody>
     </table>
     <div class="button-container">
+      <button class="cancelar-reserva" onclick="mostrarModalCancelarReserva()">Cancelar Reserva</button>
       <button class="reportar-problemas" onclick="window.location.href='reservaProblema.html'">Reportar problemas</button>
       <button onclick="window.location.href='reserva.html'">Volver</button>
     </div>
   </div>
+
+  <!-- Modal para Cancelar Reserva -->
+  <div id="modalCancelarReserva" class="modal">
+    <div class="modal-content">
+      <h3>Cancelar Reserva</h3>
+      <p>Introduzca el ID de la reserva que desea cancelar.</p>
+      <input type="number" id="reservaId" placeholder="ID de la reserva" required>
+      <button class="confirm-btn" onclick="realizarCancelacion()">Confirmar</button>
+      <button class="cancel-btn" onclick="cerrarModalCancelarReserva()">Cancelar</button>
+    </div>
+  </div>
+
   <script>
     function mostrarReservas() {
       const email = localStorage.getItem("clienteEmail");
@@ -53,11 +68,12 @@
   
             const row = `
               <tr>
+                <td>${reserva.id || 'N/A'}</td> <!-- Mostrar el ID de la reserva -->
                 <td>${h.numero}</td>
                 <td>${h.tipo}</td>
                 <td>${h.precioPorNoche} €</td>
                 <td>${reserva.metodoPago || "No especificado"}</td>
-                <td><button onclick="guardarIdHabitacionYRedirigir(${h.id})">Informacion</button></td> <!-- Cambiado a h.id -->
+                <td><button onclick="guardarIdHabitacionYRedirigir(${h.id})">Informacion</button></td>
               </tr>
             `;
   
@@ -74,10 +90,55 @@
       localStorage.setItem("habitacionId", habitacionId);
       window.location.href = "servicioHabitacion.html";
     }
-  
+
+    function mostrarModalCancelarReserva() {
+      const modal = document.getElementById("modalCancelarReserva");
+      modal.style.display = "flex";
+      document.getElementById("reservaId").value = "";
+    }
+
+    function cerrarModalCancelarReserva() {
+      const modal = document.getElementById("modalCancelarReserva");
+      modal.style.display = "none";
+    }
+
+    async function realizarCancelacion() {
+      const reservaId = document.getElementById("reservaId").value;
+
+      if (!reservaId) {
+        alert("El ID de la reserva es obligatorio.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/reservas/cancelar/${reservaId}`, {
+          method: "PUT"
+        });
+        const resultado = await response.text();
+
+        if (response.ok) {
+          alert(resultado);
+          cerrarModalCancelarReserva();
+          mostrarReservas(); // Actualizar la tabla de reservas
+        } else {
+          if (resultado === "La reserva ya está cancelada.") {
+            alert("No se puede cancelar porque la reserva ya está cancelada.");
+          } else {
+            alert("Error: " + resultado);
+          }
+        }
+      } catch (error) {
+        console.error("Error al conectar con el servidor:", error);
+        alert("Error al conectar con el servidor: " + error.message);
+      }
+    }
+
     // Llama a la función cuando la página carga
-    window.onload = mostrarReservas;
+    window.onload = function() {
+      const modal = document.getElementById("modalCancelarReserva");
+      modal.style.display = "none";
+      mostrarReservas();
+    };
   </script>
-  
 </body>
 </html>
