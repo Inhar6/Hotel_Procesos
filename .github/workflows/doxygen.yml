@@ -30,24 +30,12 @@ jobs:
         mkdir -p docs
         rm -rf docs/site
         mkdir -p docs/site
-        if [ -d "target/site" ]; then
-          cp -r target/site/* docs/site/
-        fi
-        if [ -d "target/reports" ]; then
-          mkdir -p docs/site/reports
-          cp -r target/reports/* docs/site/reports/
-        fi
+        cp -r target/site/* docs/site/
+        cp -r target/reports/* docs/site/reports/
         rm -rf docs/doxygen
         mkdir -p docs/doxygen
-        if [ -d "target/doxygen/html" ]; then
-          cp -r target/doxygen/html/* docs/doxygen/
-        fi
+        cp -r target/doxygen/html/* docs/doxygen/
 
-    - name: Build with Jekyll
-      uses: actions/jekyll-build-pages@v1
-      with:
-        source: ./docs  # Asegúrate de que esta ruta sea correcta
-        destination: ./docs/_site
         
     - name: Deploy Documentation to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
