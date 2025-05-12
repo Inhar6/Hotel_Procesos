@@ -251,9 +251,24 @@ a:hover {
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 18px;
     }
     .cancelar-reserva:hover {
       opacity: 0.9;
-      background-color: #5b010a;
+      background-color: #770510;
     }
+
+    /* Estilo para el botón de Modificar Reserva */
+    .modificar-btn {
+    background-color: #ffa200; 
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    }
+
+    .modificar-btn:hover {
+    background-color: #784c00; 
+    }
+    

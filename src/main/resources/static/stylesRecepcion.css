@@ -109,7 +109,7 @@ th {
 
 /* Estilo para el botón de Modificar Reserva */
 .modificar-btn {
-    background-color: #ffa200; /* Rojo intenso */
+    background-color: #ffa200; 
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -118,7 +118,7 @@ th {
 }
 
 .modificar-btn:hover {
-    background-color: #784c00; /* Rojo más oscuro al pasar el cursor */
+    background-color: #784c00; 
 }
 
 /* Estilo para el botón de Cancelar Reserva */

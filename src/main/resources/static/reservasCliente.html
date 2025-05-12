@@ -13,7 +13,7 @@
     <table id="tablaReservas">
       <thead>
         <tr>
-          <th>ID Reserva</th> <!-- Nueva columna -->
+          <th>ID Reserva</th>
           <th>N.º Habitación</th>
           <th>Tipo</th>
           <th>Precio/Noche</th>
@@ -26,9 +26,27 @@
       </tbody>
     </table>
     <div class="button-container">
+      <button class="modificar-reserva" onclick="mostrarModalModificarReserva()">Modificar Reserva</button>
       <button class="cancelar-reserva" onclick="mostrarModalCancelarReserva()">Cancelar Reserva</button>
       <button class="reportar-problemas" onclick="window.location.href='reservaProblema.html'">Reportar problemas</button>
       <button onclick="window.location.href='reserva.html'">Volver</button>
+    </div>
+  </div>
+
+  <!-- Modal para Modificar Reserva -->
+  <div id="modalModificarReserva" class="modal">
+    <div class="modal-content">
+      <h3>Modificar Reserva</h3>
+      <p>Introduzca el ID de la reserva y seleccione el nuevo método de pago.</p>
+      <input type="number" id="modificarReservaId" placeholder="ID de la reserva" required>
+      <select id="metodoPago" required>
+        <option value="">Selecciona un método de pago</option>
+        <option value="Tarjeta">Tarjeta</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Efectivo">Efectivo</option>
+      </select>
+      <button class="confirm-btn" onclick="realizarModificacion()">Confirmar</button>
+      <button class="cancel-btn" onclick="cerrarModalModificarReserva()">Cancelar</button>
     </div>
   </div>
 
@@ -68,7 +86,7 @@
   
             const row = `
               <tr>
-                <td>${reserva.id || 'N/A'}</td> <!-- Mostrar el ID de la reserva -->
+                <td>${reserva.id || 'N/A'}</td>
                 <td>${h.numero}</td>
                 <td>${h.tipo}</td>
                 <td>${h.precioPorNoche} €</td>
@@ -91,6 +109,74 @@
       window.location.href = "servicioHabitacion.html";
     }
 
+    // Funciones para el modal de Modificar Reserva
+    function mostrarModalModificarReserva() {
+      const modal = document.getElementById("modalModificarReserva");
+      modal.style.display = "flex";
+      document.getElementById("modificarReservaId").value = "";
+      document.getElementById("metodoPago").value = "";
+    }
+
+    function cerrarModalModificarReserva() {
+      const modal = document.getElementById("modalModificarReserva");
+      modal.style.display = "none";
+    }
+
+    async function realizarModificacion() {
+      const reservaId = document.getElementById("modificarReservaId").value;
+      const metodoPago = document.getElementById("metodoPago").value;
+
+      if (!reservaId) {
+        alert("El ID de la reserva es obligatorio.");
+        return;
+      }
+      if (!metodoPago) {
+        alert("Debes seleccionar un método de pago.");
+        return;
+      }
+
+      try {
+        // Obtener los datos actuales de la reserva para enviar un cuerpo completo
+        const reservaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+        if (!reservaResponse.ok) {
+          const errorText = await reservaResponse.text();
+          alert("Error al obtener datos de la reserva: " + errorText);
+          return;
+        }
+        const reserva = await reservaResponse.json();
+
+        // Preparar datos para actualizar solo el método de pago
+        const datosUpdate = {
+          habitacionId: reserva.habitacion?.id || null,
+          fechaCheckIn: reserva.fechaCheckIn,
+          fechaCheckOut: reserva.fechaCheckOut,
+          metodoPago: metodoPago
+        };
+
+        const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datosUpdate)
+        });
+        const resultado = await response.text();
+
+        if (response.ok) {
+          alert(resultado || "Método de pago actualizado exitosamente.");
+          cerrarModalModificarReserva();
+          mostrarReservas(); // Actualizar la tabla de reservas
+        } else {
+          alert("Error: " + resultado);
+        }
+      } catch (error) {
+        console.error("Error al conectar con el servidor:", error);
+        alert("Error al conectar con el servidor: " + error.message);
+      }
+    }
+
+    // Funciones para el modal de Cancelar Reserva
     function mostrarModalCancelarReserva() {
       const modal = document.getElementById("modalCancelarReserva");
       modal.style.display = "flex";
@@ -121,7 +207,7 @@
           cerrarModalCancelarReserva();
           mostrarReservas(); // Actualizar la tabla de reservas
         } else {
-          if (resultado === "La reserva ya está cancelada.") {
+          if (resultado === "La reserva ya está illegal.") {
             alert("No se puede cancelar porque la reserva ya está cancelada.");
           } else {
             alert("Error: " + resultado);
@@ -135,8 +221,10 @@
 
     // Llama a la función cuando la página carga
     window.onload = function() {
-      const modal = document.getElementById("modalCancelarReserva");
-      modal.style.display = "none";
+      const modalModificar = document.getElementById("modalModificarReserva");
+      const modalCancelar = document.getElementById("modalCancelarReserva");
+      modalModificar.style.display = "none";
+      modalCancelar.style.display = "none";
       mostrarReservas();
     };
   </script>
