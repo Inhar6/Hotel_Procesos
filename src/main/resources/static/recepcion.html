@@ -101,7 +101,7 @@
                 <h3>Modificar Reserva</h3>
                 <p>Introduzca los detalles para modificar la reserva.</p>
                 <input type="number" id="modificarReservaId" placeholder="ID de la reserva" required>
-                <input type="number" id="habitacionId" placeholder="ID de la habitación" required>
+                <input type="number" id="habitacionId" placeholder="Número de la habitación" required>
                 <label for="fechaCheckIn">Fecha Check-In</label>
                 <input type="date" id="fechaCheckIn" required>
                 <label for="fechaCheckOut">Fecha Check-Out</label>
@@ -112,6 +112,7 @@
                     <option value="PayPal">PayPal</option>
                     <option value="Efectivo">Efectivo</option>
                 </select>
+                <span class="total-price" id="totalPrice">Total: 0.00 €</span>
                 <button class="confirm-btn" onclick="realizarModificacion()">Confirmar</button>
                 <button class="cancel-btn" onclick="cerrarModalModificarReserva()">Cancelar</button>
             </div>
@@ -122,6 +123,53 @@
         function formatearFecha(fecha) {
             const date = new Date(fecha);
             return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        // Función para calcular el número de noches
+        function calcularNoches(fechaCheckIn, fechaCheckOut) {
+            const checkInDate = new Date(fechaCheckIn);
+            const checkOutDate = new Date(fechaCheckOut);
+            const diffTime = checkOutDate - checkInDate;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        // Función para actualizar el precio total en el modal
+        async function actualizarPrecioTotal() {
+            const habitacionId = document.getElementById("habitacionId").value;
+            const fechaCheckIn = document.getElementById("fechaCheckIn").value;
+            const fechaCheckOut = document.getElementById("fechaCheckOut").value;
+            const totalPriceElement = document.getElementById("totalPrice");
+
+            if (habitacionId && fechaCheckIn && fechaCheckOut) {
+                try {
+                    // Obtener el precio por noche de la habitación
+                    const response = await fetch(`http://localhost:8080/api/personal/habitaciones/${habitacionId}`);
+                    if (!response.ok) {
+                        throw new Error("Habitación no encontrada");
+                    }
+                    const habitacion = await response.json();
+                    const precioPorNoche = habitacion.precioPorNoche;
+
+                    // Calcular el número de noches
+                    const noches = calcularNoches(fechaCheckIn, fechaCheckOut);
+                    if (noches <= 0) {
+                        totalPriceElement.textContent = "Total: 0.00 €";
+                        return 0;
+                    }
+
+                    // Calcular el precio total
+                    const totalPagar = noches * precioPorNoche;
+                    totalPriceElement.textContent = `Total: ${totalPagar.toFixed(2)} €`;
+                    return totalPagar;
+                } catch (error) {
+                    console.error("Error al obtener precio de la habitación:", error);
+                    totalPriceElement.textContent = "Total: 0.00 €";
+                    return 0;
+                }
+            } else {
+                totalPriceElement.textContent = "Total: 0.00 €";
+                return 0;
+            }
         }
 
         async function cargarTodas() {
@@ -225,13 +273,15 @@
                 const metodoPago = reserva.metodoPago || 'N/A';
                 const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
                 const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
+                const totalPagar = reserva.totalPagar != null ? reserva.totalPagar.toFixed(2) : '0.00';
+                console.log(`Reserva ID ${reserva.id}: totalPagar = ${totalPagar}`);
                 const row = `<tr>
                     <td>${reserva.id || 'N/A'}</td>
                     <td>${reserva.habitacion?.numero || 'N/A'}</td>
                     <td>${reserva.clienteId || 'N/A'}</td>
                     <td>${formatearFecha(reserva.fechaCheckIn)}</td>
                     <td>${formatearFecha(reserva.fechaCheckOut)}</td>
-                    <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+                    <td>${totalPagar}</td>
                     <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
                     <td>${metodoPagoCapitalizado}</td>
                 </tr>`;
@@ -288,6 +338,7 @@
             document.getElementById("fechaCheckIn").value = "";
             document.getElementById("fechaCheckOut").value = "";
             document.getElementById("metodoPagoModificar").value = "";
+            document.getElementById("totalPrice").textContent = "Total: 0.00 €";
 
             // Añadir evento para prellenar campos cuando se ingrese el reservaId
             const reservaIdInput = document.getElementById("modificarReservaId");
@@ -305,19 +356,27 @@
                             document.getElementById("fechaCheckIn").value = reserva.fechaCheckIn.split("T")[0] || "";
                             document.getElementById("fechaCheckOut").value = reserva.fechaCheckOut.split("T")[0] || "";
                             document.getElementById("metodoPagoModificar").value = reserva.metodoPago || "";
+                            document.getElementById("totalPrice").textContent = `Total: ${(reserva.totalPagar || 0).toFixed(2)} €`;
                         } else {
                             alert("Reserva no encontrada. Verifica el ID.");
                             document.getElementById("habitacionId").value = "";
                             document.getElementById("fechaCheckIn").value = "";
                             document.getElementById("fechaCheckOut").value = "";
                             document.getElementById("metodoPagoModificar").value = "";
+                            document.getElementById("totalPrice").textContent = "Total: 0.00 €";
                         }
                     } catch (error) {
                         console.error("Error al obtener la reserva:", error);
                         alert("Error al conectar con el servidor: " + error.message);
                     }
                 }
-            }, { once: true }); // Ejecutar solo una vez por apertura del modal
+            }, { once: true });
+
+            // Añadir eventos para actualizar el precio total dinámicamente
+            const updatePriceFields = ["habitacionId", "fechaCheckIn", "fechaCheckOut"];
+            updatePriceFields.forEach(field => {
+                document.getElementById(field).addEventListener("change", actualizarPrecioTotal);
+            });
         }
 
         function cerrarModalModificarReserva() {
@@ -372,13 +431,22 @@
                     return;
                 }
 
+                // Calcular el precio total
+                const totalPagar = await actualizarPrecioTotal();
+                if (totalPagar <= 0) {
+                    alert("No se pudo calcular el precio total. Verifica los datos.");
+                    return;
+                }
+
                 // Preparar datos para la actualización
                 const datos = {
                     habitacionId: parseInt(habitacionId),
                     fechaCheckIn: fechaCheckIn,
                     fechaCheckOut: fechaCheckOut,
-                    metodoPago: metodoPago
+                    metodoPago: metodoPago,
+                    totalPagar: totalPagar
                 };
+                console.log("Enviando datos al backend:", datos);
 
                 const response = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
                     method: "PUT",
@@ -386,10 +454,20 @@
                     body: JSON.stringify(datos)
                 });
                 const resultado = await response.text();
+                console.log("Respuesta del backend (PUT):", resultado);
+
                 if (response.ok) {
                     alert(resultado || "Reserva modificada exitosamente.");
                     cerrarModalModificarReserva();
-                    cargarTodas();
+                    // Recargar reservas para actualizar la tabla
+                    await cargarTodas();
+                    // Verificar la reserva modificada
+                    const verificaResponse = await fetch(`http://localhost:8080/api/reservas/${reservaId}`, {
+                        method: "GET",
+                        headers: { "Accept": "application/json" }
+                    });
+                    const reservaActualizada = await verificaResponse.json();
+                    console.log("Reserva actualizada verificada:", reservaActualizada);
                 } else {
                     alert("Error: " + resultado);
                 }
@@ -550,13 +628,15 @@
                 const metodoPago = reserva.metodoPago || 'N/A';
                 const metodoPagoCapitalizado = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1).toLowerCase();
                 const estadoClass = reserva.estado.toLowerCase().replace(/\s+/g, '-');
+                const totalPagar = reserva.totalPagar != null ? reserva.totalPagar.toFixed(2) : '0.00';
+                console.log(`Reserva ID ${reserva.id}: totalPagar = ${totalPagar}`);
                 const row = `<tr>
                     <td>${reserva.id || 'N/A'}</td>
                     <td>${reserva.habitacion?.numero || 'N/A'}</td>
                     <td>${reserva.clienteId || 'N/A'}</td>
                     <td>${formatearFecha(reserva.fechaCheckIn)}</td>
                     <td>${formatearFecha(reserva.fechaCheckOut)}</td>
-                    <td>${(reserva.totalPagar || 0).toFixed(2)}</td>
+                    <td>${totalPagar}</td>
                     <td class="${estadoClass}">${reserva.estado || 'N/A'}</td>
                     <td>${metodoPagoCapitalizado}</td>
                 </tr>`;

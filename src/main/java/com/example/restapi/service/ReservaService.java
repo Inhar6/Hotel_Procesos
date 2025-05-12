@@ -36,16 +36,13 @@ public class ReservaService {
             Cliente cliente = clienteOpt.get();
             Habitacion habitacion = habitacionOpt.get();
 
-            // Verificar si la habitación ya está ocupada
             if (!habitacion.isDisponible()) {
                 return false;
             }
 
-            // Crear la reserva
             Reserva reserva = new Reserva(cliente, habitacion, fechaCheckIn, fechaCheckOut, metodoPago);
             reservaRepository.save(reserva);
 
-            // Marcar la habitación como ocupada
             habitacion.setDisponible(false);
             habitacionRepository.save(habitacion);
 
@@ -54,7 +51,7 @@ public class ReservaService {
         return false;
     }
 
-    public boolean modificarReserva(Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
+    public boolean modificarReserva(Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago, Double totalPagar) {
         Optional<Reserva> reservaOpt = reservaRepository.findById(reservaId);
         Optional<Habitacion> habitacionOpt = habitacionRepository.findById(habitacionId);
 
@@ -62,12 +59,17 @@ public class ReservaService {
             Reserva reserva = reservaOpt.get();
             Habitacion nuevaHabitacion = habitacionOpt.get();
 
+            // Validar que la reserva esté en estado "Pendiente"
+            if (!reserva.getEstado().equalsIgnoreCase("Pendiente")) {
+                return false;
+            }
+
             // Verificar que la nueva habitación esté disponible (si es diferente a la actual)
             if (!nuevaHabitacion.getId().equals(reserva.getHabitacion().getId()) && !nuevaHabitacion.isDisponible()) {
                 return false; // La nueva habitación no está disponible
             }
 
-            // Si la habitación cambia, liberar la anterior y actualizar el precio
+            // Si la habitación cambia, liberar la anterior
             if (!nuevaHabitacion.getId().equals(reserva.getHabitacion().getId())) {
                 Habitacion habitacionAnterior = reserva.getHabitacion();
                 habitacionAnterior.setDisponible(true);
@@ -76,16 +78,13 @@ public class ReservaService {
                 reserva.setHabitacion(nuevaHabitacion);
                 nuevaHabitacion.setDisponible(false);
                 habitacionRepository.save(nuevaHabitacion);
-
-                // Recalcular el precio solo si cambia la habitación
-                long noches = fechaCheckIn.until(fechaCheckOut).getDays();
-                reserva.setTotalPagar(noches * nuevaHabitacion.getPrecioPorNoche());
             }
 
-            // Actualizar los otros campos
+            // Actualizar los campos
             reserva.setFechaCheckIn(fechaCheckIn);
             reserva.setFechaCheckOut(fechaCheckOut);
             reserva.setMetodoPago(metodoPago);
+            reserva.setTotalPagar(totalPagar); // Usar el totalPagar enviado por el frontend
 
             // Guardar los cambios en la reserva
             reservaRepository.save(reserva);
@@ -100,22 +99,20 @@ public class ReservaService {
         if (reservaOpt.isPresent()) {
             Reserva reserva = reservaOpt.get();
             if ("Cancelada".equals(reserva.getEstado())) {
-                return false; // La reserva ya está cancelada
+                return false;
             }
             reserva.cancelarReserva();
             reservaRepository.save(reserva);
 
-            // Marcar la habitación como disponible nuevamente
             Habitacion habitacion = reserva.getHabitacion();
             habitacion.setDisponible(true);
             habitacionRepository.save(habitacion);
 
             return true;
         }
-        return false; // Reserva no encontrada
+        return false;
     }
 
-    // Nuevo método
     public List<Reserva> getReservasPorEmail(String email) {
         return reservaRepository.findByClienteEmail(email);
     }
@@ -131,5 +128,4 @@ public class ReservaService {
     public List<Reserva> obtenerReservasPendientes() {
         return reservaRepository.findByEstado("Pendiente");
     }
-
 }

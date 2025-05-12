@@ -54,6 +54,7 @@ public class ReservaServiceTest {
 
         reserva = new Reserva(cliente, habitacion, LocalDate.now(), LocalDate.now().plusDays(2), "Tarjeta");
         reserva.setId(1L);
+        reserva.setEstado("Pendiente"); // Asegurar estado Pendiente para pruebas de modificación
     }
 
     @Test
@@ -114,11 +115,13 @@ public class ReservaServiceTest {
         when(habitacionRepository.findById(2L)).thenReturn(Optional.of(nuevaHabitacion));
         when(reservaRepository.save(any(Reserva.class))).thenReturn(reserva);
 
-        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        Double totalPagar = 450.0; // 3 noches * 150.0
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo", totalPagar);
 
         assertTrue(result);
         assertEquals(nuevaHabitacion, reserva.getHabitacion());
         assertFalse(nuevaHabitacion.isDisponible());
+        assertEquals(totalPagar, reserva.getTotalPagar());
         verify(reservaRepository, times(1)).save(reserva);
         verify(habitacionRepository, times(1)).save(nuevaHabitacion);
     }
@@ -127,7 +130,8 @@ public class ReservaServiceTest {
     public void testModificarReservaReservaNoExiste() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
         
-        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        Double totalPagar = 450.0;
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo", totalPagar);
         
         assertFalse(result);
         verify(reservaRepository, never()).save(any(Reserva.class));
@@ -138,7 +142,8 @@ public class ReservaServiceTest {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
         when(habitacionRepository.findById(2L)).thenReturn(Optional.empty());
         
-        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        Double totalPagar = 450.0;
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo", totalPagar);
         
         assertFalse(result);
         verify(reservaRepository, never()).save(reserva);
@@ -151,15 +156,16 @@ public class ReservaServiceTest {
         
         LocalDate nuevaFechaCheckIn = LocalDate.now().plusDays(1);
         LocalDate nuevaFechaCheckOut = LocalDate.now().plusDays(4);
+        Double totalPagar = 300.0; // 3 noches * 100.0
         
-        boolean result = reservaService.modificarReserva(1L, 1L, nuevaFechaCheckIn, nuevaFechaCheckOut, "Efectivo");
+        boolean result = reservaService.modificarReserva(1L, 1L, nuevaFechaCheckIn, nuevaFechaCheckOut, "Efectivo", totalPagar);
         
         assertTrue(result);
         assertEquals(nuevaFechaCheckIn, reserva.getFechaCheckIn());
         assertEquals(nuevaFechaCheckOut, reserva.getFechaCheckOut());
         assertEquals("Efectivo", reserva.getMetodoPago());
+        assertEquals(totalPagar, reserva.getTotalPagar());
         verify(reservaRepository, times(1)).save(reserva);
-        // No debería intentar liberar la habitación actual
         verify(habitacionRepository, never()).save(habitacion);
     }
 
@@ -167,15 +173,15 @@ public class ReservaServiceTest {
     public void testModificarReservaNuevaHabitacionNoDisponible() {
         Habitacion nuevaHabitacion = new Habitacion();
         nuevaHabitacion.setId(2L);
-        nuevaHabitacion.setDisponible(false);  // Habitación no disponible
+        nuevaHabitacion.setDisponible(false);
         
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
         when(habitacionRepository.findById(2L)).thenReturn(Optional.of(nuevaHabitacion));
         
-        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo");
+        Double totalPagar = 450.0;
+        boolean result = reservaService.modificarReserva(1L, 2L, LocalDate.now(), LocalDate.now().plusDays(3), "Efectivo", totalPagar);
         
         assertFalse(result);
-        // No debería modificar la reserva ni las habitaciones
         verify(reservaRepository, never()).save(any(Reserva.class));
         verify(habitacionRepository, never()).save(any(Habitacion.class));
     }
@@ -206,7 +212,7 @@ public class ReservaServiceTest {
 
     @Test
     public void testCancelarReservaYaCancelada() {
-        reserva.cancelarReserva();  // Establece el estado a "Cancelada"
+        reserva.cancelarReserva();
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
         
         boolean result = reservaService.cancelarReserva(1L);
