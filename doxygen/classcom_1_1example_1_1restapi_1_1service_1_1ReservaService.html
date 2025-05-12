@@ -108,8 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4e94f3729c9e272acd372522ac17e79c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06911d5dd01ccc2f19c537a4896f49b6" id="r_a06911d5dd01ccc2f19c537a4896f49b6"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a06911d5dd01ccc2f19c537a4896f49b6">reservarHabitacion</a> (Long clienteId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago)</td></tr>
 <tr class="separator:a06911d5dd01ccc2f19c537a4896f49b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2284a41fa9a76d685adda4f413167075" id="r_a2284a41fa9a76d685adda4f413167075"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a2284a41fa9a76d685adda4f413167075">modificarReserva</a> (Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago)</td></tr>
-<tr class="separator:a2284a41fa9a76d685adda4f413167075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c92a64e6ef114748f6c4250945c22e" id="r_a93c92a64e6ef114748f6c4250945c22e"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a93c92a64e6ef114748f6c4250945c22e">modificarReserva</a> (Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago, Double totalPagar)</td></tr>
+<tr class="separator:a93c92a64e6ef114748f6c4250945c22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a020e7ffadb03a300cf0a1064df725032" id="r_a020e7ffadb03a300cf0a1064df725032"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a020e7ffadb03a300cf0a1064df725032">cancelarReserva</a> (Long reservaId)</td></tr>
 <tr class="separator:a020e7ffadb03a300cf0a1064df725032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dd2e6c7cc1e976ac7f08ec6876dfefc" id="r_a0dd2e6c7cc1e976ac7f08ec6876dfefc"><td class="memItemLeft" align="right" valign="top">List&lt; Reserva &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a0dd2e6c7cc1e976ac7f08ec6876dfefc">getReservasPorEmail</a> (String email)</td></tr>
@@ -268,8 +268,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2284a41fa9a76d685adda4f413167075" name="a2284a41fa9a76d685adda4f413167075"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2284a41fa9a76d685adda4f413167075">&#9670;&#160;</a></span>modificarReserva()</h2>
+<a id="a93c92a64e6ef114748f6c4250945c22e" name="a93c92a64e6ef114748f6c4250945c22e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c92a64e6ef114748f6c4250945c22e">&#9670;&#160;</a></span>modificarReserva()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +305,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>metodoPago</em>&#160;</td>
+          <td class="paramname"><em>metodoPago</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Double&#160;</td>
+          <td class="paramname"><em>totalPagar</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -21,11 +21,12 @@ var classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControll
     [ "testModificarReserva_FaltaFechaCheckOut", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a11280e084375b1c84d3c83f2716992db", null ],
     [ "testModificarReserva_FaltaHabitacionId", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a7b430b19c1b1a80cfb0270442bab4a05", null ],
     [ "testModificarReserva_FaltaMetodoPago", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a1fb068e8d30360dab79f16e6bd68f2c6", null ],
-    [ "testModificarReserva_FaltaMultiplesCampos", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#abca01a1c6cea5568ebfb84a31dafd9e8", null ],
+    [ "testModificarReserva_FaltaTotalPagar", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a0560942ebdee13373bbd88956525d3c2", null ],
     [ "testModificarReserva_FormatoFechaCheckInInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a3fee708dce2acaf70509eb03a6da3019", null ],
     [ "testModificarReserva_FormatoFechaCheckOutInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a6b64c91369ad1f808d5ecfc745f82dc2", null ],
     [ "testModificarReserva_IdInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#afe3aa571c14077c44e830baa86fe3725", null ],
     [ "testModificarReserva_NullHabitacionId", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a5063b47b0ce5433dbce6def27685f890", null ],
     [ "testModificarReserva_NullMetodoPago", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a1a45520a21776a0be3df39c5b010f18b", null ],
+    [ "testModificarReserva_TotalPagarInvalido", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#a277516b5dc38e197be1d5601e77807e2", null ],
     [ "testObtenerNuevasReservas", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html#aa96b774dd8338834e96c65eebb6353a7", null ]
 ];
