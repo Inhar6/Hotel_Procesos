@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Servicios Adicionales del Hotel</title>
-  <link rel="stylesheet" href="stylesRecepcion.css" />
+  <link rel="stylesheet" href="styleServiciosAdicionales.css" />
 </head>
 <body>
 
@@ -53,92 +53,89 @@
   <h2>Total: <span id="total-amount">0 €</span></h2>
 
   <button onclick="generarFactura()">Generar Factura</button>
-    <button onclick="window.print()">Imprimir Factura</button>
+  <button onclick="imprimirFactura()">Imprimir Factura</button>
 
-<div id="factura"></div>
+  <div id="factura"></div>
 </div>
+
 <script>
-    let totalServicios = 0;
-    const servicios = [];
+  let totalServicios = 0;
+  const servicios = [];
 
-    function addToCart(serviceName, price, quantityId) {
-        const quantityInput = document.getElementById(quantityId);
-        const quantity = parseInt(quantityInput.value, 10);
+  function addToCart(serviceName, price, quantityId) {
+    const quantityInput = document.getElementById(quantityId);
+    const quantity = parseInt(quantityInput.value, 10);
 
-        if (quantity > 0) {
-            const subtotal = price * quantity;
-            totalServicios += subtotal;
+    if (quantity > 0) {
+      const subtotal = price * quantity;
+      totalServicios += subtotal;
 
-            servicios.push({ nombre: serviceName, cantidad: quantity, precio: price, subtotal });
+      servicios.push({ nombre: serviceName, cantidad: quantity, precio: price, subtotal });
 
-            const cartSummary = document.getElementById('cart-summary');
-            const item = document.createElement('div');
-            item.classList.add('cart-item');
-            item.textContent = `${serviceName} x${quantity} - ${subtotal.toFixed(2)} €`;
-            cartSummary.appendChild(item);
+      const cartSummary = document.getElementById('cart-summary');
+      const item = document.createElement('div');
+      item.classList.add('cart-item');
+      item.textContent = `${serviceName} x${quantity} - ${subtotal.toFixed(2)} €`;
+      cartSummary.appendChild(item);
 
-            document.getElementById('total-amount').textContent = `${totalServicios.toFixed(2)} €`;
+      document.getElementById('total-amount').textContent = `${totalServicios.toFixed(2)} €`;
 
-            quantityInput.value = 0;
-        }
+      quantityInput.value = 0;
+    }
+  }
+
+  async function generarFactura() {
+    const reservaId = localStorage.getItem('idReserva');
+    if (!reservaId) {
+      alert("ID de reserva no encontrado");
+      throw new Error("ID de reserva no encontrado");
     }
 
-    async function generarFactura() {
-        const reservaId = localStorage.getItem('idReserva');
-        if (!reservaId) {
-            alert("ID de reserva no encontrado");
-            throw new Error("ID de reserva no encontrado");
-        }
+    try {
+      const response = await fetch(`/api/reservas/${reservaId}`);
+      if (!response.ok) throw new Error("No se pudo obtener la reserva");
 
-        try {
-            // Obtener la reserva utilizando el ID almacenado en localStorage
-            const response = await fetch(`/api/reservas/${reservaId}`);
-            if (!response.ok) throw new Error("No se pudo obtener la reserva");
+      const reserva = await response.json();
 
-            const reserva = await response.json();
+      const clienteNombre = reserva.cliente && reserva.cliente.nombre ? reserva.cliente.nombre : 'N/D';
+      const totalHabitacion = reserva.totalPagar;
+      const totalFinal = totalHabitacion + totalServicios;
 
-            // Verificar si los datos de cliente y nombre están presentes
-            const clienteNombre = reserva.cliente && reserva.cliente.nombre ? reserva.cliente.nombre : 'N/D';
+      let serviciosHTML = '';
+      servicios.forEach(s => {
+        serviciosHTML += `<li>${s.nombre} x${s.cantidad} - ${s.subtotal.toFixed(2)} €</li>`;
+      });
 
-            // Ya tenemos el total de la habitación calculado en el servidor (totalPagar)
-            const totalHabitacion = reserva.totalPagar; // Usamos el total calculado en el servidor
-            const totalFinal = totalHabitacion + totalServicios;
-
-            // Generamos el resumen de los servicios adicionales
-            let serviciosHTML = '';
-            servicios.forEach(s => {
-                serviciosHTML += `<li>${s.nombre} x${s.cantidad} - ${s.subtotal.toFixed(2)} €</li>`;
-            });
-
-            // Actualizamos el HTML para mostrar la factura
-            const facturaDiv = document.getElementById('factura');
-            facturaDiv.innerHTML = `
-                <div style="background:white; color:black; padding:20px; margin-top:30px; border-radius:10px;">
-                    <h2 style="text-align:center;">Factura Hotel</h2>
-                    <p><strong>ID Reserva:</strong> ${reserva.id}</p>
-                    <p><strong>Cliente:</strong> ${clienteNombre}</p>
-                    <p><strong>Habitación:</strong> ${reserva.habitacion.numero}</p>
-                    <p><strong>Desde:</strong> ${reserva.fechaCheckIn} — <strong>Hasta:</strong> ${reserva.fechaCheckOut}</p>
-                    <p><strong>Noches:</strong> ${reserva.fechaCheckIn && reserva.fechaCheckOut ? Math.abs(new Date(reserva.fechaCheckOut) - new Date(reserva.fechaCheckIn)) / (1000 * 60 * 60 * 24) : 0}</p>
-                    <p><strong>Precio por noche:</strong> ${reserva.habitacion.precioPorNoche.toFixed(2)} €</p>
-                    <p><strong>Total Habitación:</strong> ${totalHabitacion.toFixed(2)} €</p>
-                    <hr>
-                    <p><strong>Servicios Adicionales:</strong></p>
-                    <ul>${serviciosHTML}</ul>
-                    <hr>
-                    <h3>Total Final: ${totalFinal.toFixed(2)} €</h3>
-                </div>
-            `;
-        } catch (error) {
-            console.error(error);
-            alert("Error al generar la factura.");
-        }
+      const facturaDiv = document.getElementById('factura');
+      facturaDiv.innerHTML = `
+        <div class="factura-container">
+          <h2>Factura Hotel</h2>
+          <p><strong>ID Reserva:</strong> ${reserva.id}</p>
+          <p><strong>Cliente:</strong> ${clienteNombre}</p>
+          <p><strong>Habitación:</strong> ${reserva.habitacion.numero}</p>
+          <p><strong>Desde:</strong> ${reserva.fechaCheckIn} — <strong>Hasta:</strong> ${reserva.fechaCheckOut}</p>
+          <p><strong>Noches:</strong> ${reserva.fechaCheckIn && reserva.fechaCheckOut ? Math.abs(new Date(reserva.fechaCheckOut) - new Date(reserva.fechaCheckIn)) / (1000 * 60 * 60 * 24) : 0}</p>
+          <p><strong>Precio por noche:</strong> ${reserva.habitacion.precioPorNoche.toFixed(2)} €</p>
+          <p><strong>Total Habitación:</strong> ${totalHabitacion.toFixed(2)} €</p>
+          <hr>
+          <p><strong>Servicios Adicionales:</strong></p>
+          <ul>${serviciosHTML}</ul>
+          <hr>
+          <h3>Total Final: ${totalFinal.toFixed(2)} €</h3>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      alert("Error al generar la factura.");
     }
+  }
+
+  function imprimirFactura() {
+    generarFactura().then(() => {
+      window.print();
+    });
+  }
 </script>
-
-
-  
-  
 
 </body>
 </html>
