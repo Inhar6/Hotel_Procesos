@@ -1,10 +1,13 @@
 package com.example.restapi.unitarios.service;
 
 import com.example.restapi.model.CheckIn;
+import com.example.restapi.model.Cliente;
+import com.example.restapi.model.Habitacion;
 import com.example.restapi.model.Reserva;
 import com.example.restapi.repository.CheckInRepository;
 import com.example.restapi.repository.ReservaRepository;
 import com.example.restapi.service.CheckInService;
+import com.example.restapi.service.EmailService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,12 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+
+import org.springframework.test.util.ReflectionTestUtils;
+
 
 @ExtendWith(MockitoExtension.class)
 public class CheckInServiceTest {
@@ -27,6 +35,9 @@ public class CheckInServiceTest {
 
     @Mock
     private ReservaRepository reservaRepository;
+
+    @Mock
+    private EmailService emailService; // AÑADIDO
 
     @InjectMocks
     private CheckInService checkInService;
@@ -52,7 +63,11 @@ public class CheckInServiceTest {
         reserva = new Reserva();
         reserva.setId(1L);
         reserva.setEstado("Pendiente");
+
+        // Inyectar el mock de EmailService manualmente
+        ReflectionTestUtils.setField(checkInService, "emailService", emailService);
     }
+
 
     @Test
     public void testRealizarCheckIn_ReservaNoExiste() {
@@ -63,6 +78,7 @@ public class CheckInServiceTest {
         assertFalse(resultado);
         verify(reservaRepository, times(1)).findById(1L);
         verifyNoInteractions(checkInRepository);
+        verifyNoInteractions(emailService);
     }
 
     @Test
@@ -76,20 +92,61 @@ public class CheckInServiceTest {
         verify(reservaRepository, times(1)).findById(1L);
         verify(reservaRepository, never()).save(any());
         verify(checkInRepository, never()).save(any());
+        verifyNoInteractions(emailService);
     }
 
     @Test
-    public void testRealizarCheckIn_Exitoso() {
+    public void testRealizarCheckIn_Exitoso_SinCliente() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
-        when(reservaRepository.save(any(Reserva.class))).thenReturn(reserva);
-        when(checkInRepository.save(any(CheckIn.class))).thenReturn(checkIn);
+        when(reservaRepository.save(any())).thenReturn(reserva);
+        when(checkInRepository.save(any())).thenReturn(checkIn);
 
         boolean resultado = checkInService.realizarCheckIn(checkIn);
 
         assertTrue(resultado);
-        verify(reservaRepository, times(1)).findById(1L);
         verify(reservaRepository, times(1)).save(reserva);
         verify(checkInRepository, times(1)).save(checkIn);
+        verifyNoInteractions(emailService); // No hay cliente
+    }
+
+    @Test
+    public void testRealizarCheckIn_HabitacionNull() {
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Carlos");
+        cliente.setEmail("carlos@example.com");
+        reserva.setCliente(cliente);
+        reserva.setHabitacion(null); // Habitacion null
+
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(reservaRepository.save(any())).thenReturn(reserva);
+        when(checkInRepository.save(any())).thenReturn(checkIn);
+
+        boolean resultado = checkInService.realizarCheckIn(checkIn);
+
+        assertTrue(resultado);
+        verify(emailService).enviarConfirmacionCheckIn(eq("carlos@example.com"), eq("Carlos"), eq("desconocida"), any());
+    }
+
+    @Test
+    public void testRealizarCheckIn_ConHabitacionYCliente() {
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Lucía");
+        cliente.setEmail("lucia@example.com");
+
+        Habitacion habitacion = new Habitacion();
+        habitacion.setNumero(305);
+
+        reserva.setCliente(cliente);
+        reserva.setHabitacion(habitacion);
+
+        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(reservaRepository.save(any())).thenReturn(reserva);
+        when(checkInRepository.save(any())).thenReturn(checkIn);
+
+        boolean resultado = checkInService.realizarCheckIn(checkIn);
+
+        assertTrue(resultado);
+        verify(emailService).enviarConfirmacionCheckIn(eq("lucia@example.com"), eq("Lucía"), eq("305"), any());
     }
 
     @Test
