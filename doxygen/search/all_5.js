@@ -12,8 +12,10 @@ var searchData=
   ['habitacionrepository_2ejava_9',['HabitacionRepository.java',['../HabitacionRepository_8java.html',1,'']]],
   ['habitacionservice_10',['habitacionservice',['../classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html',1,'com.example.restapi.service.HabitacionService'],['../classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html#ae85b8b307d6d3c6bc5595eb36b506171',1,'com.example.restapi.service.HabitacionService.HabitacionService()']]],
   ['habitacionservice_2ejava_11',['HabitacionService.java',['../HabitacionService_8java.html',1,'']]],
-  ['habitacionservicetest_2ejava_12',['HabitacionServiceTest.java',['../HabitacionServiceTest_8java.html',1,'']]],
-  ['habitaciontest_13',['HabitacionTest',['../classcom_1_1example_1_1restapi_1_1unitarios_1_1model_1_1HabitacionTest.html',1,'com::example::restapi::unitarios::model']]],
-  ['habitaciontest_2ejava_14',['HabitacionTest.java',['../HabitacionTest_8java.html',1,'']]],
-  ['hacerreserva_15',['hacerReserva',['../classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html#ad1c90defe309eb18d5d72f34b329c0dd',1,'com::example::restapi::controller::ReservaController']]]
+  ['habitacionservicedisponiblesperformancetest_12',['HabitacionServiceDisponiblesPerformanceTest',['../classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest.html',1,'com::example::restapi::rendimiento']]],
+  ['habitacionservicedisponiblesperformancetest_2ejava_13',['HabitacionServiceDisponiblesPerformanceTest.java',['../HabitacionServiceDisponiblesPerformanceTest_8java.html',1,'']]],
+  ['habitacionservicetest_2ejava_14',['HabitacionServiceTest.java',['../HabitacionServiceTest_8java.html',1,'']]],
+  ['habitaciontest_15',['HabitacionTest',['../classcom_1_1example_1_1restapi_1_1unitarios_1_1model_1_1HabitacionTest.html',1,'com::example::restapi::unitarios::model']]],
+  ['habitaciontest_2ejava_16',['HabitacionTest.java',['../HabitacionTest_8java.html',1,'']]],
+  ['hacerreserva_17',['hacerReserva',['../classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html#ad1c90defe309eb18d5d72f34b329c0dd',1,'com::example::restapi::controller::ReservaController']]]
 ];

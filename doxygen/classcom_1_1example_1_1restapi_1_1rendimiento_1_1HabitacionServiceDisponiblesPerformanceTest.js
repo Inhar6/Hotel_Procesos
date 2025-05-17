@@ -1,0 +1,4 @@
+var classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest =
+[
+    [ "testListarHabitacionesDisponiblesPerformance", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest.html#a5fc7842e1388b783d8e7becad2da4bb7", null ]
+];

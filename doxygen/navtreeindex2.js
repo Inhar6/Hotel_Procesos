@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1CheckInRepository.html#aebc69ec6fa3c640d686deb1aef9b3cb9":[1,0,0,0,0,4,0,2],
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1CheckInRepository.html#af4d87a0e3d32e1aa3bd7801082da29cb":[1,0,0,0,0,4,0,0],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1ClienteRepository.html":[1,0,0,0,0,4,1],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1ClienteRepository.html#a65741bbb85cc15773c789da2daa0f612":[1,0,0,0,0,4,1,0],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html":[1,0,0,0,0,4,2],

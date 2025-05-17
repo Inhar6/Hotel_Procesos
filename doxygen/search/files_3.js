@@ -6,6 +6,7 @@ var searchData=
   ['habitacioncontrollertest_2ejava_3',['HabitacionControllerTest.java',['../HabitacionControllerTest_8java.html',1,'']]],
   ['habitacionrepository_2ejava_4',['HabitacionRepository.java',['../HabitacionRepository_8java.html',1,'']]],
   ['habitacionservice_2ejava_5',['HabitacionService.java',['../HabitacionService_8java.html',1,'']]],
-  ['habitacionservicetest_2ejava_6',['HabitacionServiceTest.java',['../HabitacionServiceTest_8java.html',1,'']]],
-  ['habitaciontest_2ejava_7',['HabitacionTest.java',['../HabitacionTest_8java.html',1,'']]]
+  ['habitacionservicedisponiblesperformancetest_2ejava_6',['HabitacionServiceDisponiblesPerformanceTest.java',['../HabitacionServiceDisponiblesPerformanceTest_8java.html',1,'']]],
+  ['habitacionservicetest_2ejava_7',['HabitacionServiceTest.java',['../HabitacionServiceTest_8java.html',1,'']]],
+  ['habitaciontest_2ejava_8',['HabitacionTest.java',['../HabitacionTest_8java.html',1,'']]]
 ];

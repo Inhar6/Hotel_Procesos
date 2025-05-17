@@ -28,7 +28,8 @@ var annotated_dup =
             [ "Reserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva" ]
           ] ],
           [ "rendimiento", "namespacecom_1_1example_1_1restapi_1_1rendimiento.html", [
-            [ "ProblemaServicePerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest" ]
+            [ "HabitacionServiceDisponiblesPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest" ],
+            [ "ReservaServiceListPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ReservaServiceListPerformanceTest.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ReservaServiceListPerformanceTest" ]
           ] ],
           [ "repository", "namespacecom_1_1example_1_1restapi_1_1repository.html", [
             [ "CheckInRepository", "interfacecom_1_1example_1_1restapi_1_1repository_1_1CheckInRepository.html", "interfacecom_1_1example_1_1restapi_1_1repository_1_1CheckInRepository" ],

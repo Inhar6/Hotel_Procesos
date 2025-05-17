@@ -9,8 +9,6 @@ var searchData=
   ['problemarepository_2ejava_6',['ProblemaRepository.java',['../ProblemaRepository_8java.html',1,'']]],
   ['problemaservice_7',['ProblemaService',['../classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html',1,'com::example::restapi::service']]],
   ['problemaservice_2ejava_8',['ProblemaService.java',['../ProblemaService_8java.html',1,'']]],
-  ['problemaserviceperformancetest_9',['ProblemaServicePerformanceTest',['../classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest.html',1,'com::example::restapi::rendimiento']]],
-  ['problemaserviceperformancetest_2ejava_10',['ProblemaServicePerformanceTest.java',['../ProblemaServicePerformanceTest_8java.html',1,'']]],
-  ['problemaservicetest_2ejava_11',['ProblemaServiceTest.java',['../ProblemaServiceTest_8java.html',1,'']]],
-  ['problematest_2ejava_12',['ProblemaTest.java',['../ProblemaTest_8java.html',1,'']]]
+  ['problemaservicetest_2ejava_9',['ProblemaServiceTest.java',['../ProblemaServiceTest_8java.html',1,'']]],
+  ['problematest_2ejava_10',['ProblemaTest.java',['../ProblemaTest_8java.html',1,'']]]
 ];

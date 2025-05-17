@@ -1,4 +1,5 @@
 var dir_233ace9522bfa81d243b7db66664925f =
 [
-    [ "ProblemaServicePerformanceTest.java", "ProblemaServicePerformanceTest_8java.html", "ProblemaServicePerformanceTest_8java" ]
+    [ "HabitacionServiceDisponiblesPerformanceTest.java", "HabitacionServiceDisponiblesPerformanceTest_8java.html", "HabitacionServiceDisponiblesPerformanceTest_8java" ],
+    [ "ReservaServiceListPerformanceTest.java", "ReservaServiceListPerformanceTest_8java.html", "ReservaServiceListPerformanceTest_8java" ]
 ];

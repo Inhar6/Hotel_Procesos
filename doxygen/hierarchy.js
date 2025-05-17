@@ -24,6 +24,7 @@ var hierarchy =
     [ "com.example.restapi.integracion.controller.HabitacionControllerIT", "classcom_1_1example_1_1restapi_1_1integracion_1_1controller_1_1HabitacionControllerIT.html", null ],
     [ "com.example.restapi.unitarios.controller.HabitacionControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1HabitacionControllerTest.html", null ],
     [ "com.example.restapi.service.HabitacionService", "classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html", null ],
+    [ "com.example.restapi.rendimiento.HabitacionServiceDisponiblesPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest.html", null ],
     [ "com.example.restapi.unitarios.model.HabitacionTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1model_1_1HabitacionTest.html", null ],
     [ "JpaRepository", null, [
       [ "com.example.restapi.repository.CheckInRepository", "interfacecom_1_1example_1_1restapi_1_1repository_1_1CheckInRepository.html", null ],
@@ -35,12 +36,12 @@ var hierarchy =
     [ "com.example.restapi.model.Problema", "classcom_1_1example_1_1restapi_1_1model_1_1Problema.html", null ],
     [ "com.example.restapi.controller.ProblemaController", "classcom_1_1example_1_1restapi_1_1controller_1_1ProblemaController.html", null ],
     [ "com.example.restapi.service.ProblemaService", "classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html", null ],
-    [ "com.example.restapi.rendimiento.ProblemaServicePerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest.html", null ],
     [ "com.example.restapi.model.Reserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html", null ],
     [ "com.example.restapi.controller.ReservaController", "classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html", null ],
     [ "com.example.restapi.unitarios.controller.ReservaControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html", null ],
     [ "com.example.restapi.integracion.repository.ReservaRepositoryIT", "classcom_1_1example_1_1restapi_1_1integracion_1_1repository_1_1ReservaRepositoryIT.html", null ],
     [ "com.example.restapi.service.ReservaService", "classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html", null ],
+    [ "com.example.restapi.rendimiento.ReservaServiceListPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ReservaServiceListPerformanceTest.html", null ],
     [ "com.example.restapi.unitarios.service.ReservaServiceTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1service_1_1ReservaServiceTest.html", null ],
     [ "com.example.restapi.unitarios.model.ReservaTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1model_1_1ReservaTest.html", null ],
     [ "com.example.restapi.RestApiApplication", "classcom_1_1example_1_1restapi_1_1RestApiApplication.html", null ]
