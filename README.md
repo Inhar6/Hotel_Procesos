@@ -86,6 +86,12 @@ Para ejecutar los tests de integración, utiliza el siguiente comando:
 
 Este comando ejecutará los tests de integración y generará un informe de cobertura de código si tienes configurado el plugin JaCoCo.
 
+### Tests de Integración
+
+Para ejecutar los tests de rendimiento, utiliza el siguiente comando:
+
+    mvn -Pperformance integration-test
+
 Documentación y GitHub Pages
 ----------------------------
 
