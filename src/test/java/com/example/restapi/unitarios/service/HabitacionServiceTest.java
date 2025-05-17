@@ -314,4 +314,32 @@ class HabitacionServiceTest {
         verify(habitacionRepository, times(1)).findById(99L);
         verify(habitacionRepository, never()).save(any(Habitacion.class));
     }
+
+     @Test
+    void testMarcarHabitacionComoSucia() {
+        habitacion1.setEstadoLimpieza("Limpia");
+        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion1));
+        when(habitacionRepository.save(any(Habitacion.class))).thenReturn(habitacion1);
+
+        Habitacion habitacionSucia = habitacionService.marcarHabitacionComoSucia(1L);
+
+        assertNotNull(habitacionSucia);
+        assertEquals("Sucia", habitacionSucia.getEstadoLimpieza());
+        verify(habitacionRepository, times(1)).findById(1L);
+        verify(habitacionRepository, times(1)).save(habitacion1);
+    }
+
+    @Test
+    void testMarcarHabitacionComoSuciaNotFound() {
+        when(habitacionRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            habitacionService.marcarHabitacionComoSucia(99L);
+        });
+
+        assertEquals("Habitación no encontrada", exception.getMessage());
+        verify(habitacionRepository, times(1)).findById(99L);
+        verify(habitacionRepository, never()).save(any(Habitacion.class));
+    }
+
 }
