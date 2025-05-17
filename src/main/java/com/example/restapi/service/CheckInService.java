@@ -15,6 +15,9 @@ public class CheckInService {
     private final ReservaRepository reservaRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     public CheckInService(CheckInRepository checkInRepository, ReservaRepository reservaRepository) {
         this.checkInRepository = checkInRepository;
         this.reservaRepository = reservaRepository;
@@ -34,6 +37,15 @@ public class CheckInService {
         reserva.setEstado("CheckIn Realizado");
         reservaRepository.save(reserva);
         checkInRepository.save(datosCheckIn);
+
+        
+        if (reserva.getCliente() != null && reserva.getCliente().getEmail() != null) {
+            String email = reserva.getCliente().getEmail();
+            String nombre = reserva.getCliente().getNombre();
+            String numeroHabitacion = reserva.getHabitacion() != null ? String.valueOf(reserva.getHabitacion().getNumero()) : "desconocida";
+            String fecha = datosCheckIn.getFechaCheckIn() != null ? datosCheckIn.getFechaCheckIn().toString() : "hoy";
+            emailService.enviarConfirmacionCheckIn(email, nombre, numeroHabitacion, fecha);
+        }
 
         return true;
     }
