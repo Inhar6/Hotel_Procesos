@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mantenimiento - Problemas</title>
     <link rel="stylesheet" href="stylesMantenimiento.css">
+    <style>
+        .back-button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Panel de Mantenimiento</h1>
- 
     
     <div id="notificacion"></div>
- 
     
     <table id="tablaProblemas">
        <tr>
@@ -28,6 +44,10 @@
           <th>Acciones</th>
        </tr>
     </table>
+
+    <div class="back-button-container">
+        <button class="back-button" onclick="window.history.back()">Volver</button>
+    </div>
  
     <script>
        let ultimoIdProblemaVisto = 0;
@@ -51,6 +71,8 @@
                 } else {
                    actualizarTablaProblemas(problemas); 
                 }
+             } else {
+                actualizarTablaProblemas(problemas);
              }
           } catch (error) {
              console.error('Error buscando problemas:', error);
@@ -101,21 +123,21 @@
  
              if (response.ok) {
                 mostrarNotificacion('Problema marcado como resuelto.');
-                verificarNuevosProblemas(); 
+                // Immediately fetch updated list of unresolved issues
+                await verificarNuevosProblemas();
              } else {
                 console.error('Error al marcar el problema como resuelto');
+                mostrarNotificacion('Error al marcar como resuelto');
              }
           } catch (error) {
              console.error('Error resolviendo problema:', error);
+             mostrarNotificacion('Error al procesar la solicitud');
           }
        }
  
-       
        setInterval(verificarNuevosProblemas, 10000);
- 
-       
        verificarNuevosProblemas();
     </script>
  
- </body>
+</body>
 </html>
