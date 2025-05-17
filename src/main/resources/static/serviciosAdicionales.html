@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Servicios Adicionales del Hotel</title>
   <link rel="stylesheet" href="styleServiciosAdicionales.css" />
+  <style>
+    .back-button-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .back-button {
+      padding: 10px 20px;
+      background-color: #575f66;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .back-button:hover {
+      background-color: #353637;
+    }
+  </style>
 </head>
 <body>
 
@@ -56,6 +74,10 @@
   <button onclick="imprimirFactura()">Imprimir Factura</button>
 
   <div id="factura"></div>
+
+  <div class="back-button-container">
+    <button class="back-button" onclick="window.history.back()">Volver</button>
+  </div>
 </div>
 
 <script>
