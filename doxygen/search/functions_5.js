@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['init_0',['init',['../classcom_1_1example_1_1restapi_1_1DataLoader.html#a83762433ef6023303d51709940bee546',1,'com::example::restapi::DataLoader']]],
-  ['isdisponible_1',['isDisponible',['../classcom_1_1example_1_1restapi_1_1model_1_1Habitacion.html#a962aa4434b4c68c2d692a2bc8e075e8d',1,'com::example::restapi::model::Habitacion']]],
-  ['isresuelto_2',['isResuelto',['../classcom_1_1example_1_1restapi_1_1model_1_1Problema.html#a4fafb4d6a36c88d2132cd19b347c88e1',1,'com::example::restapi::model::Problema']]],
-  ['istieneproblemas_3',['isTieneProblemas',['../classcom_1_1example_1_1restapi_1_1model_1_1Habitacion.html#a03bda1174886e790017b20283a2d5683',1,'com::example::restapi::model::Habitacion']]]
+  ['habitacion_0',['habitacion',['../classcom_1_1example_1_1restapi_1_1model_1_1Habitacion.html#acbcae7cce447107ae23ca10de5d8578b',1,'com.example.restapi.model.Habitacion.Habitacion()'],['../classcom_1_1example_1_1restapi_1_1model_1_1Habitacion.html#a5ff69f1e0a7e07613edbe565554b095a',1,'com.example.restapi.model.Habitacion.Habitacion(int numero, double precioPorNoche, boolean disponible, String estadoLimpieza, boolean tieneProblemas, String tipo)']]],
+  ['habitacioncontroller_1',['HabitacionController',['../classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController.html#a567cec24eaf601a6b0865fcc0f19f9eb',1,'com::example::restapi::controller::HabitacionController']]],
+  ['habitacionservice_2',['HabitacionService',['../classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html#ae85b8b307d6d3c6bc5595eb36b506171',1,'com::example::restapi::service::HabitacionService']]],
+  ['hacerreserva_3',['hacerReserva',['../classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html#ad1c90defe309eb18d5d72f34b329c0dd',1,'com::example::restapi::controller::ReservaController']]]
 ];

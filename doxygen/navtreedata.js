@@ -46,8 +46,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "CheckInControllerTest_8java.html",
-"classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html#aaae87cdcb9d1efc5c4f01bcf3d4c91d1",
-"interfacecom_1_1example_1_1restapi_1_1repository_1_1ProblemaRepository.html#a52580fc946bd61ac3f4857af63934d87"
+"classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html#ae803f757289863f3f66e52d3308ba44d",
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html#a01c3a20350bbb820d39b8be473fbe5dc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

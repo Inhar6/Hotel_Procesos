@@ -1,16 +1,9 @@
 var searchData=
 [
-  ['problema_0',['Problema',['../classcom_1_1example_1_1restapi_1_1model_1_1Problema.html',1,'com::example::restapi::model']]],
-  ['problema_2ejava_1',['Problema.java',['../Problema_8java.html',1,'']]],
-  ['problemacontroller_2',['ProblemaController',['../classcom_1_1example_1_1restapi_1_1controller_1_1ProblemaController.html',1,'com::example::restapi::controller']]],
-  ['problemacontroller_2ejava_3',['ProblemaController.java',['../ProblemaController_8java.html',1,'']]],
-  ['problemacontrollertest_2ejava_4',['ProblemaControllerTest.java',['../ProblemaControllerTest_8java.html',1,'']]],
-  ['problemarepository_5',['ProblemaRepository',['../interfacecom_1_1example_1_1restapi_1_1repository_1_1ProblemaRepository.html',1,'com::example::restapi::repository']]],
-  ['problemarepository_2ejava_6',['ProblemaRepository.java',['../ProblemaRepository_8java.html',1,'']]],
-  ['problemaservice_7',['ProblemaService',['../classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html',1,'com::example::restapi::service']]],
-  ['problemaservice_2ejava_8',['ProblemaService.java',['../ProblemaService_8java.html',1,'']]],
-  ['problemaserviceperformancetest_9',['ProblemaServicePerformanceTest',['../classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest.html',1,'com::example::restapi::rendimiento']]],
-  ['problemaserviceperformancetest_2ejava_10',['ProblemaServicePerformanceTest.java',['../ProblemaServicePerformanceTest_8java.html',1,'']]],
-  ['problemaservicetest_2ejava_11',['ProblemaServiceTest.java',['../ProblemaServiceTest_8java.html',1,'']]],
-  ['problematest_2ejava_12',['ProblemaTest.java',['../ProblemaTest_8java.html',1,'']]]
+  ['obtenerinformeocupacion_0',['obtenerInformeOcupacion',['../classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html#a98a0e5847e4a55a77704b21fb1436ccf',1,'com::example::restapi::service::HabitacionService']]],
+  ['obtenernuevasreservas_1',['obtenerNuevasReservas',['../classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html#ab9d2c925ccc7f5bd9cff117521619e3f',1,'com::example::restapi::controller::ReservaController']]],
+  ['obtenerocupacionhotel_2',['obtenerOcupacionHotel',['../classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController.html#a906b7053d9d5192196f0d93ba18a7496',1,'com::example::restapi::controller::HabitacionController']]],
+  ['obtenerproblemaporid_3',['obtenerProblemaPorId',['../classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html#ab218b32cc5883e354fa5f8d87c63e173',1,'com::example::restapi::service::ProblemaService']]],
+  ['obtenerproblemasnoresueltos_4',['obtenerproblemasnoresueltos',['../classcom_1_1example_1_1restapi_1_1controller_1_1ProblemaController.html#ac7f5363042ed7d4cfc3c20937d075fe7',1,'com.example.restapi.controller.ProblemaController.obtenerProblemasNoResueltos()'],['../classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html#aaae87cdcb9d1efc5c4f01bcf3d4c91d1',1,'com.example.restapi.service.ProblemaService.obtenerProblemasNoResueltos()']]],
+  ['obtenerreservaspendientes_5',['obtenerReservasPendientes',['../classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html#a3de73683ff6b76a0cbb1b6409cef4e08',1,'com::example::restapi::service::ReservaService']]]
 ];

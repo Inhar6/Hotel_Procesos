@@ -41,6 +41,7 @@ var annotated_dup =
             [ "CheckInService", "classcom_1_1example_1_1restapi_1_1service_1_1CheckInService.html", "classcom_1_1example_1_1restapi_1_1service_1_1CheckInService" ],
             [ "CheckOutService", "classcom_1_1example_1_1restapi_1_1service_1_1CheckOutService.html", "classcom_1_1example_1_1restapi_1_1service_1_1CheckOutService" ],
             [ "ClienteService", "classcom_1_1example_1_1restapi_1_1service_1_1ClienteService.html", "classcom_1_1example_1_1restapi_1_1service_1_1ClienteService" ],
+            [ "EmailService", "classcom_1_1example_1_1restapi_1_1service_1_1EmailService.html", "classcom_1_1example_1_1restapi_1_1service_1_1EmailService" ],
             [ "HabitacionService", "classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService.html", "classcom_1_1example_1_1restapi_1_1service_1_1HabitacionService" ],
             [ "ProblemaService", "classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html", "classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService" ],
             [ "ReservaService", "classcom_1_1example_1_1restapi_1_1service_1_1ReservaService.html", "classcom_1_1example_1_1restapi_1_1service_1_1ReservaService" ]

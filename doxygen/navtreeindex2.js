@@ -1,5 +1,10 @@
 var NAVTREEINDEX2 =
 {
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html#a01c3a20350bbb820d39b8be473fbe5dc":[1,0,0,0,0,4,2,2],
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html#a531c21316aaf1385e5e005c93e0d4c35":[1,0,0,0,0,4,2,1],
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html#aed04d71a7d2dcca95a0aa9abde8f123b":[1,0,0,0,0,4,2,0],
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1HabitacionRepository.html#af1775ac5d0487bebba511fa65428b05a":[1,0,0,0,0,4,2,3],
+"interfacecom_1_1example_1_1restapi_1_1repository_1_1ProblemaRepository.html":[1,0,0,0,0,4,3],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1ProblemaRepository.html#a52580fc946bd61ac3f4857af63934d87":[1,0,0,0,0,4,3,0],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1ReservaRepository.html":[1,0,0,0,0,4,4],
 "interfacecom_1_1example_1_1restapi_1_1repository_1_1ReservaRepository.html#a0e6ffa63753711c236f8ef2b0ef4834a":[1,0,0,0,0,4,4,2],

@@ -18,6 +18,7 @@ var hierarchy =
     [ "com.example.restapi.unitarios.service.ClienteServiceTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1service_1_1ClienteServiceTest.html", null ],
     [ "com.example.restapi.unitarios.model.ClienteTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1model_1_1ClienteTest.html", null ],
     [ "com.example.restapi.DataLoader", "classcom_1_1example_1_1restapi_1_1DataLoader.html", null ],
+    [ "com.example.restapi.service.EmailService", "classcom_1_1example_1_1restapi_1_1service_1_1EmailService.html", null ],
     [ "com.example.restapi.model.Habitacion", "classcom_1_1example_1_1restapi_1_1model_1_1Habitacion.html", null ],
     [ "com.example.restapi.controller.HabitacionController", "classcom_1_1example_1_1restapi_1_1controller_1_1HabitacionController.html", null ],
     [ "com.example.restapi.integracion.controller.HabitacionControllerIT", "classcom_1_1example_1_1restapi_1_1integracion_1_1controller_1_1HabitacionControllerIT.html", null ],

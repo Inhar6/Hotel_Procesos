@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['problema_2ejava_0',['Problema.java',['../Problema_8java.html',1,'']]],
-  ['problemacontroller_2ejava_1',['ProblemaController.java',['../ProblemaController_8java.html',1,'']]],
-  ['problemacontrollertest_2ejava_2',['ProblemaControllerTest.java',['../ProblemaControllerTest_8java.html',1,'']]],
-  ['problemarepository_2ejava_3',['ProblemaRepository.java',['../ProblemaRepository_8java.html',1,'']]],
-  ['problemaservice_2ejava_4',['ProblemaService.java',['../ProblemaService_8java.html',1,'']]],
-  ['problemaserviceperformancetest_2ejava_5',['ProblemaServicePerformanceTest.java',['../ProblemaServicePerformanceTest_8java.html',1,'']]],
-  ['problemaservicetest_2ejava_6',['ProblemaServiceTest.java',['../ProblemaServiceTest_8java.html',1,'']]],
-  ['problematest_2ejava_7',['ProblemaTest.java',['../ProblemaTest_8java.html',1,'']]]
+  ['habitacion_2ejava_0',['Habitacion.java',['../Habitacion_8java.html',1,'']]],
+  ['habitacioncontroller_2ejava_1',['HabitacionController.java',['../HabitacionController_8java.html',1,'']]],
+  ['habitacioncontrollerit_2ejava_2',['HabitacionControllerIT.java',['../HabitacionControllerIT_8java.html',1,'']]],
+  ['habitacioncontrollertest_2ejava_3',['HabitacionControllerTest.java',['../HabitacionControllerTest_8java.html',1,'']]],
+  ['habitacionrepository_2ejava_4',['HabitacionRepository.java',['../HabitacionRepository_8java.html',1,'']]],
+  ['habitacionservice_2ejava_5',['HabitacionService.java',['../HabitacionService_8java.html',1,'']]],
+  ['habitacionservicetest_2ejava_6',['HabitacionServiceTest.java',['../HabitacionServiceTest_8java.html',1,'']]],
+  ['habitaciontest_2ejava_7',['HabitacionTest.java',['../HabitacionTest_8java.html',1,'']]]
 ];
