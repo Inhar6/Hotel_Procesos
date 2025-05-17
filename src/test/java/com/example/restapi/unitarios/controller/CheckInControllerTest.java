@@ -1,22 +1,24 @@
 package com.example.restapi.unitarios.controller;
 
+import com.example.restapi.controller.CheckInController;
 import com.example.restapi.model.CheckIn;
 import com.example.restapi.service.CheckInService;
-import com.example.restapi.controller.CheckInController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CheckInControllerTest {
@@ -27,10 +29,12 @@ public class CheckInControllerTest {
     @InjectMocks
     private CheckInController checkInController;
 
+    private MockMvc mockMvc;
     private CheckIn datosCheckIn;
 
     @BeforeEach
     public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(checkInController).build();
         datosCheckIn = new CheckIn();
         datosCheckIn.setReservaId(1L);
         datosCheckIn.setNombreHuesped("Juan");
@@ -46,186 +50,209 @@ public class CheckInControllerTest {
     }
 
     @Test
-    public void testRealizarCheckIn_Exitoso() {
-        // Arrange
+    public void testRealizarCheckIn_Exitoso() throws Exception {
         when(checkInService.realizarCheckIn(any(CheckIn.class))).thenReturn(true);
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Check-in realizado con éxito."));
 
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Check-in realizado con éxito.", response.getBody());
-        verify(checkInService, times(1)).realizarCheckIn(datosCheckIn);
+        verify(checkInService, times(1)).realizarCheckIn(any(CheckIn.class));
     }
 
     @Test
-    public void testRealizarCheckIn_NombreHuespedNulo() {
-        // Arrange
-        datosCheckIn.setNombreHuesped(null);
+    public void testRealizarCheckIn_ReservaIdNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_ApellidosHuespedNulo() {
-        // Arrange
-        datosCheckIn.setApellidosHuesped(null);
+    public void testRealizarCheckIn_NombreHuespedNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_DocumentoNumeroNulo() {
-        // Arrange
-        datosCheckIn.setDocumentoNumero(null);
+    public void testRealizarCheckIn_ApellidosHuespedNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckInNulo() {
-        // Arrange
-        datosCheckIn.setFechaCheckIn(null);
+    public void testRealizarCheckIn_DocumentoTipoNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckOutNulo() {
-        // Arrange
-        datosCheckIn.setFechaCheckOut(null);
+    public void testRealizarCheckIn_DocumentoNumeroNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_MetodoPagoNulo() {
-        // Arrange
-        datosCheckIn.setMetodoPago(null);
+    public void testRealizarCheckIn_TelefonoNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Faltan campos obligatorios en los datos del check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckInAnterior() {
-        // Arrange
-        datosCheckIn.setFechaCheckIn(LocalDate.now().minusDays(1));
+    public void testRealizarCheckIn_EmailNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("La fecha de check-in no puede ser anterior a hoy.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckInHoy() {
-        // Arrange
-        datosCheckIn.setFechaCheckIn(LocalDate.now());
+    public void testRealizarCheckIn_FechaCheckInNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
+
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckOutNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
+
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_NumHuespedesNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
+
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_MetodoPagoNulo() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Faltan campos obligatorios en los datos del check-in."));
+
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckInAnterior() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().minusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("La fecha de check-in no puede ser anterior a hoy."));
+
+        verifyNoInteractions(checkInService);
+    }
+
+    @Test
+    public void testRealizarCheckIn_FechaCheckInHoy() throws Exception {
         when(checkInService.realizarCheckIn(any(CheckIn.class))).thenReturn(true);
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now() + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Check-in realizado con éxito."));
 
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Check-in realizado con éxito.", response.getBody());
-        verify(checkInService, times(1)).realizarCheckIn(datosCheckIn);
+        verify(checkInService, times(1)).realizarCheckIn(any(CheckIn.class));
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckOutIgualCheckIn() {
-        // Arrange
-        datosCheckIn.setFechaCheckOut(datosCheckIn.getFechaCheckIn());
+    public void testRealizarCheckIn_FechaCheckOutIgualCheckIn() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(1) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("La fecha de check-out debe ser posterior a la fecha de check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("La fecha de check-out debe ser posterior a la fecha de check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_FechaCheckOutAnteriorCheckIn() {
-        // Arrange
-        datosCheckIn.setFechaCheckOut(datosCheckIn.getFechaCheckIn().minusDays(1));
+    public void testRealizarCheckIn_FechaCheckOutAnteriorCheckIn() throws Exception {
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(3) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(1) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("La fecha de check-out debe ser posterior a la fecha de check-in."));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
-
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("La fecha de check-out debe ser posterior a la fecha de check-in.", response.getBody());
         verifyNoInteractions(checkInService);
     }
 
     @Test
-    public void testRealizarCheckIn_ReservaNoValida() {
-        // Arrange
+    public void testRealizarCheckIn_ReservaNoValida() throws Exception {
         when(checkInService.realizarCheckIn(any(CheckIn.class))).thenReturn(false);
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("No se pudo realizar el check-in. Verifica los datos y que la reserva exista."));
 
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("No se pudo realizar el check-in. Verifica los datos y que la reserva exista.", response.getBody());
-        verify(checkInService, times(1)).realizarCheckIn(datosCheckIn);
+        verify(checkInService, times(1)).realizarCheckIn(any(CheckIn.class));
     }
 
     @Test
-    public void testRealizarCheckIn_ErrorInesperado() {
-        // Arrange
+    public void testRealizarCheckIn_ErrorInesperado() throws Exception {
         when(checkInService.realizarCheckIn(any(CheckIn.class)))
                 .thenThrow(new RuntimeException("Error en el servicio"));
 
-        // Act
-        ResponseEntity<String> response = checkInController.realizarCheckIn(datosCheckIn);
+        mockMvc.perform(post("/api/reservas/checkin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reservaId\":1,\"nombreHuesped\":\"Juan\",\"apellidosHuesped\":\"Pérez\",\"documentoTipo\":\"DNI\",\"documentoNumero\":\"12345678\",\"telefono\":\"123456789\",\"email\":\"juan@example.com\",\"fechaCheckIn\":\"" + LocalDate.now().plusDays(1) + "\",\"fechaCheckOut\":\"" + LocalDate.now().plusDays(3) + "\",\"numHuespedes\":2,\"metodoPago\":\"Tarjeta\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error inesperado: Error en el servicio"));
 
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Error inesperado: Error en el servicio", response.getBody());
-        verify(checkInService, times(1)).realizarCheckIn(datosCheckIn);
+        verify(checkInService, times(1)).realizarCheckIn(any(CheckIn.class));
     }
 }
