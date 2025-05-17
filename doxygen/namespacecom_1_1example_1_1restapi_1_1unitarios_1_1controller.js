@@ -1,8 +1,0 @@
-var namespacecom_1_1example_1_1restapi_1_1unitarios_1_1controller =
-[
-    [ "CheckInControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_check_in_controller_test.html", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_check_in_controller_test" ],
-    [ "CheckOutControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_check_out_controller_test.html", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_check_out_controller_test" ],
-    [ "ClienteControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test.html", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_cliente_controller_test" ],
-    [ "HabitacionControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_habitacion_controller_test.html", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_habitacion_controller_test" ],
-    [ "ReservaControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_reserva_controller_test.html", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1_reserva_controller_test" ]
-];
