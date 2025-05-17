@@ -34,6 +34,7 @@ var hierarchy =
     [ "com.example.restapi.model.Problema", "classcom_1_1example_1_1restapi_1_1model_1_1Problema.html", null ],
     [ "com.example.restapi.controller.ProblemaController", "classcom_1_1example_1_1restapi_1_1controller_1_1ProblemaController.html", null ],
     [ "com.example.restapi.service.ProblemaService", "classcom_1_1example_1_1restapi_1_1service_1_1ProblemaService.html", null ],
+    [ "com.example.restapi.rendimiento.ProblemaServicePerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1ProblemaServicePerformanceTest.html", null ],
     [ "com.example.restapi.model.Reserva", "classcom_1_1example_1_1restapi_1_1model_1_1Reserva.html", null ],
     [ "com.example.restapi.controller.ReservaController", "classcom_1_1example_1_1restapi_1_1controller_1_1ReservaController.html", null ],
     [ "com.example.restapi.unitarios.controller.ReservaControllerTest", "classcom_1_1example_1_1restapi_1_1unitarios_1_1controller_1_1ReservaControllerTest.html", null ],
