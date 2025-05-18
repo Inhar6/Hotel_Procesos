@@ -44,7 +44,7 @@
             const tbody = document.getElementById("habitaciones-no-limpias-list");
             tbody.innerHTML = "";
             habitaciones.forEach(hab => {
-                const row = `<tr>
+                const row = `<tr id="row-${hab.id}">
                     <td>${hab.id}</td>
                     <td>${hab.tipo}</td>
                     <td>${hab.precioPorNoche} €</td>
@@ -56,6 +56,7 @@
                 tbody.innerHTML += row;
             });
         }
+
         async function marcarHabitacionComoLimpia(roomId) {
             if (confirm('¿Estás seguro de marcar esta habitación como limpia?')) {
                 try {
@@ -65,7 +66,10 @@
                     });
                     if (response.ok) {
                         // Eliminar la fila de la tabla
-                        document.getElementById(`row-${roomId}`).remove();
+                        const row = document.getElementById(`row-${roomId}`);
+                        if (row) {
+                            row.remove();
+                        }
                         alert('Habitación marcada como limpia');
                     } else {
                         const errorText = await response.text();
