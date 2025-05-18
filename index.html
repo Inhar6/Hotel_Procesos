@@ -102,6 +102,7 @@
                 <li><a href="#api-rest">API REST</a></li>
                 <li><a href="#empaquetado">Empaquetado</a></li>
                 <li><a href="#pruebas">Pruebas</a></li>
+                <li><a href="#documentacion-github">Documentación y GitHub Pages</a></li>
                 <li><a href="#referencias">Referencias</a></li>
             </ul>
         </nav>
@@ -114,15 +115,6 @@
                 <li><a href="https://inhar6.github.io/Hotel_Procesos/site/">Informes de pruebas</a> creados después de ejecutar Cobertura, Pruebas Unitarias, Pruebas de Rendimiento y Pruebas de Integración</li>
             </ol>
         </section>
-            <ul>
-                <li><a href="#documentacion">Documentación</a></li>
-                <li><a href="#proyecto">Proyecto</a></li>
-                <li><a href="#lanzamiento">Lanzamiento</a></li>
-                <li><a href="#api-rest">API REST</a></li>
-                <li><a href="#empaquetado">Empaquetado</a></li>
-                <li><a href="#pruebas">Pruebas</a></li>
-                <li><a href="#referencias">Referencias</a></li>
-            </ul>
         </nav>
 
         <section id="proyecto">
@@ -204,6 +196,43 @@
             <p>Para ejecutar los tests de integración, utiliza el siguiente comando:</p>
             <pre><code>mvn verify</code></pre>
             <p>Este comando ejecutará los tests de integración y generará un informe de cobertura de código si tienes configurado el plugin JaCoCo.</p>
+            
+            <h3>Tests de Rendimiento</h3>
+            <p>Para ejecutar los tests de rendimiento, utiliza el siguiente comando:</p>
+            <pre><code>mvn -Pperformance integration-test</code></pre>
+        </section>
+        
+        <section id="documentacion-github">
+            <h2>Documentación y GitHub Pages</h2>
+            <p>Este proyecto utiliza Doxygen para generar documentación y GitHub Pages para alojarla. La documentación incluye detalles sobre pruebas unitarias, pruebas de integración y pruebas de rendimiento.</p>
+            
+            <h3>Generación de Informes de Doxygen</h3>
+            <p>Para generar informes de Doxygen, puedes usar los siguientes comandos de Maven:</p>
+            <pre><code>mvn doxygen:report</code></pre>
+            <p>O alternativamente:</p>
+            <pre><code>mvn site</code></pre>
+            
+            <h3>Mover la Documentación a la Carpeta docs</h3>
+            <p>Si deseas generar toda la documentación y moverla a la carpeta docs de tu proyecto, sigue estos pasos:</p>
+            
+            <ol>
+                <li>Ejecuta las pruebas unitarias y de cobertura:
+                    <pre><code>mvn test jacoco:report</code></pre>
+                </li>
+                <li>Ejecuta las pruebas de rendimiento:
+                    <pre><code>mvn -Pperformance integration-test</code></pre>
+                </li>
+                <li>Asegúrate de que los informes de rendimiento también se muevan a la carpeta target/site/reports:
+                    <pre><code>mvn -Pperformance resources:copy-resources@copy-perf-report</code></pre>
+                </li>
+                <li>Mueve todo el contenido a la carpeta docs:
+                    <pre><code>mvn post-site</code></pre>
+                </li>
+            </ol>
+            
+            <h3>GitHub Pages</h3>
+            <p>El proyecto está configurado para usar GitHub Pages para alojar la documentación. La rama gh-pages se utiliza para este propósito. Puedes ver la documentación en la siguiente URL:</p>
+            <p><a href="https://inhar6.github.io/Hotel_Procesos/">GitHub Pages para Hotel_Procesos</a></p>
         </section>
 
         <section id="referencias">
