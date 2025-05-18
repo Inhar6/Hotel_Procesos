@@ -1,64 +1,74 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    text-align: center;
+    background: url('hotel.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
     margin: 0;
     padding: 0;
 }
 
+/* Contenedor principal */
 .container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 5% auto;
     width: 80%;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
 }
 
-h1 {
-    text-align: center;
-    color: #007bff;
+/* Títulos */
+h1, h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
 }
 
-h2 {
-    color: #007bff;
-    text-align: center;
-}
-
+/* Sección de informe */
 .informe {
     margin-top: 30px;
 }
 
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 20px;
+    background: white;
+    color: black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-table, th, td {
+th, td {
+    padding: 12px;
     border: 1px solid #ddd;
-}
-
-td {
-    padding: 10px;
     text-align: left;
 }
 
 th {
-    background-color: #f4f4f9;
+    background: #4caf50;
+    color: white;
     font-weight: bold;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+/* Estilo para el botón Volver */
+.back-button-container {
+    text-align: center;
+    margin: 20px 0;
 }
 
-button:hover {
-    background-color: #0056b3;
+.back-button {
+    background-color: #575f66;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.back-button:hover {
+    background-color: #353637;
 }
