@@ -197,7 +197,7 @@ a:hover {
 }
 
 .modal-content {
-    background-color: #fff;
+    background: #fff;
     padding: 20px;
     border-radius: 10px;
     width: 350px;
