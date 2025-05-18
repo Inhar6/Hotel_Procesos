@@ -49,7 +49,7 @@ public class ReservaServiceTest {
 
         habitacion = new Habitacion();
         habitacion.setId(1L);
-        habitacion.setDisponible(true);
+        habitacion.setDisponible(false); // Corregido para reflejar reserva activa
         habitacion.setPrecioPorNoche(100.0);
 
         reserva = new Reserva(cliente, habitacion, LocalDate.now(), LocalDate.now().plusDays(2), "Tarjeta");
@@ -59,6 +59,8 @@ public class ReservaServiceTest {
 
     @Test
     public void testReservarHabitacion() {
+        // Configurar habitación como disponible para este test
+        habitacion.setDisponible(true);
         when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacion));
         when(reservaRepository.save(any(Reserva.class))).thenReturn(reserva);

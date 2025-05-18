@@ -2,11 +2,11 @@ body {
     font-family: Arial, sans-serif;
     background: #f5f7fa;
     margin: 20px;
-    color: #333;
+    color: #ffffff;
 }
 
 .container {
-    background: white;
+    background: rgba(0, 0, 0, 0.7);
     padding: 20px 30px;
     border-radius: 10px;
     max-width: 600px;
@@ -16,11 +16,12 @@ body {
 
 h1, h2 {
     text-align: center;
-    color: #222;
+    color: #ffffff;
 }
 
 .service {
     display: flex;
+    background: #dddddd;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #eee;
@@ -33,10 +34,11 @@ h1, h2 {
     font-weight: 600;
     font-size: 1.1em;
     flex: 1;
+    color: #151515;
 }
 
 .service-price {
-    color: #28a745;
+    color: #13b439;
     font-weight: 600;
     margin: 0 20px;
     min-width: 60px;

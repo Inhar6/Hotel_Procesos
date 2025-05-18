@@ -1,3 +1,4 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -8,7 +9,7 @@ body {
     padding: 0;
 }
 
-
+/* Contenedor principal */
 .container {
     background: rgba(0, 0, 0, 0.7);
     padding: 30px;
@@ -18,20 +19,20 @@ body {
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
 }
 
-
+/* Títulos */
 h1 {
     font-size: 28px;
     margin-bottom: 20px;
 }
 
-
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background: white;
     color: black;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 th, td {
@@ -45,7 +46,7 @@ th {
     color: white;
 }
 
-
+/* Botones */
 button {
     font-size: 16px;
     padding: 10px;
@@ -61,7 +62,7 @@ button:hover {
     background-color: #45a049;
 }
 
-
+/* Notificación */
 #notificacion {
     display: none;
     position: fixed;
@@ -71,6 +72,26 @@ button:hover {
     color: white;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
+}
+
+/* Estilo para el botón Volver */
+.back-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.back-button {
+    background-color: #575f66;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.back-button:hover {
+    background-color: #353637;
 }
