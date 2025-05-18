@@ -1,4 +1,0 @@
-var HabitacionServiceDisponiblesPerformanceTest_8java =
-[
-    [ "com.example.restapi.rendimiento.HabitacionServiceDisponiblesPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1HabitacionServiceDisponiblesPerformanceTest" ]
-];

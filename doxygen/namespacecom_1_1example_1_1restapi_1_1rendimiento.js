@@ -1,0 +1,5 @@
+var namespacecom_1_1example_1_1restapi_1_1rendimiento =
+[
+    [ "HabitacionServiceDisponiblesPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1_habitacion_service_disponibles_performance_test.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1_habitacion_service_disponibles_performance_test" ],
+    [ "ReservaServiceListPerformanceTest", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1_reserva_service_list_performance_test.html", "classcom_1_1example_1_1restapi_1_1rendimiento_1_1_reserva_service_list_performance_test" ]
+];

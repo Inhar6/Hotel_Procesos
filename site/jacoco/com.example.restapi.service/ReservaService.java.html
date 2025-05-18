@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReservaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rest-api</a> &gt; <a href="index.source.html" class="el_package">com.example.restapi.service</a> &gt; <span class="el_source">ReservaService.java</span></div><h1>ReservaService.java</h1><pre class="source lang-java linenums">package com.example.restapi.service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.restapi.model.Cliente;
+import com.example.restapi.model.Habitacion;
+import com.example.restapi.model.Reserva;
+import com.example.restapi.repository.ClienteRepository;
+import com.example.restapi.repository.HabitacionRepository;
+import com.example.restapi.repository.ReservaRepository;
+
+@Service
+public class ReservaService {
+
+<span class="fc" id="L23">    private static final Logger logger = LoggerFactory.getLogger(ReservaService.class);</span>
+
+    private final ReservaRepository reservaRepository;
+    private final ClienteRepository clienteRepository;
+    private final HabitacionRepository habitacionRepository;
+
+    @Autowired
+<span class="fc" id="L30">    public ReservaService(ReservaRepository reservaRepository, ClienteRepository clienteRepository, HabitacionRepository habitacionRepository) {</span>
+<span class="fc" id="L31">        this.reservaRepository = reservaRepository;</span>
+<span class="fc" id="L32">        this.clienteRepository = clienteRepository;</span>
+<span class="fc" id="L33">        this.habitacionRepository = habitacionRepository;</span>
+<span class="fc" id="L34">    }</span>
+
+    @Transactional
+    public boolean reservarHabitacion(Long clienteId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago) {
+<span class="fc" id="L38">        Optional&lt;Cliente&gt; clienteOpt = clienteRepository.findById(clienteId);</span>
+<span class="fc" id="L39">        Optional&lt;Habitacion&gt; habitacionOpt = habitacionRepository.findById(habitacionId);</span>
+
+<span class="fc bfc" id="L41" title="All 4 branches covered.">        if (clienteOpt.isPresent() &amp;&amp; habitacionOpt.isPresent()) {</span>
+<span class="fc" id="L42">            Cliente cliente = clienteOpt.get();</span>
+<span class="fc" id="L43">            Habitacion habitacion = habitacionOpt.get();</span>
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            if (!habitacion.isDisponible()) {</span>
+<span class="fc" id="L46">                return false;</span>
+            }
+
+<span class="fc" id="L49">            Reserva reserva = new Reserva(cliente, habitacion, fechaCheckIn, fechaCheckOut, metodoPago);</span>
+<span class="fc" id="L50">            reservaRepository.save(reserva);</span>
+
+<span class="fc" id="L52">            habitacion.setDisponible(false);</span>
+<span class="fc" id="L53">            habitacionRepository.save(habitacion);</span>
+
+<span class="fc" id="L55">            return true;</span>
+        }
+<span class="fc" id="L57">        return false;</span>
+    }
+
+    @Transactional
+    public boolean modificarReserva(Long reservaId, Long habitacionId, LocalDate fechaCheckIn, LocalDate fechaCheckOut, String metodoPago, Double totalPagar) {
+<span class="fc" id="L62">        logger.info(&quot;Modificando reserva ID: {}, habitacionId: {}, fechaCheckIn: {}, fechaCheckOut: {}, metodoPago: {}, totalPagar: {}&quot;,</span>
+<span class="fc" id="L63">                reservaId, habitacionId, fechaCheckIn, fechaCheckOut, metodoPago, totalPagar);</span>
+
+<span class="fc" id="L65">        Optional&lt;Reserva&gt; reservaOpt = reservaRepository.findById(reservaId);</span>
+<span class="fc" id="L66">        Optional&lt;Habitacion&gt; habitacionOpt = habitacionRepository.findById(habitacionId);</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (!reservaOpt.isPresent()) {</span>
+<span class="fc" id="L69">            logger.error(&quot;Reserva no encontrada para ID: {}&quot;, reservaId);</span>
+<span class="fc" id="L70">            return false;</span>
+        }
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (!habitacionOpt.isPresent()) {</span>
+<span class="fc" id="L73">            logger.error(&quot;Habitación no encontrada para ID: {}&quot;, habitacionId);</span>
+<span class="fc" id="L74">            return false;</span>
+        }
+
+<span class="fc" id="L77">        Reserva reserva = reservaOpt.get();</span>
+<span class="fc" id="L78">        Habitacion nuevaHabitacion = habitacionOpt.get();</span>
+
+        // Validar estado: solo &quot;Pendiente&quot; o &quot;CheckIn Realizado&quot;
+<span class="pc bpc" id="L81" title="3 of 4 branches missed.">        if (!reserva.getEstado().equalsIgnoreCase(&quot;Pendiente&quot;) &amp;&amp; !reserva.getEstado().equalsIgnoreCase(&quot;CheckIn Realizado&quot;)) {</span>
+<span class="nc" id="L82">            logger.error(&quot;Estado inválido para modificar reserva ID: {}. Estado actual: {}&quot;, reservaId, reserva.getEstado());</span>
+<span class="nc" id="L83">            return false;</span>
+        }
+
+        // Si no se cambia la habitación, verificar que esté ocupada (disponible = false)
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (nuevaHabitacion.getId().equals(reserva.getHabitacion().getId())) {</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            if (nuevaHabitacion.isDisponible()) {</span>
+<span class="nc" id="L89">                logger.error(&quot;La habitación ID: {} está libre, pero debería estar ocupada para la reserva ID: {}&quot;, habitacionId, reservaId);</span>
+<span class="nc" id="L90">                return false;</span>
+            }
+        } else {
+            // Si se cambia la habitación, verificar que la nueva esté disponible
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            if (!nuevaHabitacion.isDisponible()) {</span>
+<span class="fc" id="L95">                logger.error(&quot;La nueva habitación ID: {} no está disponible&quot;, habitacionId);</span>
+<span class="fc" id="L96">                return false;</span>
+            }
+
+            // Liberar la habitación anterior
+<span class="fc" id="L100">            Habitacion habitacionAnterior = reserva.getHabitacion();</span>
+<span class="fc" id="L101">            habitacionAnterior.setDisponible(true);</span>
+<span class="fc" id="L102">            habitacionRepository.save(habitacionAnterior);</span>
+
+            // Ocupar la nueva habitación
+<span class="fc" id="L105">            nuevaHabitacion.setDisponible(false);</span>
+<span class="fc" id="L106">            habitacionRepository.save(nuevaHabitacion);</span>
+<span class="fc" id="L107">            reserva.setHabitacion(nuevaHabitacion);</span>
+        }
+
+        // Actualizar los campos
+<span class="fc" id="L111">        reserva.setFechaCheckIn(fechaCheckIn);</span>
+<span class="fc" id="L112">        reserva.setFechaCheckOut(fechaCheckOut);</span>
+<span class="fc" id="L113">        reserva.setMetodoPago(metodoPago);</span>
+<span class="fc" id="L114">        reserva.setTotalPagar(totalPagar);</span>
+
+        // Guardar los cambios
+<span class="fc" id="L117">        logger.info(&quot;Guardando reserva actualizada ID: {}&quot;, reservaId);</span>
+<span class="fc" id="L118">        reservaRepository.save(reserva);</span>
+<span class="fc" id="L119">        return true;</span>
+    }
+
+    @Transactional
+    public boolean cancelarReserva(Long reservaId) {
+<span class="fc" id="L124">        Optional&lt;Reserva&gt; reservaOpt = reservaRepository.findById(reservaId);</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (reservaOpt.isPresent()) {</span>
+<span class="fc" id="L127">            Reserva reserva = reservaOpt.get();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (&quot;Cancelada&quot;.equals(reserva.getEstado())) {</span>
+<span class="fc" id="L129">                return false;</span>
+            }
+<span class="fc" id="L131">            reserva.cancelarReserva();</span>
+<span class="fc" id="L132">            reservaRepository.save(reserva);</span>
+
+<span class="fc" id="L134">            Habitacion habitacion = reserva.getHabitacion();</span>
+<span class="fc" id="L135">            habitacion.setDisponible(true);</span>
+<span class="fc" id="L136">            habitacionRepository.save(habitacion);</span>
+
+<span class="fc" id="L138">            return true;</span>
+        }
+<span class="fc" id="L140">        return false;</span>
+    }
+
+    public List&lt;Reserva&gt; getReservasPorEmail(String email) {
+<span class="fc" id="L144">        return reservaRepository.findByClienteEmail(email);</span>
+    }
+
+    public Optional&lt;Reserva&gt; getReservaById(Long id) {
+<span class="fc" id="L148">        return reservaRepository.findById(id);</span>
+    }
+
+    public List&lt;Reserva&gt; getAllReservas() {
+<span class="fc" id="L152">        return reservaRepository.findAll();</span>
+    }
+
+    public List&lt;Reserva&gt; obtenerReservasPendientes() {
+<span class="fc" id="L156">        return reservaRepository.findByEstado(&quot;Pendiente&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
