@@ -5,24 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Servicios Adicionales del Hotel</title>
   <link rel="stylesheet" href="styleServiciosAdicionales.css" />
-  <style>
-    .back-button-container {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .back-button {
-      padding: 10px 20px;
-      background-color: #575f66;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .back-button:hover {
-      background-color: #353637;
-    }
-  </style>
 </head>
 <body>
 
@@ -70,8 +52,10 @@
 
   <h2>Total: <span id="total-amount">0 €</span></h2>
 
-  <button onclick="generarFactura()">Generar Factura</button>
-  <button onclick="imprimirFactura()">Imprimir Factura</button>
+  <div class="button-container">
+    <button onclick="generarFactura()">Generar Factura</button>
+    <button onclick="imprimirFactura()">Imprimir Factura</button>
+  </div>
 
   <div id="factura"></div>
 

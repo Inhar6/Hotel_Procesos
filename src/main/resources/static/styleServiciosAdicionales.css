@@ -3,62 +3,61 @@ body {
     background: #f5f7fa;
     margin: 20px;
     color: #333;
-  }
-  
-  .container {
+}
+
+.container {
     background: white;
     padding: 20px 30px;
     border-radius: 10px;
     max-width: 600px;
     margin: auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  
-  h1, h2 {
+}
+
+h1, h2 {
     text-align: center;
     color: #222;
-  }
-  
-  .service {
+}
+
+.service {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Esto alinea verticalmente al centro */
+    align-items: center;
     border: 1px solid #eee;
     padding: 12px 20px;
     margin-bottom: 12px;
     border-radius: 8px;
-  }
-  
-  .service-name {
+}
+
+.service-name {
     font-weight: 600;
     font-size: 1.1em;
-    flex: 1; /* Esto ayuda a que tome el espacio necesario */
-  }
-  
-  .service-price {
+    flex: 1;
+}
+
+.service-price {
     color: #28a745;
     font-weight: 600;
-    margin: 0 20px; /* Espacio a los lados para separar bien */
-    min-width: 60px; /* Ancho mínimo para que todos tengan igual espacio */
-    text-align: right; /* Alinea el precio a la derecha dentro de ese espacio */
-  }
-  
-  .quantity-container {
+    margin: 0 20px;
+    min-width: 60px;
+    text-align: right;
+}
+
+.quantity-container {
     display: flex;
     align-items: center;
-  }
-  
-  
-  .quantity-container input[type=number] {
+}
+
+.quantity-container input[type=number] {
     width: 60px;
     padding: 6px;
     margin-right: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1em;
-  }
-  
-  .add-to-cart {
+}
+
+.add-to-cart {
     background: #007bff;
     color: white;
     border: none;
@@ -67,30 +66,29 @@ body {
     cursor: pointer;
     transition: background 0.3s ease;
     margin: 3px;
-    
-  }
-  
-  .add-to-cart:hover {
+}
+
+.add-to-cart:hover {
     background: #0056b3;
-  }
-  
-  #cart-summary {
+}
+
+#cart-summary {
     border-left: 3px solid #007bff;
     padding-left: 12px;
     margin-bottom: 15px;
-  }
-  
-  .cart-item {
+}
+
+.cart-item {
     padding: 4px 0;
     border-bottom: 1px solid #eee;
-  }
-  
-  h2 span#total-amount {
+}
+
+h2 span#total-amount {
     color: #d35400;
-  }
-  
-  button {
-    margin: 5px 10px 20px 10px;
+}
+
+button {
+    margin: 5px;
     padding: 10px 15px;
     font-size: 1em;
     border-radius: 7px;
@@ -99,47 +97,71 @@ body {
     background-color: #6c757d;
     color: white;
     transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #495057;
-  }
-  
-  .factura-container {
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.factura-container {
     background: white;
     color: black;
     padding: 20px;
     margin-top: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
-  }
-  
-  .factura-container h2 {
+}
+
+.factura-container h2 {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .factura-container hr {
+}
+
+.factura-container hr {
     margin: 15px 0;
     border: none;
     border-top: 1px solid #ccc;
-  }
-  
-  /* Estilos para impresión */
-  @media print {
+}
+
+@media print {
     body * {
-      visibility: hidden;
+        visibility: hidden;
     }
     #factura, #factura * {
-      visibility: visible;
+        visibility: visible;
     }
     #factura {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      margin: 0;
-      padding: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
-  }
-  
+}
+
+.back-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.back-button {
+    padding: 10px 20px;
+    background-color: #575f66;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background-color: #353637;
+}
